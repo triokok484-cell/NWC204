@@ -3,327 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NWC204 - Networking Master Review</title>
+    <title>NWC204 - Networking Practice Tool</title>
     <style>
         :root {
-            --primary-color: #0056b3; /* Đổi sang màu xanh đặc trưng của Cisco/Networking */
-            --primary-light: #e7f1ff;
+            --primary-color: #6f42c1;
+            --primary-light: #f3f0ff;
             --secondary-color: #28a745;
             --danger-color: #dc3545;
             --light-bg: #f8f9fa;
             --dark-text: #333;
-            --border-radius: 12px;
+            --border-radius: 15px;
         }
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
         
         * { box-sizing: border-box; }
-        
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: var(--light-bg);
+            background-color: #f5f6fa;
             color: var(--dark-text);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column;
+            height: 100vh; overflow: hidden;
         }
 
-        /* HEADER */
+        /* Top Bar */
         .top-bar {
-            background: white;
-            padding: 10px 20px;
+            background: white; padding: 12px 25px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            display: flex; justify-content: space-between; align-items: center;
             z-index: 10;
-            flex-shrink: 0;
         }
-
-        .tabs {
-            display: flex;
-            background: #f0f0f0;
-            padding: 4px;
-            border-radius: 25px;
-        }
-
+        .tabs { display: flex; background: #eee; padding: 4px; border-radius: 30px; }
         .tab-btn {
-            padding: 8px 20px;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            border-radius: 20px;
-            font-weight: 600;
-            color: #666;
-            transition: all 0.3s;
+            padding: 8px 22px; border: none; background: transparent;
+            cursor: pointer; border-radius: 25px; font-weight: 600;
+            transition: 0.3s; color: #555;
         }
+        .tab-btn.active { background: var(--primary-color); color: white; }
 
-        .tab-btn.active {
-            background-color: var(--primary-color);
-            color: white;
-            box-shadow: 0 2px 5px rgba(0, 86, 179, 0.3);
-        }
-
-        .lang-btn {
-            background: white;
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-            padding: 5px 15px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        /* LAYOUT */
-        .main-container {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-            position: relative;
-        }
-
+        /* Content Area */
+        .main-container { display: flex; flex: 1; overflow: hidden; }
         .content-area {
-            flex: 1;
+            flex: 1; padding: 30px; overflow-y: auto;
+            max-width: 1000px; margin: 0 auto; width: 100%;
+        }
+
+        /* Question Highlight Style */
+        .question-header {
+            background: #eef2ff;
+            border-left: 6px solid var(--primary-color);
             padding: 20px;
-            overflow-y: auto;
-            max-width: 900px;
-            margin: 0 auto;
-            width: 100%;
-            padding-bottom: 100px;
-        }
-
-        /* CONTROLS */
-        .controls-group {
-            background: #fff;
-            padding: 15px 20px;
-            border-radius: var(--border-radius);
-            margin-bottom: 20px;
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            flex-wrap: wrap;
-        }
-        .control-item { display: flex; align-items: center; }
-        .control-item select {
-            padding: 8px;
-            border: 2px solid #ddd;
             border-radius: 8px;
-            font-size: 14px;
-            background: #fafafa;
+            margin-bottom: 25px;
         }
-        .control-item label {
-            font-weight: 600;
-            margin-right: 8px;
-            font-size: 14px;
+        .question-text {
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.5;
+            color: #1e293b;
+        }
+        .chapter-tag {
+            display: inline-block;
+            background: #ddd;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #666;
         }
 
-        /* FLASHCARD */
-        .flashcard-wrapper {
-            display: flex;
-            justify-content: center;
-            perspective: 1000px;
-            margin-bottom: 20px;
-        }
-        .flashcard {
-            width: 100%;
-            max-width: 600px;
-            height: 350px;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.6s;
-            cursor: pointer;
-        }
-        .flashcard.flipped { transform: rotateY(180deg); }
-        .card-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            background: white;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            border: 2px solid var(--primary-light);
-            overflow-y: auto;
-        }
-        .card-back { transform: rotateY(180deg); background: #fdfdfe; }
-
-        /* QUIZ */
-        .question-card {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 25px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
+        /* Options */
         .options-list { list-style: none; padding: 0; }
         .options-list li {
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 15px 15px 15px 50px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.2s;
+            background: white; border: 2px solid #edf2f7;
+            border-radius: 12px; padding: 18px 18px 18px 55px;
+            margin-bottom: 12px; cursor: pointer;
+            position: relative; transition: 0.2s;
+            font-size: 16px; font-weight: 500;
         }
         .options-list li::before {
             content: attr(data-label);
-            position: absolute; left: 15px; top: 50%;
-            transform: translateY(-50%);
-            width: 24px; height: 24px;
-            background: #f0f0f0; border-radius: 50%;
-            text-align: center; line-height: 24px; font-weight: bold;
+            position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+            width: 28px; height: 28px; background: #f1f5f9;
+            border-radius: 50%; text-align: center; line-height: 28px; font-weight: bold;
         }
-        .options-list li.correct { border-color: var(--secondary-color); background: #d4edda; }
-        .options-list li.wrong { border-color: var(--danger-color); background: #f8d7da; }
+        .options-list li:hover { border-color: var(--primary-color); background: #f8fafc; }
+        .options-list li.correct { background: #dcfce7; border-color: var(--secondary-color); color: #166534; }
+        .options-list li.wrong { background: #fee2e2; border-color: var(--danger-color); color: #991b1b; }
 
-        /* BUTTONS */
-        .start-btn, .nav-btn, .submit-btn {
-            padding: 12px 30px; border-radius: 25px; border: none;
-            font-weight: bold; cursor: pointer; transition: 0.3s;
-        }
-        .start-btn { background: var(--primary-color); color: white; }
-        .submit-btn { background: var(--secondary-color); color: white; }
-        .nav-btn.secondary { background: #e0e0e0; color: #333; }
-
-        /* SIDEBAR */
+        /* Sidebar Map */
         .quiz-sidebar {
-            width: 250px; background: white; border-left: 1px solid #eee;
+            width: 280px; background: white; border-left: 1px solid #e2e8f0;
             padding: 20px; overflow-y: auto;
         }
-        .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
         .map-btn {
-            width: 100%; aspect-ratio: 1; border: none; border-radius: 5px;
-            background: #f0f0f0; cursor: pointer; font-weight: bold;
+            width: 100%; aspect-ratio: 1; border: none; border-radius: 8px;
+            background: #f1f5f9; cursor: pointer; font-weight: bold; transition: 0.2s;
         }
-        .map-btn.active { border: 2px solid var(--primary-color); }
+        .map-btn.active { box-shadow: 0 0 0 3px var(--primary-light); border: 2px solid var(--primary-color); }
         .map-btn.correct { background: var(--secondary-color); color: white; }
         .map-btn.wrong { background: var(--danger-color); color: white; }
 
+        /* UI Elements */
+        .start-btn { 
+            background: var(--primary-color); color: white; border: none;
+            padding: 15px 40px; border-radius: 30px; font-size: 18px;
+            font-weight: bold; cursor: pointer;
+        }
         .hidden { display: none !important; }
         .flex-between { display: flex; justify-content: space-between; align-items: center; }
-        pre { background: #2d2d2d; color: #fff; padding: 10px; border-radius: 5px; text-align: left; width: 100%; }
+        .explanation-box {
+            margin-top: 20px; padding: 20px; border-radius: 12px;
+            border-left: 5px solid #666; background: #f8fafc;
+        }
+
+        /* Flashcard specifics */
+        .flashcard {
+            width: 100%; max-width: 650px; height: 400px;
+            perspective: 1000px; margin: 0 auto; cursor: pointer;
+        }
+        .flashcard-inner {
+            position: relative; width: 100%; height: 100%;
+            transition: transform 0.6s; transform-style: preserve-3d;
+        }
+        .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+        .card-face {
+            position: absolute; width: 100%; height: 100%;
+            backface-visibility: hidden; border-radius: 20px;
+            background: white; padding: 40px; display: flex;
+            flex-direction: column; justify-content: center; align-items: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;
+        }
+        .card-back { transform: rotateY(180deg); background: #fafaff; }
+
+        /* Hotkey Legend */
+        .hotkey-hint {
+            position: fixed; bottom: 20px; right: 20px;
+            background: #333; color: white; padding: 8px 15px;
+            border-radius: 8px; font-size: 12px; opacity: 0.7;
+        }
     </style>
 </head>
 <body>
 
     <div class="top-bar">
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('flashcard')">📚 Flashcards</button>
-            <button class="tab-btn" onclick="switchTab('quiz')">📝 Quiz (Practice)</button>
+            <button class="tab-btn active" onclick="switchTab('flashcard')">📚 Thẻ học</button>
+            <button class="tab-btn" onclick="switchTab('quiz')">📝 Luyện tập Quiz</button>
         </div>
-        <div style="font-weight: bold; color: var(--primary-color);">NWC204 - NETWORK FUNDAMENTALS</div>
-        <button class="lang-btn" onclick="toggleLanguage()">🌐 VN / EN</button>
+        <div id="hotkey-display" style="font-size: 14px; font-weight: bold; color: var(--primary-color);">Hotkey: N (Dịch) | M (Xáo đáp án)</div>
+        <button class="tab-btn" onclick="toggleLanguage()" style="border: 1px solid #ddd;">🌐 VN / EN</button>
     </div>
 
     <div class="main-container">
         <div class="content-area">
-
-            <!-- FLASHCARD VIEW -->
+            
+            <!-- FLASHCARD -->
             <div id="flashcard-view">
-                <div class="controls-group">
-                    <div class="control-item">
-                        <label id="lbl-fc-topic">Topic:</label>
-                        <select id="fc-topic-select" onchange="filterFlashcards()"></select>
-                    </div>
-                    <div class="control-item">
-                        <label id="lbl-fc-shuffle">Shuffle Options:</label>
-                        <input type="checkbox" id="fc-shuffle-check" onchange="renderFlashcard()">
-                    </div>
-                </div>
-
-                <div class="flashcard-wrapper">
-                    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-                        <div class="card-face card-front">
-                            <small id="fc-flip-hint" style="color: #888; margin-bottom: 10px;">Click to flip</small>
-                            <div id="fc-content" style="width: 100%;"></div>
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                    <div class="flashcard-inner">
+                        <div class="card-face">
+                            <div class="chapter-tag" id="fc-tag">Topic</div>
+                            <div id="fc-question" class="question-text"></div>
                         </div>
                         <div class="card-face card-back">
-                            <h3 style="color: var(--secondary-color);" id="txt-fc-ans">Answer</h3>
-                            <div id="fc-answer" style="font-size: 20px; font-weight: bold; margin-bottom: 15px;"></div>
-                            <div style="text-align: left; width: 100%;">
-                                <strong id="txt-fc-exp">Explanation:</strong>
-                                <div id="fc-explanation"></div>
-                            </div>
+                            <h3 style="color: var(--secondary-color);">ĐÁP ÁN</h3>
+                            <div id="fc-answer" style="font-size: 22px; font-weight: bold; margin-bottom: 20px;"></div>
+                            <div id="fc-explanation" style="text-align: left; font-size: 15px; color: #555;"></div>
                         </div>
                     </div>
                 </div>
-                <div style="display:flex; justify-content:center; gap:20px;">
-                    <button class="nav-btn secondary" onclick="navFlashcard(-1)" id="btn-fc-prev">Prev</button>
-                    <span id="fc-counter" style="align-self:center; font-weight:bold;">0 / 0</span>
-                    <button class="nav-btn" onclick="navFlashcard(1)" id="btn-fc-next">Next</button>
+                <div class="flex-between" style="max-width: 650px; margin: 30px auto;">
+                    <button class="tab-btn" onclick="navFlashcard(-1)" style="background:#ddd">Trước</button>
+                    <span id="fc-counter" style="font-weight: bold;">0/0</span>
+                    <button class="tab-btn" onclick="navFlashcard(1)" style="background:#ddd">Sau</button>
                 </div>
             </div>
 
-            <!-- QUIZ SETUP -->
-            <div id="quiz-setup" class="hidden" style="text-align:center; padding: 40px; background: white; border-radius: 12px;">
-                <h2 id="txt-setup-title">Practice Config</h2>
-                <div class="control-item" style="justify-content:center; margin-bottom: 20px;">
-                    <label id="lbl-quiz-topic">Topic:</label>
-                    <select id="quiz-topic-select" onchange="updateMaxQuestions()"></select>
+            <!-- SETUP -->
+            <div id="quiz-setup" class="hidden" style="text-align: center; background: white; padding: 50px; border-radius: 20px;">
+                <h1 style="color: var(--primary-color);">Cấu hình luyện tập</h1>
+                <div style="margin-bottom: 30px;">
+                    <label>1. Chọn chủ đề:</label><br><br>
+                    <select id="topic-select" onchange="updateMax()" style="padding: 12px; width: 300px; border-radius: 8px;"></select>
                 </div>
-                <p><span id="txt-total">Total available:</span> <span id="total-qs" style="font-weight:bold;">0</span></p>
-                <div style="margin: 20px 0;">
-                    <label id="txt-q-count">Questions to do:</label><br>
-                    <input type="number" id="quiz-count-input" value="10" style="padding:10px; width:80px; text-align:center; font-size:18px;">
+                <div style="margin-bottom: 30px;">
+                    <label>2. Số lượng câu hỏi:</label><br><br>
+                    <input type="number" id="quiz-count" value="10" style="padding: 10px; width: 80px; text-align: center; font-size: 18px;">
+                    <span id="total-available" style="color: #666; margin-left: 10px;"></span>
                 </div>
-                <button class="start-btn" onclick="startQuiz()" id="txt-start">Start 🚀</button>
+                <button class="start-btn" onclick="startQuiz()">Bắt đầu làm bài 🚀</button>
             </div>
 
             <!-- QUIZ ACTIVE -->
             <div id="quiz-active" class="hidden">
-                <div class="question-card">
-                    <div class="flex-between" style="margin-bottom:15px; color:#666;">
-                        <span id="quiz-progress">Question 1/10</span>
-                        <span id="txt-doing">NWC204 Training</span>
-                    </div>
-                    <div id="q-content"></div>
-                    <ul class="options-list" id="q-options"></ul>
-                    <div id="q-explanation" style="margin-top:20px; padding:15px; border-radius:8px; display:none;"></div>
+                <div class="question-header">
+                    <div class="chapter-tag" id="q-tag">Chapter Name</div>
+                    <div id="quiz-question" class="question-text"></div>
                 </div>
-                <div class="flex-between">
-                    <button class="nav-btn secondary" onclick="navQuiz(-1)" id="btn-prev">Prev</button>
-                    <button class="submit-btn" onclick="finishQuiz()" id="btn-submit">Submit</button>
-                    <button class="nav-btn" onclick="navQuiz(1)" id="btn-next">Next</button>
+                <ul class="options-list" id="quiz-options"></ul>
+                <div id="quiz-explanation" class="explanation-box" style="display: none;"></div>
+                
+                <div class="flex-between" style="margin-top: 30px;">
+                    <button class="tab-btn" onclick="navQuiz(-1)" style="background:#ddd">Câu trước</button>
+                    <button class="start-btn" style="background: var(--secondary-color);" onclick="finishQuiz()">Kết thúc & Chấm điểm</button>
+                    <button class="tab-btn" onclick="navQuiz(1)" style="background:#ddd">Câu sau</button>
                 </div>
             </div>
 
             <!-- RESULT -->
-            <div id="quiz-result" class="hidden" style="text-align:center;">
-                <div style="background:white; padding:30px; border-radius:12px; margin-bottom:20px;">
-                    <h2 id="txt-result-title">Result</h2>
-                    <div id="score-val" style="font-size:48px; font-weight:bold; color:var(--primary-color);">0/0</div>
-                    <button class="start-btn" onclick="resetQuiz()" style="margin-top:15px;">Restart 🔄</button>
+            <div id="quiz-result" class="hidden" style="text-align: center;">
+                <div style="background: white; padding: 40px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+                    <h2>Kết quả bài làm</h2>
+                    <div id="final-score" style="font-size: 60px; font-weight: bold; color: var(--primary-color);">0/0</div>
+                    <button class="start-btn" onclick="resetQuiz()" style="margin-top: 20px;">Làm đề mới 🔄</button>
                 </div>
-                <div id="review-list"></div>
+                <div id="review-area" style="margin-top: 30px; text-align: left;"></div>
             </div>
 
         </div>
 
         <!-- SIDEBAR -->
         <div class="quiz-sidebar hidden" id="quiz-sidebar">
-            <div style="font-weight:bold; margin-bottom:15px;" id="txt-map">Question Map</div>
+            <h3 style="margin-top: 0;">Bản đồ câu hỏi</h3>
             <div class="question-grid" id="map-grid"></div>
         </div>
     </div>
 
+    <div class="hotkey-hint">Phím N: Dịch | Phím M: Xáo đáp án | Mũi tên: Chuyển câu</div>
+
 <script>
-    // 1. DỮ LIỆU CÂU HỎI (JSON sẽ được bạn thêm vào đây)
-    // Cấu trúc mẫu: { id: 1, topic: "OSI Model", vi: { question: "", options: [], answer: "", explanation: "" }, en: { question: "", options: [], answer: "", explanation: "" } }
+    // JSON DATA - Hãy dán dữ liệu 50 câu của bạn vào đây
     const quizData = [
-        
-  {
+        {
     "id": 1,
     "topic": "Transport & Application Layers",
     "vi": {
@@ -1123,82 +1038,858 @@
       "options": ["A. Sequencing", "B. Duplexing", "C. Multiplexing", "D. segmentation"],
       "answer": "D. segmentation"
     }
-  }
-
+  },
+{
+"id": 51,
+"topic": "Network Security & Services",
+"vi": {
+"question": "Lệnh 'ip default-gateway 172.16.100.1' được cấu hình trên Switch có tác dụng gì?",
+"options": ["A. Đặt IP quản lý cho Switch", "B. Cho phép quản lý Switch từ xa từ một mạng khác", "C. Giới hạn Switch chỉ gửi frame đến gateway đó", "D. Giúp Switch giao tiếp với các host trong mạng 172.16.100.0"],
+"answer": "B. Cho phép quản lý Switch từ xa từ một mạng khác",
+"explanation": "Switch Layer 2 không cần Gateway để chạy trong mạng nội bộ, nhưng nếu bạn muốn SSH/Telnet từ mạng khác vào nó, nó cần Gateway để biết đường trả lời.",
+"tip": "Mẹo: Switch dùng Gateway để 'trả lời thư' của sếp ở xa (Remote Management). Nếu không có Gateway, Switch chỉ nói chuyện được với 'hàng xóm' cùng mạng LAN thôi."
+},
+"en": {
+"question": "The global configuration command ip default-gateway 172.16.100.1 is applied to a switch. What is the effect?",
+"options": ["A. Management IP address", "B. Remotely managed from a host on another network", "C. Limited to sending frames to gateway", "D. Communicate with local hosts"],
+"answer": "B. Remotely managed from a host on another network"
+}
+},
+{
+"id": 52,
+"topic": "Network Security & Services",
+"vi": {
+"question": "Lệnh 'nslookup' được sử dụng để làm gì?",
+"options": ["A. Kiểm tra cấu hình IP", "B. Truy vấn thủ công máy chủ DNS để phân giải tên miền", "C. Hiển thị bảng định tuyến", "D. Xóa bộ nhớ đệm DNS"],
+"answer": "B. Truy vấn thủ công máy chủ DNS để phân giải tên miền",
+"explanation": "Nslookup giúp bạn kiểm tra xem một tên miền (như google.com) đang trỏ về IP nào bằng cách hỏi trực tiếp server DNS.",
+"tip": "Mẹo: 'Lookup' là tra cứu. 'NS' là Name Server. Nslookup = Tra cứu máy chủ tên miền."
+},
+"en": {
+"question": "Which command is used to manually query a DNS server to resolve a specific host name?",
+"options": ["A. nslookup", "B. ipconfig/displaydns", "C. tracert", "D. net"],
+"answer": "A. nslookup"
+}
+},
+{
+"id": 53,
+"topic": "Physical & Data Link Layers",
+"vi": {
+"question": "Ưu điểm của cáp quang so với cáp đồng khi kết nối giữa các tòa nhà là gì?",
+"options": ["A. Chi phí lắp đặt thấp hơn", "B. Khoảng cách truyền xa hơn", "C. Băng thông lớn hơn", "D. Ít bị nhiễu điện từ (EMI/RFI)", "E. Dễ bấm đầu cáp"],
+"answer": "B, C, D (Chọn 3)",
+"explanation": "Cáp quang dùng ánh sáng nên không bị nhiễu điện, truyền được đi rất xa (hàng chục km) và băng thông cực lớn.",
+"tip": "Mẹo: Cáp đồng là 'Xe đạp' (rẻ, gần, dễ sửa). Cáp quang là 'Tên lửa' (nhanh, xa, không sợ sấm sét nhưng đắt và khó nối)."
+},
+"en": {
+"question": "What makes fiber preferable to copper cabling for interconnecting buildings? (Choose three.)",
+"options": ["A. lower cost", "B. greater distances", "C. greater bandwidth", "D. limited susceptibility to EMI/RFI", "E. easily terminated"],
+"answer": "B, C, D"
+}
+},
+{
+"id": 54,
+"topic": "IPv4 & IPv6 Addressing",
+"vi": {
+"question": "Thông điệp DHCP Discover có đặc điểm gì? (Chọn 3)",
+"options": ["A. MAC đích là FF-FF-FF-FF-FF-FF", "B. IP đích là 255.255.255.255", "C. Đến từ server cấp IP", "D. Đến từ client đang tìm IP", "E. Chỉ server mới phản hồi"],
+"answer": "B, D, E",
+"explanation": "Khi máy tính mới vào mạng, nó chưa có IP nên phải gửi Broadcast (địa chỉ 255.255.255.255) để gọi 'Có ông Server nào ở đây không?'",
+"tip": "Mẹo: Discover = Khám phá/Tìm kiếm. Client là người 'đi tìm', Server là người 'phản hồi'."
+},
+"en": {
+"question": "Which three statements describe a DHCP Discover message? (Choose three.)",
+"options": ["A. Dest MAC is FF-FF-FF-FF-FF-FF", "B. Dest IP is 255.255.255.255", "C. From server", "D. From client seeking IP", "E. Only DHCP server replies"],
+"answer": "B, D, E"
+}
+},
+{
+"id": 55,
+"topic": "Physical & Data Link Layers",
+"vi": {
+"question": "Phát biểu nào đúng về phương thức truy cập CSMA/CD trong Ethernet?",
+"options": ["A. Va chạm không thể xảy ra", "B. Chỉ máy gây va chạm mới phải chờ", "C. Mọi thiết bị phải lắng nghe trước khi truyền", "D. Thiết bị va chạm được ưu tiên truyền lại ngay"],
+"answer": "C. Mọi thiết bị phải lắng nghe trước khi truyền",
+"explanation": "CSMA/CD (Carrier Sense Multiple Access with Collision Detection). 'Carrier Sense' nghĩa là phải nghe ngóng xem đường truyền có rảnh không mới được nói.",
+"tip": "Mẹo: CSMA/CD giống như 'Họp gia đình'. Trước khi bạn muốn nói, bạn phải im lặng nghe xem có ai đang nói không. Nếu hai người cùng nói (va chạm), cả hai cùng im lặng rồi chờ một lúc mới nói lại."
+},
+"en": {
+"question": "Which statement is true about the CSMA/CD access method used in Ethernet?",
+"options": ["A. collision cannot occur", "B. only collided device backoff", "C. listen before transmitting", "D. priority to transmit after backoff"],
+"answer": "C. listen before transmitting"
+}
+},
+{
+"id": 56,
+"topic": "IPv4 & IPv6 Addressing",
+"vi": {
+"question": "Tiến trình EUI-64 sử dụng thông tin nào để tạo Interface ID cho địa chỉ IPv6?",
+"options": ["A. Địa chỉ MAC của giao diện", "B. Địa chỉ IP ngẫu nhiên 64-bit", "C. Địa chỉ cấp bởi DHCPv6", "D. Địa chỉ IPv4 của giao diện"],
+"answer": "A. Địa chỉ MAC của giao diện",
+"explanation": "EUI-64 lấy MAC (48 bit), chèn thêm 'FFFE' vào giữa và đảo ngược bit thứ 7 để tạo ra định danh 64 bit duy nhất.",
+"tip": "Mẹo: EUI-64 là 'Dựa hơi MAC'. Thấy EUI-64 là chọn MAC address ngay."
+},
+"en": {
+"question": "What is used in the EUI-64 process to create an IPv6 interface ID?",
+"options": ["A. MAC address", "B. random 64-bit", "C. DHCPv6 address", "D. IPv4 address"],
+"answer": "A. MAC address"
+}
+},
+{
+"id": 57,
+"topic": "IPv4 & IPv6 Addressing",
+"vi": {
+"question": "Ba dải địa chỉ nào sau đây là địa chỉ Private (tư nhân) theo RFC 1918?",
+"options": ["A. 100.64.0.0/14", "B. 169.254.0.0/16", "C. 172.16.0.0/12", "D. 192.168.0.0/16", "E. 10.0.0.0/8"],
+"answer": "C, D, E",
+"explanation": "Địa chỉ Private không được định tuyến trên Internet, dùng cho mạng nội bộ.",
+"tip": "Mẹo: Nhớ 3 số đầu: 10, 172, 192. Nếu thấy 10.x.x.x hoặc 192.168.x.x thì 100% là Private."
+},
+"en": {
+"question": "Which three blocks of addresses are defined by RFC 1918 for private network use? (Choose three.)",
+"options": ["A. 100.64.0.0/14", "B. 169.254.0.0/16", "C. 172.16.0.0/12", "D. 192.168.0.0/16", "E. 10.0.0.0/8"],
+"answer": "C, D, E"
+}
+},
+{
+"id": 58,
+"topic": "Transport & Application Layers",
+"vi": {
+"question": "Các ứng dụng nào sau đây sử dụng giao thức TCP?",
+"options": ["A. SMTP", "B. FTP", "C. SNMP", "D. HTTP", "E. TFTP", "F. DHCP"],
+"answer": "A, B, D",
+"explanation": "TCP dùng cho các dịch vụ cần độ tin cậy tuyệt đối: Email (SMTP), Web (HTTP), File (FTP).",
+"tip": "Phân biệt: TCP = 'Chậm nhưng chắc' (Web, Mail, File). UDP = 'Nhanh nhưng ẩu' (Video, Voice, DNS, DHCP)."
+},
+"en": {
+"question": "Which three application layer protocols use TCP? (Choose three.)",
+"options": ["A. SMTP", "B. FTP", "C. SNMP", "D. HTTP", "E. TFTP", "F. DHCP"],
+"answer": "A, B, D"
+}
+},
+{
+"id": 59,
+"topic": "Network Security & Services",
+"vi": {
+"question": "SSH khác với Telnet ở điểm quan trọng nào?",
+"options": ["A. SSH dùng cổng khác", "B. SSH mã hóa tin nhắn và xác thực người dùng", "C. SSH dùng cho console", "D. SSH là giao thức out-of-band"],
+"answer": "B. SSH mã hóa tin nhắn và xác thực người dùng",
+"explanation": "Telnet gửi dữ liệu dạng văn bản thuần (plaintext), dễ bị hack. SSH mã hóa toàn bộ dữ liệu.",
+"tip": "Mẹo: Telnet là 'Nói loa phường' (ai cũng nghe thấy mật khẩu). SSH là 'Nói thầm vào tai' (được mã hóa, cực kỳ an toàn)."
+},
+"en": {
+"question": "How is SSH different from Telnet?",
+"options": ["A. Different ports", "B. Encrypts messages and user authentication", "C. Only for console", "D. Out-of-band access"],
+"answer": "B. Encrypts messages and user authentication"
+}
+},
+{
+"id": 60,
+"topic": "Physical & Data Link Layers",
+"vi": {
+"question": "Hiện tượng nhiễu chéo (crosstalk) trong cáp UTP là do đâu?",
+"options": ["A. Do phản xạ sóng điện", "B. Do va chạm dữ liệu", "C. Do từ trường của các cặp dây liền kề", "D. Do sử dụng dây bện"],
+"answer": "C. Do từ trường của các cặp dây liền kề",
+"explanation": "Khi dòng điện chạy trong dây, nó tạo ra từ trường. Từ trường này 'nhảy' sang dây bên cạnh gây nhiễu.",
+"tip": "Mẹo: Crosstalk = 'Nói chuyện chéo'. Giống như bạn đang gọi điện mà nghe thấy tiếng của cuộc gọi ở nhà bên cạnh xuyên qua tường."
+},
+"en": {
+"question": "What causes crosstalk within the UTP cable pairs?",
+"options": ["A. reflection of electrical wave", "B. collision", "C. magnetic field around adjacent pairs", "D. use of braided wire"],
+"answer": "C. magnetic field around adjacent pairs"
+}
+},
+{
+"id": 61,
+"topic": "IPv4 & IPv6 Addressing",
+"vi": {
+"question": "Cần mượn bao nhiêu bit host để chia được 5 mạng con?",
+"options": ["A. 5", "B. 2", "C. 3", "D. 4"],
+"answer": "C. 3",
+"explanation": "Mượn n bit thì chia được 2^n mạng. 2^2=4 (không đủ), 2^3=8 (đủ cho 5).",
+"tip": "Mẹo: Luôn chọn lũy thừa của 2 lớn hơn hoặc bằng số mạng cần. Cần 5 mạng thì phải chọn 8 (tức là 3 bit)."
+},
+"en": {
+"question": "How many bits must be borrowed from the host portion to accommodate 5 networks?",
+"options": ["A. five", "B. two", "C. three", "D. four"],
+"answer": "C. three"
+}
+},
+{
+"id": 62,
+"topic": "Transport & Application Layers",
+"vi": {
+"question": "Server gửi bao nhiêu segment trước khi yêu cầu xác nhận (ACK) nếu Window Size là 1000 byte và mỗi segment 100 byte?",
+"options": ["A. 1", "B. 10", "C. 1000", "D. 100"],
+"answer": "B. 10",
+"explanation": "Window Size là lượng dữ liệu được gửi đi trước khi dừng lại chờ ACK. 1000 / 100 = 10.",
+"tip": "Mẹo: Window Size giống như 'Dung lượng ổ bánh mì'. Bạn cắn được 10 miếng (1000 byte) thì sau khi ăn hết 10 miếng bạn mới phải 'gật đầu' (ACK) bảo người bón tiếp."
+},
+"en": {
+"question": "The TCP window is 1000 bytes. Server sends 100-byte segments. How many segments before ACK?",
+"options": ["A. 1", "B. 10", "C. 1000", "D. 100"],
+"answer": "B. 10"
+}
+},
+{
+"id": 63,
+"topic": "Routing & Subnetting",
+"vi": {
+"question": "Router làm gì khi giá trị TTL (Time to Live) của gói tin giảm xuống bằng 0?",
+"options": ["A. Chuyển tiếp gói tin đi tiếp", "B. Gửi thông điệp ICMP Time Exceeded về nguồn và hủy gói tin", "C. Tăng TTL lên và gửi lại", "D. Lưu gói tin vào bộ nhớ đệm"],
+"answer": "B. Gửi thông điệp ICMP Time Exceeded về nguồn và hủy gói tin",
+"explanation": "TTL dùng để ngăn gói tin chạy vòng quanh mạng mãi mãi. Mỗi khi qua router, TTL giảm 1. Về 0 thì gói tin 'chết'.",
+"tip": "Mẹo: TTL là 'Tuổi thọ'. Cứ đi qua một trạm thì già đi 1 tuổi. 0 tuổi thì gói tin 'về hưu' (bị hủy)."
+},
+"en": {
+"question": "What does a router do when the TTL field of a packet reaches zero?",
+"options": ["A. Forward packet", "B. Send ICMP Time Exceeded and drop packet", "C. Increase TTL", "D. Buffer packet"],
+"answer": "B. Send ICMP Time Exceeded and drop packet"
+}
+},
+{
+"id": 64,
+"topic": "Network Security & Services",
+"vi": {
+"question": "Tấn công ARP Spoofing (giả mạo ARP) nhằm mục đích gì?",
+"options": ["A. Làm tràn bảng MAC của switch", "B. Ánh xạ IP đến địa chỉ MAC sai để chặn bắt dữ liệu", "C. Làm sập server DHCP", "D. Làm tràn bộ nhớ router"],
+"answer": "B. Ánh xạ IP đến địa chỉ MAC sai để chặn bắt dữ liệu",
+"explanation": "Kẻ tấn công lừa máy nạn nhân rằng MAC của nó là Gateway, từ đó mọi dữ liệu sẽ gửi qua máy kẻ tấn công.",
+"tip": "Mẹo: Spoofing = 'Giả mạo'. Kẻ xấu giả vờ là 'Cổng ra' để bạn nộp hết 'thư từ' cho nó."
+},
+"en": {
+"question": "What is the aim of an ARP spoofing attack?",
+"options": ["A. flood MAC table", "B. associate IP to wrong MAC", "C. overwhelm DHCP", "D. flood router memory"],
+"answer": "B. associate IP to wrong MAC"
+}
+},
+{
+"id": 65,
+"topic": "IPv4 & IPv6 Addressing",
+"vi": {
+"question": "Giao thức nào giúp máy tính tự kiểm tra xem địa chỉ IPv6 nó vừa tự tạo có bị trùng với máy khác không?",
+"options": ["A. SLAAC", "B. DHCPv6", "C. DAD (Duplicate Address Detection)", "D. ARP"],
+"answer": "C. DAD (Duplicate Address Detection)",
+"explanation": "Trong IPv6 không có ARP. DAD dùng Neighbor Solicitation để hỏi xem có ai dùng IP này chưa.",
+"tip": "Mẹo: DAD = 'Detect' (Phát hiện) + 'Duplicate' (Trùng). Thấy hỏi về trùng địa chỉ IPv6 thì chọn DAD."
+},
+"en": {
+"question": "What process does a device use to verify that its IPv6 address is unique?",
+"options": ["A. DHCPv6", "B. SLAAC", "C. Neighbor Discovery", "D. Duplicate Address Detection (DAD)"],
+"answer": "D. Duplicate Address Detection (DAD)"
+}
+},
+{
+"id": 66,
+"topic": "Transport & Application Layers",
+"vi": {
+"question": "UDP có đặc điểm nào sau đây?",
+"options": ["A. Có số thứ tự (Sequence number)", "B. Độ trễ thấp (Low overhead)", "C. Độ tin cậy cao", "D. Kiểm soát luồng (Flow control)"],
+"answer": "B. Độ trễ thấp (Low overhead)",
+"explanation": "UDP không có bắt tay, không có số thứ tự, không gửi lại nên header rất nhẹ, truyền cực nhanh.",
+"tip": "Mẹo: UDP là 'Chạy bộ'. TCP là 'Đi xe tải chở hàng'. Chạy bộ thì nhanh và nhẹ nhưng không chở được đồ nặng và dễ ngã (mất gói)."
+},
+"en": {
+"question": "Which is a characteristic of UDP?",
+"options": ["A. Sequence number", "B. Low overhead", "C. Reliability", "D. Flow control"],
+"answer": "B. Low overhead"
+}
+},
+{
+"id": 67,
+"topic": "Physical & Data Link Layers",
+"vi": {
+"question": "Trong mô hình IEEE 802, tầng Data Link chia thành 2 phân lớp nào?",
+"options": ["A. TCP và IP", "B. LLC và MAC", "C. Physical và MAC", "D. Network và Data"],
+"answer": "B. LLC và MAC",
+"explanation": "LLC (Logical Link Control) và MAC (Media Access Control).",
+"tip": "Mẹo: Nhớ 2 anh em nhà họ Layer 2: Anh LLC ở trên, Em MAC ở dưới."
+},
+"en": {
+"question": "The IEEE 802 LAN data link layer consists of which two sublayers?",
+"options": ["A. TCP and IP", "B. LLC and MAC", "C. Physical and MAC", "D. Network and Data"],
+"answer": "B. LLC and MAC"
+}
+},
+{
+"id": 68,
+"topic": "Network Models & OSI",
+"vi": {
+"question": "Cấu trúc PDU tại tầng Transport được gọi là gì?",
+"options": ["A. Bits", "B. Frame", "C. Packet", "D. Segment"],
+"answer": "D. Segment",
+"explanation": "Tầng 4 = Segment, Tầng 3 = Packet, Tầng 2 = Frame, Tầng 1 = Bits.",
+"tip": "Mẹo: Segment - Packet - Frame - Bits. (Hãy nhớ câu: Sao Phải Fân Bân - Lớp 4-3-2-1)."
+},
+"en": {
+"question": "Which name is assigned to the transport layer PDU?",
+"options": ["A bits", "B. frame", "C. packet", "D. segment"],
+"answer": "D. segment"
+}
+},
+{
+"id": 69,
+"topic": "IPv4 & IPv6 Addressing",
+"vi": {
+"question": "Địa chỉ mạng (Network address) của host 10.11.12.100 mask 255.255.255.0 là gì?",
+"options": ["A. 10.0.0.0", "B. 10.11.0.0", "C. 10.11.12.0", "D. 10.11.12.100"],
+"answer": "C. 10.11.12.0",
+"explanation": "Với mask /24 (.0), địa chỉ mạng là 3 octet đầu giữ nguyên, octet cuối bằng 0.",
+"tip": "Mẹo: Địa chỉ mạng là địa chỉ mà phần Host toàn số 0."
+},
+"en": {
+"question": "Host-A has IP 10.11.12.100 mask 255.255.255.0. What is the network address?",
+"options": ["A. 10.0.0.0", "B. 10.11.0.0", "C. 10.11.12.0", "D. 10.11.12.100"],
+"answer": "C. 10.11.12.0"
+}
+},
+{
+"id": 70,
+"topic": "Network Models & OSI",
+"vi": {
+"question": "Loại mạng nào cho phép nhân viên làm việc tại nhà hoặc văn phòng nhỏ truy cập tài nguyên công ty?",
+"options": ["A. SOHO", "B. BYOD", "C. WAN", "D. Converged"],
+"answer": "A. SOHO",
+"explanation": "SOHO (Small Office/Home Office).",
+"tip": "Mẹo: SOHO = 'Số Hộ' gia đình. Mạng quy mô nhỏ dùng cho nhà ở."
+},
+"en": {
+"question": "Which term describes a type of network used by people who work from home or from a small office?",
+"options": ["A. SOHO", "B. BYOD", "C. WAN", "D. Converged"],
+"answer": "A. SOHO"
+}
+},
+{
+"id": 71,
+"topic": "Routing & Subnetting",
+"vi": {
+"question": "Router sử dụng thông số nào để chọn đường đi tốt nhất khi có nhiều đường đến cùng một đích?",
+"options": ["A. IP nguồn", "B. Giá trị Metric thấp nhất", "C. MAC đích", "D. Gateway IP cao nhất"],
+"answer": "B. Giá trị Metric thấp nhất",
+"explanation": "Metric là 'chi phí' để đi qua một con đường. Router luôn ưu tiên đường rẻ nhất (metric thấp nhất).",
+"tip": "Mẹo: Metric giống như 'Giá vé'. Đi du lịch bạn luôn chọn vé rẻ nhất (metric thấp nhất) để đi."
+},
+"en": {
+"question": "Which parameter does the router use to choose the path when there are multiple routes?",
+"options": ["A. source IP", "B. lower metric", "C. dest MAC", "D. higher gateway"],
+"answer": "B. lower metric"
+}
+},
+{
+"id": 72,
+"topic": "Physical & Data Link Layers",
+"vi": {
+"question": "Cáp quang Multi-mode có khả năng truyền dữ liệu trong khoảng cách bao nhiêu?",
+"options": ["A. 100 km", "B. 500 mét", "C. 10 km", "D. 100 mét"],
+"answer": "B. 500 mét",
+"explanation": "Multi-mode dùng LED, lõi to, tán xạ nhiều nên chỉ đi được tầm vài trăm mét. Single-mode mới đi được hàng chục km.",
+"tip": "Mẹo: Multi = 'Nhiều' (nhiều tia sáng đâm vào thành cáp nên mệt nhanh, đi gần). Single = 'Một' (một tia đi thẳng nên đi xa)."
+},
+"en": {
+"question": "Multi-mode fiber can travel approximately how far?",
+"options": ["A. 100 km", "B. 500 meters", "C. 10 km", "D. 100 meters"],
+"answer": "B. 500 meters"
+}
+},
+{
+"id": 73,
+"topic": "Transport & Application Layers",
+"vi": {
+"question": "Port 443 được sử dụng cho dịch vụ nào?",
+"options": ["A. HTTP", "B. HTTPS", "C. FTP", "D. DNS"],
+"answer": "B. HTTPS",
+"explanation": "HTTP dùng port 80, HTTPS (có bảo mật) dùng port 443.",
+"tip": "Mẹo: Nhớ 80 là Web thường. 443 là Web an toàn (có chữ S)."
+},
+"en": {
+"question": "Port 443 is used for which service?",
+"options": ["A. HTTP", "B. HTTPS", "C. FTP", "D. DNS"],
+"answer": "B. HTTPS"
+}
+},
+{
+"id": 74,
+"topic": "IPv4 & IPv6 Addressing",
+"vi": {
+"question": "Ba tầng nào của mô hình OSI gộp lại thành tầng Application của mô hình TCP/IP?",
+"options": ["A. Application, Presentation, Session", "B. Transport, Network, Data Link", "C. Session, Transport, Network", "D. Physical, Data Link, Network"],
+"answer": "A. Application, Presentation, Session",
+"explanation": "TCP/IP đơn giản hóa OSI bằng cách gộp 3 tầng trên cùng thành 1 tầng Application duy nhất.",
+"tip": "Mẹo: Hãy nhớ bộ ba: 'App - Pre - Ses' (Anh Phê Sướng) là tầng trên cùng."
+},
+"en": {
+"question": "These three OSI layers define the same functions as the TCP/IP application layer. (Choose three).",
+"options": ["A. Application", "B. Presentation", "C. Session", "D. Transport", "E. Network", "F. Data link"],
+"answer": "A, B, C"
+}
+},
+{
+"id": 75,
+"topic": "Physical & Data Link Layers",
+"vi": {
+"question": "Trong mạng Ethernet, địa chỉ MAC đích của một gói tin Broadcast là gì?",
+"options": ["A. 00-00-00-00-00-00", "B. 127.0.0.1", "C. FF-FF-FF-FF-FF-FF", "D. 255.255.255.255"],
+"answer": "C. FF-FF-FF-FF-FF-FF",
+"explanation": "Broadcast ở Layer 2 (MAC) là toàn chữ F. 255.255.255.255 là Broadcast ở Layer 3 (IP).",
+"tip": "Mẹo: Đề hỏi MAC thì chọn chữ F. Đề hỏi IP thì chọn số 255."
+},
+"en": {
+"question": "What is the destination MAC address of a broadcast frame?",
+"options": ["A. 00-00-00-00-00-00", "B. 127.0.0.1", "C. FF-FF-FF-FF-FF-FF", "D. 255.255.255.255"],
+"answer": "C. FF-FF-FF-FF-FF-FF"
+}
+},
+{
+"id": 76,
+"topic": "IPv4 & IPv6 Addressing",
+"vi": {
+"question": "Có bao nhiêu bit trong một địa chỉ IPv6?",
+"options": ["A. 32", "B. 48", "C. 64", "D. 128"],
+"answer": "D. 128",
+"explanation": "IPv4 có 32 bit, IPv6 có 128 bit (nhiều hơn rất nhiều).",
+"tip": "Mẹo: 128 bit chia làm 8 nhóm, mỗi nhóm 4 ký tự Hex."
+},
+"en": {
+"question": "How many bits are in an IPv6 address?",
+"options": ["A. 32", "B. 48", "C. 64", "D. 128"],
+"answer": "D. 128"
+}
+},
+{
+"id": 77,
+"topic": "Routing & Subnetting",
+"vi": {
+"question": "Giá trị Default Administrative Distance (AD) của một tuyến đường kết nối trực tiếp (Directly Connected) là bao nhiêu?",
+"options": ["A. 0", "B. 1", "C. 90", "D. 120"],
+"answer": "A. 0",
+"explanation": "AD là độ tin cậy. Số càng nhỏ càng tin cậy. Kết nối trực tiếp là tin cậy nhất nên AD = 0.",
+"tip": "Mẹo: Connected = 0. Static = 1. OSPF = 110. RIP = 120. (Cái gì mình tự tay cắm dây vào thì mình tin nhất - AD=0)."
+},
+"en": {
+"question": "What is the Administrative Distance of a directly connected route?",
+"options": ["A. 0", "B. 1", "C. 90", "D. 120"],
+"answer": "A. 0"
+}
+},
+{
+"id": 78,
+"topic": "Transport & Application Layers",
+"vi": {
+"question": "Dịch vụ DNS (Domain Name System) thực hiện chức năng gì?",
+"options": ["A. Cấp phát IP tự động", "B. Phân giải tên miền thành địa chỉ IP", "C. Truyền file an toàn", "D. Mã hóa nội dung web"],
+"answer": "B. Phân giải tên miền thành địa chỉ IP",
+"explanation": "Con người nhớ tên (google.com), máy tính nhớ số (IP). DNS là 'danh bạ' giúp chuyển đổi giữa hai loại này.",
+"tip": "Mẹo: DNS = 'Danh Bạ'. Cứ tìm IP từ tên người/tên web."
+},
+"en": {
+"question": "What function does DNS provide?",
+"options": ["A. Assigns IP", "B. Resolves names to IP", "C. Secure file transfer", "D. Web encryption"],
+"answer": "B. Resolves names to IP"
+}
+},
+{
+"id": 79,
+"topic": "Physical & Data Link Layers",
+"vi": {
+"question": "Lớp nào trong mô hình OSI chịu trách nhiệm chuyển bit thành tín hiệu điện?",
+"options": ["A. Physical", "B. Data Link", "C. Network", "D. Transport"],
+"answer": "A. Physical",
+"explanation": "Tầng 1 (Physical) làm việc với dây cáp, đầu nối và các tín hiệu vật lý.",
+"tip": "Mẹo: Vật lý là 'Sờ được'. Cái gì sờ được (dây, điện) là tầng 1."
+},
+"en": {
+"question": "Which OSI layer is responsible for converting bits into electrical signals?",
+"options": ["A. Physical", "B. Data Link", "C. Network", "D. Transport"],
+"answer": "A. Physical"
+}
+},
+{
+"id": 80,
+"topic": "Network Security & Services",
+"vi": {
+"question": "Loại phần mềm độc hại nào tự ngụy trang dưới dạng một chương trình hợp lệ (như game)?",
+"options": ["A. Virus", "B. Worm", "C. Trojan horse", "D. Spyware"],
+"answer": "C. Trojan horse",
+"explanation": "Ngựa gỗ thành Troy trông bề ngoài hiền lành nhưng bên trong chứa lính (mã độc) để tấn công.",
+"tip": "Mẹo: Thấy 'Game' hoặc 'Chương trình hợp lệ' mà có độc thì chọn Trojan."
+},
+"en": {
+"question": "Which malicious code classified as a Trojan horse?",
+"options": ["A. virus", "B. worm", "C. disguise as a game", "D. spyware"],
+"answer": "C. disguise as a game"
+}
+},
+{
+"id": 81,
+"topic": "IPv4 & IPv6 Addressing",
+"vi": {
+"question": "Giao thức nào được IPv6 dùng để tìm địa chỉ MAC (thay thế cho ARP)?",
+"options": ["A. ICMPv6 Neighbor Discovery", "B. DHCPv6", "C. DNS", "D. IGMP"],
+"answer": "A. ICMPv6 Neighbor Discovery",
+"explanation": "Trong IPv6, không còn ARP broadcast. Nó dùng gói tin Neighbor Solicitation (NS) để tìm MAC.",
+"tip": "Mẹo: IPv4 có ARP. IPv6 có NDP (Neighbor Discovery). Nhớ từ khóa 'Neighbor' (Hàng xóm)."
+},
+"en": {
+"question": "Which protocol is used by IPv6 to resolve MAC addresses (replacing ARP)?",
+"options": ["A. Neighbor Discovery", "B. DHCPv6", "C. DNS", "D. IGMP"],
+"answer": "A. Neighbor Discovery"
+}
+},
+{
+"id": 82,
+"topic": "Physical & Data Link Layers",
+"vi": {
+"question": "Trường nào trong IPv4 Header giúp ngăn gói tin bị lặp vô hạn (Loop)?",
+"options": ["A. Protocol", "B. Time to Live (TTL)", "C. Checksum", "D. Version"],
+"answer": "B. Time to Live (TTL)",
+"explanation": "TTL là bộ đếm giảm dần qua mỗi router. Về 0 thì gói tin bị hủy, tránh lặp mạng.",
+"tip": "Mẹo: TTL = 'Time To Love' (Thời gian để sống). Hết giờ là chết."
+},
+"en": {
+"question": "Which field in IPv4 header prevents infinite loops?",
+"options": ["A. Protocol", "B. Time to Live", "C. Checksum", "D. Version"],
+"answer": "B. Time to Live"
+}
+},
+{
+"id": 83,
+"topic": "Routing & Subnetting",
+"vi": {
+"question": "Lệnh nào dùng để cấu hình IP cho interface G0/0 của router?",
+"options": ["A. ip address 192.168.1.1 255.255.255.0", "B. address 192.168.1.1", "C. set ip 192.168.1.1", "D. interface ip 192.168.1.1"],
+"answer": "A. ip address 192.168.1.1 255.255.255.0",
+"explanation": "Phải nhập cả IP và Subnet mask trong cùng một dòng lệnh.",
+"tip": "Mẹo: Luôn nhớ IP đi kèm với Mask. Thiếu Mask là router không chịu."
+},
+"en": {
+"question": "How to configure an IP on a router interface?",
+"options": ["A. ip address 192.168.1.1 255.255.255.0", "B. address 192.168.1.1", "C. set ip 192.168.1.1", "D. interface ip 192.168.1.1"],
+"answer": "A. ip address 192.168.1.1 255.255.255.0"
+}
+},
+{
+"id": 84,
+"topic": "Transport & Application Layers",
+"vi": {
+"question": "Lệnh 'netstat' hiển thị thông tin gì trên máy tính Windows?",
+"options": ["A. Cấu hình IP", "B. Các kết nối mạng hiện có và các cổng đang lắng nghe", "C. Bảng định tuyến", "D. Kiểm tra DNS"],
+"answer": "B. Các kết nối mạng hiện có và các cổng đang lắng nghe",
+"explanation": "Netstat (Network Statistics) liệt kê tất cả các phiên TCP/UDP đang hoạt động.",
+"tip": "Mẹo: Netstat = Network Status. Muốn biết máy mình đang 'nói chuyện' với ai thì dùng lệnh này."
+},
+"en": {
+"question": "What information does the 'netstat' command provide?",
+"options": ["A. IP config", "B. active connections and ports", "C. routing table", "D. DNS check"],
+"answer": "B. active connections and ports"
+}
+},
+{
+"id": 85,
+"topic": "Physical & Data Link Layers",
+"vi": {
+"question": "Giao thức nào cho phép cấp phát địa chỉ IP một cách tự động?",
+"options": ["A. DNS", "B. DHCP", "C. HTTP", "D. SMTP"],
+"answer": "B. DHCP",
+"explanation": "DHCP (Dynamic Host Configuration Protocol).",
+"tip": "Mẹo: DHCP = 'Đi Học Có Phiếu'. (Đến trường là được phát phiếu ăn - IP tự động)."
+},
+"en": {
+"question": "Which protocol provides automatic IP assignment?",
+"options": ["A. DNS", "B. DHCP", "C. HTTP", "D. SMTP"],
+"answer": "B. DHCP"
+}
+},
+{
+"id": 86,
+"topic": "IPv4 & IPv6 Addressing",
+"vi": {
+"question": "Tiền tố /27 tương đương với Subnet Mask nào?",
+"options": ["A. 255.255.255.192", "B. 255.255.255.224", "C. 255.255.255.240", "D. 255.255.255.248"],
+"answer": "B. 255.255.255.224",
+"explanation": "/27 = 24 bit đầu (255.255.255) + 3 bit mượn (128+64+32 = 224).",
+"tip": "Mẹo: /25=.128, /26=.192, /27=.224."
+},
+"en": {
+"question": "Prefix /27 is equivalent to which mask?",
+"options": ["A. 255.255.255.192", "B. 255.255.255.224", "C. 255.255.255.240", "D. 255.255.255.248"],
+"answer": "B. 255.255.255.224"
+}
+},
+{
+"id": 87,
+"topic": "Network Models & OSI",
+"vi": {
+"question": "Tầng nào trong mô hình OSI cung cấp giao diện giữa người dùng và mạng?",
+"options": ["A. Presentation", "B. Session", "C. Application", "D. Network"],
+"answer": "C. Application",
+"explanation": "Tầng 7 (Application) là nơi các phần mềm (Chrome, Outlook) tương tác trực tiếp với người dùng.",
+"tip": "Mẹo: Application là 'Ứng dụng'. Bạn dùng ứng dụng gì thì tầng đó là tầng 7."
+},
+"en": {
+"question": "Which OSI layer provides the interface between user and network?",
+"options": ["A. Presentation", "B. Session", "C. Application", "D. Network"],
+"answer": "C. Application"
+}
+},
+{
+"id": 88,
+"topic": "Physical & Data Link Layers",
+"vi": {
+"question": "Loại mạng nào kết nối các mạng LAN ở những khoảng cách địa lý xa nhau?",
+"options": ["A. PAN", "B. MAN", "C. WAN", "D. WLAN"],
+"answer": "C. WAN",
+"explanation": "WAN (Wide Area Network).",
+"tip": "Mẹo: WAN = 'Wide' (Rộng). Cứ thấy liên tỉnh, liên quốc gia là WAN."
+},
+"en": {
+"question": "Which type of network connects LANs over a long distance?",
+"options": ["A. PAN", "B. MAN", "C. WAN", "D. WLAN"],
+"answer": "C. WAN"
+}
+},
+{
+"id": 89,
+"topic": "Routing & Subnetting",
+"vi": {
+"question": "Lệnh nào lưu cấu hình từ RAM vào NVRAM?",
+"options": ["A. copy running-config startup-config", "B. copy startup-config running-config", "C. save configuration", "D. write to flash"],
+"answer": "A. copy running-config startup-config",
+"explanation": "RAM (running) -> NVRAM (startup).",
+"tip": "Mẹo: Hãy nhớ: 'Copy cái Đang có vào cái Bắt đầu'. (Run to Start)."
+},
+"en": {
+"question": "Command to save config from RAM to NVRAM?",
+"options": ["A. copy running-config startup-config", "B. copy startup-config running-config", "C. save configuration", "D. write to flash"],
+"answer": "A. copy running-config startup-config"
+}
+},
+{
+"id": 90,
+"topic": "Transport & Application Layers",
+"vi": {
+"question": "Cổng đích (Destination Port) của dịch vụ SSH là bao nhiêu?",
+"options": ["A. 21", "B. 22", "C. 23", "D. 25"],
+"answer": "B. 22",
+"explanation": "SSH=22, Telnet=23, FTP=21, SMTP=25.",
+"tip": "Mẹo: SSH là 22. Telnet (không an toàn) là 23. SSH ra đời sau để thay thế Telnet nên đứng số 22 (trước 23)."
+},
+"en": {
+"question": "Destination port for SSH?",
+"options": ["A. 21", "B. 22", "C. 23", "D. 25"],
+"answer": "B. 22"
+}
+},
+{
+"id": 91,
+"topic": "IPv4 & IPv6 Addressing",
+"vi": {
+"question": "Địa chỉ Multicast của IPv6 bắt đầu bằng các ký tự nào?",
+"options": ["A. fe80::", "B. 2001::", "C. ff00::", "D. ::1"],
+"answer": "C. ff00::",
+"explanation": "IPv6 Multicast dùng tiền tố FF00::/8.",
+"tip": "Mẹo: FF = 'Fast Friends' (Một nhóm bạn cùng nhận tin - Multicast)."
+},
+"en": {
+"question": "IPv6 multicast addresses start with?",
+"options": ["A. fe80::", "B. 2001::", "C. ff00::", "D. ::1"],
+"answer": "C. ff00::"
+}
+},
+{
+"id": 92,
+"topic": "Physical & Data Link Layers",
+"vi": {
+"question": "Thứ tự của các bit trong cáp Ethernet thẳng (T568B) là gì?",
+"options": ["A. Cam Trắng, Cam, Xanh Lá Trắng, Xanh Dương, Xanh Dương Trắng, Xanh Lá, Nâu Trắng, Nâu", "B. Xanh Lá Trắng, Xanh Lá..."],
+"answer": "A. Cam Trắng, Cam...",
+"explanation": "Chuẩn T568B bắt đầu bằng màu Cam.",
+"tip": "Mẹo: 'B' là 'Bright' (Sáng như màu Cam). Chuẩn B bắt đầu bằng màu Cam."
+},
+"en": {
+"question": "Standard T568B color sequence?",
+"options": ["A. White-orange, Orange, White-green, Blue, White-blue, Green, White-brown, Brown", "B. White-green..."],
+"answer": "A. White-orange..."
+}
+},
+{
+"id": 93,
+"topic": "Network Models & OSI",
+"vi": {
+"question": "Mô hình mạng nào mà trong đó mỗi máy tính vừa là máy khách vừa là máy chủ?",
+"options": ["A. Client-Server", "B. Peer-to-Peer (P2P)", "C. Centralized", "D. Cloud"],
+"answer": "B. Peer-to-Peer (P2P)",
+"explanation": "Ngang hàng (Peer-to-Peer) cho phép chia sẻ file trực tiếp giữa các máy.",
+"tip": "Mẹo: Peer-to-Peer là 'Bạn bè'. Không có ai là sếp, ai cũng có thể cho đồ (server) và nhận đồ (client)."
+},
+"en": {
+"question": "Network model where each computer acts as both client and server?",
+"options": ["A. Client-Server", "B. Peer-to-Peer", "C. Centralized", "D. Cloud"],
+"answer": "B. Peer-to-Peer"
+}
+},
+{
+"id": 94,
+"topic": "Network Security & Services",
+"vi": {
+"question": "Firewall hoạt động ở tầng nào để lọc traffic dựa trên IP và Port?",
+"options": ["A. Layer 1 & 2", "B. Layer 3 & 4", "C. Layer 5 & 6", "D. Chỉ Layer 7"],
+"answer": "B. Layer 3 & 4",
+"explanation": "Lọc IP (Layer 3) và Port (Layer 4).",
+"tip": "Mẹo: Tầng 3 và 4 là 'Cảnh sát'. Kiểm tra CMND (IP) và thẻ ngành (Port)."
+},
+"en": {
+"question": "Firewall filters traffic at which layers?",
+"options": ["A. Layer 1 & 2", "B. Layer 3 & 4", "C. Layer 5 & 6", "D. Layer 7 only"],
+"answer": "B. Layer 3 & 4"
+}
+},
+{
+"id": 95,
+"topic": "Routing & Subnetting",
+"vi": {
+"question": "Khi gõ một lệnh sai trên IOS, router cố gắng phân giải nó thành tên miền gây mất thời gian. Phím tắt nào giúp ngắt quá trình này?",
+"options": ["A. Ctrl+C", "B. Ctrl+Z", "C. Ctrl+Shift+6", "D. Esc"],
+"answer": "C. Ctrl+Shift+6",
+"explanation": "Đây là tổ hợp phím để ngắt (interrupt) các tiến trình treo trên Cisco IOS.",
+"tip": "Mẹo: 'Sáu' (6) là phím 'Cứu'. Đang bị lag do gõ sai lệnh thì nhấn Ctrl+Shift+6."
+},
+"en": {
+"question": "Keystroke to interrupt a Cisco process (like DNS lookup)?",
+"options": ["A. Ctrl+C", "B. Ctrl+Z", "C. Ctrl+Shift+6", "D. Esc"],
+"answer": "C. Ctrl+Shift+6"
+}
+},
+{
+"id": 96,
+"topic": "IPv4 & IPv6 Addressing",
+"vi": {
+"question": "Dải địa chỉ IPv4 nào được dành riêng cho thử nghiệm Loopback?",
+"options": ["A. 192.168.1.0/24", "B. 127.0.0.0/8", "C. 10.0.0.0/8", "D. 224.0.0.0/4"],
+"answer": "B. 127.0.0.0/8",
+"explanation": "Mọi địa chỉ bắt đầu bằng 127 đều là loopback.",
+"tip": "Mẹo: 127 là 'Số tự sướng'. Tự gửi tin cho chính mình."
+},
+"en": {
+"question": "IPv4 loopback address range?",
+"options": ["A. 192.168.1.0/24", "B. 127.0.0.0/8", "C. 10.0.0.0/8", "D. 224.0.0.0/4"],
+"answer": "B. 127.0.0.0/8"
+}
+},
+{
+"id": 97,
+"topic": "Physical & Data Link Layers",
+"vi": {
+"question": "Tính năng Full-duplex khác Half-duplex như thế nào?",
+"options": ["A. Full-duplex nhanh hơn gấp 10 lần", "B. Full-duplex cho phép gửi và nhận đồng thời", "C. Full-duplex chỉ dùng cáp đồng", "D. Half-duplex không bao giờ có va chạm"],
+"answer": "B. Full-duplex cho phép gửi và nhận đồng thời",
+"explanation": "Full-duplex = Gửi + Nhận cùng lúc.",
+"tip": "Mẹo: Full = 'Đầy đủ'. Vừa ăn vừa nói được (không lịch sự nhưng nhanh)."
+},
+"en": {
+"question": "Difference between Full-duplex and Half-duplex?",
+"options": ["A. 10x faster", "B. Send and receive simultaneously", "C. Copper only", "D. Half-duplex no collision"],
+"answer": "B. Send and receive simultaneously"
+}
+},
+{
+"id": 98,
+"topic": "Transport & Application Layers",
+"vi": {
+"question": "Dịch vụ FTP sử dụng những cổng nào?",
+"options": ["A. 20 và 21", "B. 22 và 23", "C. 80 và 443", "D. 53 và 67"],
+"answer": "A. 20 và 21",
+"explanation": "21 để điều khiển (Control), 20 để truyền dữ liệu (Data).",
+"tip": "Mẹo: FTP là 'File Hai Cổng' (20, 21)."
+},
+"en": {
+"question": "Which ports does FTP use?",
+"options": ["A. 20 and 21", "B. 22 and 23", "C. 80 and 443", "D. 53 and 67"],
+"answer": "A. 20 and 21"
+}
+},
+{
+"id": 99,
+"topic": "Network Security & Services",
+"vi": {
+"question": "Lệnh nào dùng để đặt tên cho Router?",
+"options": ["A. name Router1", "B. hostname Router1", "C. set name Router1", "D. router-name Router1"],
+"answer": "B. hostname Router1",
+"explanation": "Dùng trong Global Configuration mode.",
+"tip": "Mẹo: Hostname = 'Tên của máy chủ'. Phải viết liền, không có dấu cách."
+},
+"en": {
+"question": "Command to set router name?",
+"options": ["A. name Router1", "B. hostname Router1", "C. set name Router1", "D. router-name Router1"],
+"answer": "B. hostname Router1"
+}
+},
+{
+"id": 100,
+"topic": "IPv4 & IPv6 Addressing",
+"vi": {
+"question": "Địa chỉ IPv4 169.254.x.x (APIPA) xuất hiện khi nào?",
+"options": ["A. Khi mạng chạy rất nhanh", "B. Khi máy không thể kết nối tới server DHCP để nhận IP", "C. Khi địa chỉ là Multicast", "D. Khi ping loopback"],
+"answer": "B. Khi máy không thể kết nối tới server DHCP để nhận IP",
+"explanation": "Windows tự cấp IP này khi nó không tìm thấy ai cấp IP cho nó.",
+"tip": "Mẹo: Thấy 169.254 là 'Mất mạng'. Máy đang gào khóc vì không có IP."
+},
+"en": {
+"question": "When does 169.254.x.x (APIPA) appear?",
+"options": ["A. Fast network", "B. Cannot reach DHCP server", "C. Multicast address", "D. Loopback ping"],
+"answer": "B. Cannot reach DHCP server"
+}
+}
     ];
 
-    // 2. PHÂN LOẠI CHỦ ĐỀ NWC204
-    const nwcTopics = [
-        "Network Models & OSI",
-        "Physical & Data Link Layers",
-        "IPv4 & IPv6 Addressing",
-        "Routing & Subnetting",
-        "Transport & Application Layers",
-        "Network Security & Services"
-    ];
-
-    let state = { 
-        isVietnamese: true, activeTab: 'flashcard', fcIndex: 0, 
-        fcFilteredData: [], quizPhase: 'setup', activeQuestions: [], 
-        userAnswers: {}, currentQuizIndex: 0 
+    let state = {
+        isVN: true,
+        activeTab: 'flashcard',
+        fcIdx: 0,
+        quizPhase: 'setup',
+        activeQs: [],
+        currentIdx: 0,
+        answers: {}
     };
 
-    const texts = {
-        vi: { 
-            setupTitle: "Cấu hình luyện tập", total: "Tổng số câu khả dụng:", qCount: "Số lượng câu làm:", 
-            start: "Bắt đầu 🚀", map: "Bản đồ câu hỏi", doing: "Đang luyện tập NWC204", 
-            submit: "Nộp bài", resultTitle: "Kết quả bài làm", prev: "Trước", next: "Sau",
-            fcAns: "Đáp án", fcExp: "Giải thích", qOf: "Câu", all: "Tất cả chủ đề",
-            flipHint: "Click để lật thẻ", topic: "Chủ đề:"
-        },
-        en: { 
-            setupTitle: "Practice Config", total: "Total available:", qCount: "Questions count:", 
-            start: "Start 🚀", map: "Question Map", doing: "NWC204 Training", 
-            submit: "Submit", resultTitle: "Quiz Results", prev: "Prev", next: "Next",
-            fcAns: "Answer", fcExp: "Explanation", qOf: "Question", all: "All Topics",
-            flipHint: "Click to flip card", topic: "Topic:"
-        }
-    };
+    const labelChars = "ABCDEF".split("");
 
     function init() {
-        const fcSelect = document.getElementById('fc-topic-select');
-        const quizSelect = document.getElementById('quiz-topic-select');
-        
-        [fcSelect, quizSelect].forEach(select => {
-            select.innerHTML = `<option value="all">${state.isVietnamese ? texts.vi.all : texts.en.all}</option>`;
-            nwcTopics.forEach(t => select.add(new Option(t, t)));
+        const select = document.getElementById('topic-select');
+        const topics = ["Tất cả / All Chapters", ...new Set(quizData.map(q => q.topic))];
+        select.innerHTML = topics.map(t => `<option value="${t}">${t}</option>`).join('');
+        updateMax();
+        renderFlashcard();
+
+        // Đăng ký Phím tắt
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT') return;
+            const key = e.key.toLowerCase();
+            if (key === 'n') toggleLanguage();
+            if (key === 'm') shuffleCurrentOptions();
+            if (key === 'arrowright') { if(state.activeTab === 'flashcard') navFlashcard(1); else navQuiz(1); }
+            if (key === 'arrowleft') { if(state.activeTab === 'flashcard') navFlashcard(-1); else navQuiz(-1); }
         });
-        
-        filterFlashcards(); updateMaxQuestions(); updateLanguageTexts();
     }
 
     function toggleLanguage() {
-        state.isVietnamese = !state.isVietnamese;
-        updateLanguageTexts();
-        renderFlashcard();
-        if (state.quizPhase === 'active') renderQuestionCard();
+        state.isVN = !state.isVN;
+        if (state.activeTab === 'flashcard') renderFlashcard();
+        else if (state.quizPhase === 'active') renderQuestion();
     }
 
-    function updateLanguageTexts() {
-        const t = state.isVietnamese ? texts.vi : texts.en;
-        document.getElementById('txt-setup-title').innerText = t.setupTitle;
-        document.getElementById('txt-total').innerText = t.total;
-        document.getElementById('txt-q-count').innerText = t.qCount;
-        document.getElementById('txt-start').innerText = t.start;
-        document.getElementById('txt-map').innerText = t.map;
-        document.getElementById('txt-doing').innerText = t.doing;
-        document.getElementById('btn-prev').innerText = t.prev;
-        document.getElementById('btn-next').innerText = t.next;
-        document.getElementById('btn-submit').innerText = t.submit;
-        document.getElementById('txt-result-title').innerText = t.resultTitle;
-        document.getElementById('fc-flip-hint').innerText = t.flipHint;
-        document.getElementById('lbl-fc-topic').innerText = t.topic;
-        document.getElementById('lbl-quiz-topic').innerText = t.topic;
+    function shuffleCurrentOptions() {
+        const q = (state.activeTab === 'flashcard') ? null : state.activeQuestions[state.currentIdx];
+        if (q) {
+            q.perm = shuffleArray(Array.from(Array(q.vi.options.length).keys()));
+            renderQuestion();
+        }
     }
 
     function switchTab(tab) {
         state.activeTab = tab;
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-btn')[tab === 'flashcard' ? 0 : 1].classList.add('active');
+        
         document.getElementById('flashcard-view').classList.add('hidden');
         document.getElementById('quiz-setup').classList.add('hidden');
         document.getElementById('quiz-active').classList.add('hidden');
@@ -1206,123 +1897,148 @@
         document.getElementById('quiz-sidebar').classList.add('hidden');
 
         if (tab === 'flashcard') {
-            document.querySelectorAll('.tab-btn')[0].classList.add('active');
             document.getElementById('flashcard-view').classList.remove('hidden');
         } else {
-            document.querySelectorAll('.tab-btn')[1].classList.add('active');
             if (state.quizPhase === 'setup') document.getElementById('quiz-setup').classList.remove('hidden');
-            else { 
+            else {
                 document.getElementById(state.quizPhase === 'active' ? 'quiz-active' : 'quiz-result').classList.remove('hidden');
                 document.getElementById('quiz-sidebar').classList.remove('hidden');
             }
         }
     }
 
-    // CORE LOGIC: Shuffle, Filter, Nav
-    function shuffleArray(arr) { return arr.sort(() => Math.random() - 0.5); }
-
-    function filterFlashcards() {
-        const topic = document.getElementById('fc-topic-select').value;
-        state.fcFilteredData = topic === 'all' ? [...quizData] : quizData.filter(q => q.topic === topic);
-        state.fcIndex = 0; renderFlashcard();
-    }
-
+    // Flashcard Logic
     function renderFlashcard() {
-        if (state.fcFilteredData.length === 0) { document.getElementById('fc-content').innerText = "No data."; return; }
-        const q = state.fcFilteredData[state.fcIndex];
-        const data = state.isVietnamese ? q.vi : q.en;
+        if (quizData.length === 0) return;
+        const q = quizData[state.fcIdx];
+        const data = state.isVN ? q.vi : q.en;
         document.querySelector('.flashcard').classList.remove('flipped');
-        document.getElementById('fc-content').innerHTML = `<strong>Topic: ${q.topic}</strong><p>${data.question}</p>`;
+        document.getElementById('fc-tag').innerText = q.topic;
+        document.getElementById('fc-question').innerText = data.question;
         document.getElementById('fc-answer').innerText = data.answer;
-        document.getElementById('fc-explanation').innerText = data.explanation;
-        document.getElementById('fc-counter').innerText = `${state.fcIndex + 1} / ${state.fcFilteredData.length}`;
+        document.getElementById('fc-explanation').innerText = data.explanation || "";
+        document.getElementById('fc-counter').innerText = `${state.fcIdx + 1} / ${quizData.length}`;
     }
 
     function navFlashcard(dir) {
-        let n = state.fcIndex + dir;
-        if (n >= 0 && n < state.fcFilteredData.length) { state.fcIndex = n; renderFlashcard(); }
+        state.fcIdx = (state.fcIdx + dir + quizData.length) % quizData.length;
+        renderFlashcard();
     }
 
-    function updateMaxQuestions() {
-        const topic = document.getElementById('quiz-topic-select').value;
-        const count = topic === 'all' ? quizData.length : quizData.filter(q => q.topic === topic).length;
-        document.getElementById('total-qs').innerText = count;
+    // Quiz Logic
+    function updateMax() {
+        const topic = document.getElementById('topic-select').value;
+        const count = topic.includes("Tất cả") ? quizData.length : quizData.filter(q => q.topic === topic).length;
+        document.getElementById('total-available').innerText = `(Có sẵn: ${count})`;
     }
+
+    function shuffleArray(a) { return a.sort(() => Math.random() - 0.5); }
 
     function startQuiz() {
-        const count = parseInt(document.getElementById('quiz-count-input').value);
-        const topic = document.getElementById('quiz-topic-select').value;
-        let pool = topic === 'all' ? [...quizData] : quizData.filter(q => q.topic === topic);
+        const topic = document.getElementById('topic-select').value;
+        const count = parseInt(document.getElementById('quiz-count').value);
+        let pool = topic.includes("Tất cả") ? [...quizData] : quizData.filter(q => q.topic === topic);
+        
+        // Random liên tục
         state.activeQuestions = shuffleArray(pool).slice(0, count);
-        state.userAnswers = {}; state.currentQuizIndex = 0; state.quizPhase = 'active';
-        switchTab('quiz'); renderQuestionCard(); renderMap();
+        state.answers = {};
+        state.currentIdx = 0;
+        state.quizPhase = 'active';
+        
+        document.getElementById('quiz-setup').classList.add('hidden');
+        document.getElementById('quiz-active').classList.remove('hidden');
+        document.getElementById('quiz-sidebar').classList.remove('hidden');
+        
+        renderQuestion();
+        renderMap();
     }
 
-    function renderQuestionCard() {
-        const idx = state.currentQuizIndex;
+    function renderQuestion() {
+        const idx = state.currentIdx;
         const q = state.activeQuestions[idx];
-        const data = state.isVietnamese ? q.vi : q.en;
-        const t = state.isVietnamese ? texts.vi : texts.en;
+        const data = state.isVN ? q.vi : q.en;
         
-        document.getElementById('quiz-progress').innerText = `${t.qOf} ${idx + 1}/${state.activeQuestions.length}`;
-        document.getElementById('q-content').innerHTML = `<p>${data.question}</p>`;
+        document.getElementById('q-tag').innerText = q.topic;
+        document.getElementById('quiz-question').innerText = data.question;
+        document.getElementById('quiz-progress').innerText = `Câu hỏi ${idx + 1} / ${state.activeQuestions.length}`;
         
-        const ul = document.getElementById('q-options'); ul.innerHTML = '';
-        const ans = state.userAnswers[idx];
+        const ul = document.getElementById('quiz-options');
+        ul.innerHTML = '';
+        const exp = document.getElementById('quiz-explanation');
+        const userAns = state.answers[idx];
 
-        data.options.forEach((opt, i) => {
+        // Khởi tạo permutation nếu chưa có
+        if (!q.perm) q.perm = Array.from(Array(data.options.length).keys());
+
+        q.perm.forEach((originalIdx, i) => {
             const li = document.createElement('li');
-            li.innerText = opt;
-            const label = String.fromCharCode(65 + i);
-            li.setAttribute('data-label', label);
-            
-            if (ans) {
+            li.innerText = data.options[originalIdx].replace(/^[A-Z]\.\s*/, '');
+            const currentLabel = labelChars[i];
+            li.setAttribute('data-label', currentLabel);
+
+            if (userAns) {
                 li.classList.add('disabled');
-                if (opt.startsWith(data.answer.charAt(0))) li.classList.add('correct');
-                if (ans.label === label && !ans.isCorrect) li.classList.add('wrong');
+                const isCorrect = data.options[originalIdx].startsWith(data.answer.charAt(0));
+                if (isCorrect) li.classList.add('correct');
+                if (userAns.label === currentLabel && !userAns.isCorrect) li.classList.add('wrong');
             } else {
                 li.onclick = () => {
-                    const isCorrect = opt.startsWith(data.answer.charAt(0));
-                    state.userAnswers[idx] = { label, isCorrect };
-                    renderQuestionCard(); renderMap();
+                    const isCorrect = data.options[originalIdx].startsWith(data.answer.charAt(0));
+                    state.answers[idx] = { label: currentLabel, isCorrect };
+                    renderQuestion();
+                    renderMap();
                 };
             }
             ul.appendChild(li);
         });
 
-        const exp = document.getElementById('q-explanation');
-        if (ans) {
+        if (userAns) {
             exp.style.display = 'block';
-            exp.style.background = ans.isCorrect ? '#d4edda' : '#f8d7da';
-            exp.innerHTML = `<strong>${t.fcExp}:</strong> ${data.explanation}`;
+            exp.style.borderLeftColor = userAns.isCorrect ? 'var(--secondary-color)' : 'var(--danger-color)';
+            exp.innerHTML = `<strong>Đáp án đúng: ${data.answer}</strong><p>${data.explanation || ""}</p>`;
         } else exp.style.display = 'none';
+
+        highlightMap();
     }
 
     function navQuiz(dir) {
-        let n = state.currentQuizIndex + dir;
-        if (n >= 0 && n < state.activeQuestions.length) { state.currentQuizIndex = n; renderQuestionCard(); }
+        const next = state.currentIdx + dir;
+        if (next >= 0 && next < state.activeQuestions.length) {
+            state.currentIdx = next;
+            renderQuestion();
+        }
+    }
+
+    function renderMap() {
+        const grid = document.getElementById('map-grid');
+        grid.innerHTML = state.activeQuestions.map((_, i) => 
+            `<button class="map-btn" id="map-btn-${i}" onclick="jumpTo(${i})">${i + 1}</button>`
+        ).join('');
+        highlightMap();
+    }
+
+    function jumpTo(i) { state.currentIdx = i; renderQuestion(); }
+
+    function highlightMap() {
+        document.querySelectorAll('.map-btn').forEach((btn, i) => {
+            btn.className = 'map-btn';
+            if (i === state.currentIdx) btn.classList.add('active');
+            if (state.answers[i]) btn.classList.add(state.answers[i].isCorrect ? 'correct' : 'wrong');
+        });
     }
 
     function finishQuiz() {
         state.quizPhase = 'result';
-        let score = Object.values(state.userAnswers).filter(a => a.isCorrect).length;
-        document.getElementById('score-val').innerText = `${score}/${state.activeQuestions.length}`;
-        switchTab('quiz');
+        const score = Object.values(state.answers).filter(a => a.isCorrect).length;
+        document.getElementById('quiz-active').classList.add('hidden');
+        document.getElementById('quiz-result').classList.remove('hidden');
+        document.getElementById('final-score').innerText = `${score} / ${state.activeQuestions.length}`;
     }
 
-    function resetQuiz() { state.quizPhase = 'setup'; switchTab('quiz'); }
-
-    function renderMap() {
-        const grid = document.getElementById('map-grid'); grid.innerHTML = '';
-        state.activeQuestions.forEach((_, i) => {
-            const btn = document.createElement('button');
-            btn.className = 'map-btn';
-            btn.innerText = i + 1;
-            if (state.userAnswers[i]) btn.classList.add(state.userAnswers[i].isCorrect ? 'correct' : 'wrong');
-            if (i === state.currentQuizIndex) btn.classList.add('active');
-            btn.onclick = () => { state.currentQuizIndex = i; renderQuestionCard(); renderMap(); };
-            grid.appendChild(btn);
-        });
+    function resetQuiz() {
+        state.quizPhase = 'setup';
+        state.activeQuestions.forEach(q => delete q.perm);
+        switchTab('quiz');
     }
 
     init();
