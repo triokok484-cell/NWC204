@@ -3325,16 +3325,23 @@
     function init() {
         quizData.forEach(q => {
             ['vi', 'en'].forEach(lang => {
-                if (!q[lang]) return;
+                if (!q[lang] || !q[lang].answer || !q[lang].options) return; // Bỏ qua an toàn nếu data bị rỗng
                 
-                q[lang].correctIndices = q[lang].answer.map(ansText => {
-                    return q[lang].options.indexOf(ansText);
+                // BẢO VỆ CHỐNG LỖI CRASH: 
+                // Kiểm tra xem answer có phải là Mảng không. Nếu lỡ gõ chuỗi (thiếu ngoặc vuông []), tự động ép thành mảng.
+                let ansArray = Array.isArray(q[lang].answer) ? q[lang].answer : [q[lang].answer];
+                
+                // Dò tìm vị trí đáp án đúng
+                q[lang].correctIndices = ansArray.map(ansText => {
+                    // Dùng findIndex và trim() để phòng ngừa trường hợp bạn gõ thừa dấu cách (space)
+                    return q[lang].options.findIndex(opt => opt.trim() === ansText.trim());
                 }).filter(index => index !== -1); 
                 
                 q[lang].cleanOptions = q[lang].options;
             });
         });
 
+        // Load danh sách chủ đề
         const topics = ["Tất cả", ...new Set(quizData.map(q => q.topic))];
         const selects = [document.getElementById('fc-topic-select'), document.getElementById('quiz-topic-select')];
         selects.forEach(s => {
@@ -3344,6 +3351,59 @@
         filterFC();
         updateUI(); 
         
+        // Cài đặt phím tắt
+        window.addEventListener('keydown', e => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+            
+            // Lật thẻ bằng phím Space
+            if (e.code === 'Space') { 
+                e.preventDefault(); 
+                flipCard(); 
+            }
+            
+            if (e.key.toLowerCase() === 'n') toggleLang();
+            if (e.key.toLowerCase() === 'm') shuffleOptions();
+            if (e.key === 'ArrowRight') (state.tab === 'flashcard') ? navFC(1) : (state.quizPhase === 'active' && navQuiz(1));
+            if (e.key === 'ArrowLeft') (state.tab === 'flashcard') ? navFC(-1) : (state.quizPhase === 'active' && navQuiz(-1));
+            
+            // Lật thẻ bằng phím Lên / Xuống & chống scroll trang
+            if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                if (state.tab === 'flashcard') {
+                    e.preventDefault(); // Khóa cuộn trang
+                    flipCard();
+                }
+            }
+        });
+    }function init() {
+        quizData.forEach(q => {
+            ['vi', 'en'].forEach(lang => {
+                if (!q[lang] || !q[lang].answer || !q[lang].options) return; // Bỏ qua an toàn nếu data bị rỗng
+                
+                // BẢO VỆ CHỐNG LỖI CRASH: 
+                // Kiểm tra xem answer có phải là Mảng không. Nếu lỡ gõ chuỗi (thiếu ngoặc vuông []), tự động ép thành mảng.
+                let ansArray = Array.isArray(q[lang].answer) ? q[lang].answer : [q[lang].answer];
+                
+                // Dò tìm vị trí đáp án đúng
+                q[lang].correctIndices = ansArray.map(ansText => {
+                    // Dùng findIndex và trim() để phòng ngừa trường hợp bạn gõ thừa dấu cách (space)
+                    return q[lang].options.findIndex(opt => opt.trim() === ansText.trim());
+                }).filter(index => index !== -1); 
+                
+                q[lang].cleanOptions = q[lang].options;
+            });
+        });
+
+        // Load danh sách chủ đề
+        const topics = ["Tất cả", ...new Set(quizData.map(q => q.topic))];
+        const selects = [document.getElementById('fc-topic-select'), document.getElementById('quiz-topic-select')];
+        selects.forEach(s => {
+            s.innerHTML = topics.map(t => `<option value="${t}">${t}</option>`).join('');
+        });
+        
+        filterFC();
+        updateUI(); 
+        
+        // Cài đặt phím tắt
         window.addEventListener('keydown', e => {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
             
