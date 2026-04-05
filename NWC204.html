@@ -1105,6 +1105,856 @@
       "answer": "A. FTP, B. HTTP",
       "explanation": "FTP and HTTP mandate guaranteed delivery, sequencing, and data integrity, all of which are provided by the TCP protocol."
     }
+  },
+        {
+    "id": 51,
+    "topic": "Network Models & OSI",
+    "vi": {
+      "question": "Cơ sở hạ tầng mạng nào mà tổ chức có thể sử dụng để cung cấp quyền truy cập an toàn cho những cá nhân thuộc tổ chức khác nhưng cần truy cập vào dữ liệu của công ty?",
+      "options": ["A. Extranet", "B. Intranet", "C. LAN", "D. WAN"],
+      "answer": "A. Extranet",
+      "explanation": "Extranet là mạng nội bộ (Intranet) nhưng mở rộng quyền truy cập an toàn cho các đối tác, nhà cung cấp hoặc khách hàng bên ngoài.",
+      "tip": "Cho người ngoài (khác tổ chức) truy cập an toàn => Extranet."
+    },
+    "en": {
+      "question": "Which network infrastructure might an organization use to provide secure and safe access to individuals who work for a different organization but require access to the organization's data?",
+      "options": ["A. Extranet", "B. Intranet", "C. LAN", "D. WAN"],
+      "answer": "A. Extranet",
+      "explanation": "An extranet provides secure access to a corporate network for external entities like partners or suppliers."
+    }
+  },
+  {
+    "id": 52,
+    "topic": "Network Models & OSI",
+    "vi": {
+      "question": "Thiết bị nào sau đây thuộc nhóm thiết bị trung gian (intermediary devices)? (Chọn hai)",
+      "options": ["A. Hosts", "B. Routers", "C. Servers", "D. Switches"],
+      "answer": "B. Routers, D. Switches",
+      "explanation": "Thiết bị trung gian nằm ở giữa mạng để kết nối các thiết bị đầu cuối (Hosts, Servers) lại với nhau.",
+      "tip": "Trung gian (nằm giữa) = Router, Switch, Firewall."
+    },
+    "en": {
+      "question": "Which two devices are intermediary devices? (Choose two)",
+      "options": ["A. Hosts", "B. Routers", "C. Servers", "D. Switches"],
+      "answer": "B. Routers, D. Switches",
+      "explanation": "Routers and switches connect end devices (like hosts and servers) to the network."
+    }
+  },
+  {
+    "id": 53,
+    "topic": "Transport & Application Layers",
+    "vi": {
+      "question": "UDP và TCP thuộc tầng nào trong mô hình TCP/IP?",
+      "options": ["A. Application", "B. Transport", "C. Internet", "D. Network access"],
+      "answer": "B. Transport",
+      "explanation": "Tầng Giao vận (Transport layer) chịu trách nhiệm phân mảnh, thiết lập kết nối và điều khiển luồng, với 2 giao thức chính là TCP và UDP.",
+      "tip": "Cứ thấy TCP hoặc UDP là auto chọn Transport (Tầng 4 OSI / Tầng Giao vận)."
+    },
+    "en": {
+      "question": "UDP and TCP belong to which layer of the TCP/IP protocol?",
+      "options": ["A. Application", "B. Transport", "C. Internet", "D. Network access"],
+      "answer": "B. Transport",
+      "explanation": "The transport layer provides logical communication between application processes running on different hosts, primarily using TCP or UDP."
+    }
+  },
+  {
+    "id": 54,
+    "topic": "Network Security & Services",
+    "vi": {
+      "question": "Phần nào của URL http://www.cisco.com/index.html đại diện cho tên miền cấp cao nhất (top-level DNS domain)?",
+      "options": ["A. .com", "B. http", "C. Index", "D. www"],
+      "answer": "A. .com",
+      "explanation": ".com, .org, .edu, .vn được gọi là các Top-Level Domain (TLD).",
+      "tip": "Top-level domain luôn là phần đuôi cuối cùng của tên miền (.com, .net, .vn)."
+    },
+    "en": {
+      "question": "What part of the URL, http://www.cisco.com/index.html, represents the top-level DNS domain?",
+      "options": ["A. .com", "B. http", "C. Index", "D. www"],
+      "answer": "A. .com",
+      "explanation": "The top-level domain (TLD) is the last segment of the domain name, such as .com, .org, or .net."
+    }
+  },
+  {
+    "id": 55,
+    "topic": "Network Security & Services",
+    "vi": {
+      "question": "Loại bản ghi DNS (Resource Record) nào dùng để phân giải các máy chủ có thẩm quyền tên miền (authoritative name servers)?",
+      "options": ["A. NS", "B. A", "C. MX", "D. AAAA"],
+      "answer": "A. NS",
+      "explanation": "Bản ghi NS (Name Server) trỏ đến máy chủ DNS quản lý tên miền đó. Bản ghi A trỏ đến IPv4, AAAA trỏ đến IPv6, MX trỏ đến Mail server.",
+      "tip": "Nhớ: NS = Name Server."
+    },
+    "en": {
+      "question": "Which of the following DNS resource record types resolves authoritative name servers?",
+      "options": ["A. NS", "B. A", "C. MX", "D. AAAA"],
+      "answer": "A. NS",
+      "explanation": "An NS (Name Server) record delegates a DNS zone to use the given authoritative name servers."
+    }
+  },
+  {
+    "id": 56,
+    "topic": "Network Security & Services",
+    "vi": {
+      "question": "Đặc điểm nào mô tả đúng về Spyware (phần mềm gián điệp)?",
+      "options": ["A. Phần mềm được cài đặt trên thiết bị người dùng và thu thập thông tin về họ", "B. Một cuộc tấn công làm chậm hoặc làm sập thiết bị/mạng", "C. Sử dụng thông tin xác thực bị đánh cắp để truy cập dữ liệu riêng tư", "D. Một thiết bị mạng lọc quyền truy cập và lưu lượng vào mạng"],
+      "answer": "A. Phần mềm được cài đặt trên thiết bị người dùng và thu thập thông tin về họ",
+      "explanation": "Đúng như tên gọi (Spy = Gián điệp), nó lén lút nằm trong máy tính và theo dõi mọi thao tác duyệt web, gõ phím của bạn để gửi về cho hacker.",
+      "tip": "Spyware = Spy (Điệp viên) = Thu thập thông tin lén lút (collects information)."
+    },
+    "en": {
+      "question": "What characteristic describes spyware?",
+      "options": ["A. software that is installed on a user device and collects information about the user", "B. an attack that slows or crashes a device or network service", "C. the use of stolen credentials to access private data", "D. a network device that filters access and traffic coming into a network"],
+      "answer": "A. software that is installed on a user device and collects information about the user",
+      "explanation": "Spyware secretly gathers information about a person or organization and relays it to advertisers or hackers."
+    }
+  },
+  {
+    "id": 57,
+    "topic": "IPv4 & IPv6 Addressing",
+    "vi": {
+      "question": "Phần nào của địa chỉ GUA (Global Unicast Address) IPv6 được cung cấp/chỉ định bởi ISP?",
+      "options": ["A. Global routing prefix", "B. Global routing prefix and subnet ID", "C. Prefix", "D. RIR prefix"],
+      "answer": "A. Global routing prefix",
+      "explanation": "Cấu trúc IPv6 GUA gồm 3 phần: Global Routing Prefix (do ISP cấp), Subnet ID (do cty tự chia), Interface ID (địa chỉ máy).",
+      "tip": "ISP chỉ cấp cái 'Gốc' cho bạn (Global Routing Prefix), phần còn lại bạn tự chia."
+    },
+    "en": {
+      "question": "Which part of a GUA is assigned by the ISP?",
+      "options": ["A. Global routing prefix", "B. Global routing prefix and subnet ID", "C. Prefix", "D. RIR prefix"],
+      "answer": "A. Global routing prefix",
+      "explanation": "The Global Routing Prefix is assigned by the provider (ISP) and represents the network portion of the address."
+    }
+  },
+  {
+    "id": 58,
+    "topic": "Network Models & OSI",
+    "vi": {
+      "question": "Đúng hay Sai? Trong môi trường mạng ngang hàng (peer-to-peer), mọi máy tính đều có thể hoạt động vừa như máy khách (client) vừa như máy chủ (server).",
+      "options": ["A. True", "B. False"],
+      "answer": "A. True",
+      "explanation": "Mạng P2P không có máy chủ quản lý trung tâm. Bất kỳ máy nào cũng có thể chia sẻ file (làm Server) và tải file từ máy khác (làm Client).",
+      "tip": "Ngang hàng (P2P) = Ai cũng bình đẳng, vừa là người xin (Client) vừa là người cho (Server)."
+    },
+    "en": {
+      "question": "True or false? In a peer-to-peer network environment every peer can function as both a client and a server.",
+      "options": ["A. True", "B. False"],
+      "answer": "A. True",
+      "explanation": "In a P2P network, tasks and workloads are shared equally among peers without centralized administrative servers."
+    }
+  },
+  {
+    "id": 59,
+    "topic": "Network Security & Services",
+    "vi": {
+      "question": "Một kỹ thuật viên nghi ngờ có một thiết bị (node) bị lỗi trên đường truyền gây rớt gói tin. Lệnh nào giúp xác định chính xác thiết bị lỗi đó nằm ở ngã tư nào?",
+      "options": ["A. ipconfig/displaydns", "B. ipconfig/flushdns", "C. ping", "D. tracert"],
+      "answer": "D. tracert",
+      "explanation": "Ping chỉ cho biết có đến đích được không. Tracert (Trace Route) sẽ in ra danh sách TỪNG router (hop) mà gói tin đi qua, qua đó biết gói tin 'chết' ở thiết bị nào.",
+      "tip": "Muốn tìm 'địa điểm cụ thể bị đứt cáp' trên đường đi, phải dùng Tracert."
+    },
+    "en": {
+      "question": "A technician is troubleshooting a network where it is suspected that a defective node in the network path is causing packets to be dropped. What command can the technician use to identify the faulty node?",
+      "options": ["A. ipconfig/displaydns", "B. ipconfig/flushdns", "C. ping", "D. tracert"],
+      "answer": "D. tracert",
+      "explanation": "Tracert traces the path a packet takes to a destination, showing every router (hop) along the way."
+    }
+  },
+  {
+    "id": 60,
+    "topic": "Network Models & OSI",
+    "vi": {
+      "question": "Loại sơ đồ mạng (topology) nào cho phép bạn nhìn thấy vị trí thực tế của các thiết bị trung gian và cách lắp đặt cáp?",
+      "options": ["A. Physical topology", "B. Logical topology", "C. IP address topology", "D. Aerial topology"],
+      "answer": "A. Physical topology",
+      "explanation": "Sơ đồ Vật lý (Physical) vẽ lại hình ảnh phòng máy, tủ rack, cáp cắm vào cổng số mấy. Sơ đồ Logic thì chỉ vẽ địa chỉ IP và Subnet.",
+      "tip": "Thực tế (Actual location), sờ được, thấy được = Physical (Vật lý)."
+    },
+    "en": {
+      "question": "Which type of network topology lets you see the actual location of intermediary devices and cable installation?",
+      "options": ["A. Physical topology", "B. Logical topology", "C. IP address topology", "D. Aerial topology"],
+      "answer": "A. Physical topology",
+      "explanation": "A physical topology shows the physical layout of the devices, cables, and rooms."
+    }
+  },
+  {
+    "id": 61,
+    "topic": "Network Security & Services",
+    "vi": {
+      "question": "Chức năng nào của lệnh tracert KHÁC BIỆT so với lệnh ping khi được sử dụng trên máy trạm?",
+      "options": ["A. Lệnh tracert nhanh hơn", "B. Lệnh tracert hiển thị thông tin của các router trên đường đi", "C. Lệnh tracert gửi một tin nhắn ICMP tới mỗi hop", "D. Lệnh tracert dùng để kiểm tra kết nối giữa 2 thiết bị"],
+      "answer": "B. Lệnh tracert hiển thị thông tin của các router trên đường đi",
+      "explanation": "Cả 2 đều dùng để kiểm tra kết nối, nhưng điểm ăn tiền của Tracert là nó vẽ được sơ đồ đường đi (các trạm trung chuyển).",
+      "tip": "Trace = Theo dấu vết. Nó in ra danh sách các ngã tư (Routers) đã đi qua."
+    },
+    "en": {
+      "question": "What is a function of the tracert command that differs from the ping command when they are used on a workstation?",
+      "options": ["A. The tracert command reaches the destination faster.", "B. The tracert command shows the information of routers in the path.", "C. The tracert command sends one ICMP message to each hop.", "D. The tracert command is used to test the connectivity between two devices."],
+      "answer": "B. The tracert command shows the information of routers in the path.",
+      "explanation": "Unlike ping which only reports reachability, tracert details every router intersection between source and destination."
+    }
+  },
+  {
+    "id": 62,
+    "topic": "Network Security & Services",
+    "vi": {
+      "question": "Lợi ích mà SSH mang lại so với Telnet khi quản lý Router từ xa là gì?",
+      "options": ["A. Encryption (Mã hóa)", "B. TCP usage", "C. Authorization", "D. Connections via multiple VTY lines"],
+      "answer": "A. Encryption (Mã hóa)",
+      "explanation": "Telnet gửi mật khẩu dạng văn bản thuần (plaintext) ai cũng đọc được nếu bắt được gói tin. SSH mã hóa toàn bộ phiên kết nối.",
+      "tip": "SSH có chữ S = Secure (An toàn) = Mã hóa dữ liệu."
+    },
+    "en": {
+      "question": "Which benefit does SSH offer over Telnet for remotely managing a router?",
+      "options": ["A. Encryption", "B. TCP usage", "C. Authorization", "D. connections via multiple VTY lines"],
+      "answer": "A. Encryption",
+      "explanation": "SSH provides a secure management connection by encrypting the traffic, whereas Telnet sends data in clear text."
+    }
+  },
+  {
+    "id": 63,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Bạn đang đứng trong phòng thiết bị với một Switch mới toanh cần được cấu hình. Phương thức truy cập nào là phù hợp nhất?",
+      "options": ["A. Console", "B. Telnet/SSH", "C. Aux", "D. Ethernet"],
+      "answer": "A. Console",
+      "explanation": "Thiết bị mới khui hộp chưa có IP, chưa có mạng nên không thể Telnet hay SSH. Bạn phải cắm cáp Console trực tiếp vào máy tính để cấu hình lần đầu.",
+      "tip": "Đứng ngay cạnh thiết bị mới khui hộp = Cắm cáp Console."
+    },
+    "en": {
+      "question": "Which access method would be most appropriate if you were in the equipment room with a new switch that needs to be configured?",
+      "options": ["A. Console", "B. Telnet/SSH", "C. Aux", "D. Ethernet"],
+      "answer": "A. Console",
+      "explanation": "Out-of-band console access is required for initial configuration of a brand new device that has no network IP assigned yet."
+    }
+  },
+  {
+    "id": 64,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Phần nào của Ethernet Frame có nhiệm vụ phát hiện lỗi trong khung (Frame)?",
+      "options": ["A. Preamble", "B. Start of Frame Delimiter", "C. Frame Check Sequence", "D. Type"],
+      "answer": "C. Frame Check Sequence",
+      "explanation": "FCS (Frame Check Sequence) nằm ở đuôi gói tin, dùng thuật toán CRC để đối chiếu xem chuỗi bit có bị hỏng dọc đường không.",
+      "tip": "Check (kiểm tra) lỗi = Frame Check Sequence (FCS)."
+    },
+    "en": {
+      "question": "Which part of an Ethernet frame detects errors in the frame?",
+      "options": ["A. Preamble", "B. Start of Frame Delimiter", "C. Frame Check Sequence", "D. Type"],
+      "answer": "C. Frame Check Sequence",
+      "explanation": "The FCS is a 4-byte field at the end of the frame used to detect transmission errors using Cyclic Redundancy Check (CRC)."
+    }
+  },
+  {
+    "id": 65,
+    "topic": "Transport & Application Layers",
+    "vi": {
+      "question": "Giả sử host 10.1.1.10 muốn yêu cầu dịch vụ Web từ máy chủ 10.1.1.254. Cặp socket nào sau đây hiển thị đúng định dạng kết nối?",
+      "options": ["A. 1099:10.1.1.10, 80:10.1.1.254", "B. 10.1.1.10:80, 10.1.1.254:1099", "C. 10.1.1.10:1099, 10.1.1.254:80", "D. 80:10.1.1.10, 1099:10.1.1.254"],
+      "answer": "C. 10.1.1.10:1099, 10.1.1.254:80",
+      "explanation": "Socket = IP + Port. Dịch vụ Web chạy port 80 (đặt ở Server). Host thì tự sinh một port ngẫu nhiên (>1023, ở đây là 1099). Định dạng chuẩn là IP:Port.",
+      "tip": "IP đi trước, Port đi sau phân cách bằng dấu 2 chấm (IP:Port). Server Web luôn dùng port 80."
+    },
+    "en": {
+      "question": "Assume a host with IP address 10.1.1.10 wants to request web services from a server at 10.1.1.254. Which of the following would display the correct socket pair?",
+      "options": ["A. 1099:10.1.1.10, 80:10.1.1.254", "B. 10.1.1.10:80, 10.1.1.254:1099", "C. 10.1.1.10:1099, 10.1.1.254:80", "D. 80:10.1.1.10, 1099:10.1.1.254"],
+      "answer": "C. 10.1.1.10:1099, 10.1.1.254:80",
+      "explanation": "A socket is formed by IP:Port. The client uses a random high port (1099), while the web server listens on the well-known port 80."
+    }
+  },
+  {
+    "id": 66,
+    "topic": "Transport & Application Layers",
+    "vi": {
+      "question": "Hai ứng dụng nào sau đây sử dụng giao thức TCP? (Chọn hai)",
+      "options": ["A. FTP", "B. HTTP", "C. ICMP", "D. TFTP", "E. VoIP"],
+      "answer": "A. FTP, B. HTTP",
+      "explanation": "FTP (tải file) và HTTP (duyệt web) yêu cầu dữ liệu phải nguyên vẹn 100%, mất 1 bit là hỏng toàn bộ, do đó phải dùng TCP (giao thức đảm bảo độ tin cậy).",
+      "tip": "Cần an toàn, chính xác tuyệt đối (Web, File, Mail) thì dùng TCP."
+    },
+    "en": {
+      "question": "Which two applications would use the TCP transport layer protocol? (Choose two.)",
+      "options": ["A. FTP", "B. HTTP", "C. ICMP", "D. TFTP", "E. VoIP"],
+      "answer": "A. FTP, B. HTTP",
+      "explanation": "FTP and HTTP mandate guaranteed delivery, sequencing, and data integrity, all of which are provided by the TCP protocol."
+    }
+  },
+  {
+    "id": 67,
+    "topic": "Transport & Application Layers",
+    "vi": {
+      "question": "Phương thức giao hàng nào KHÔNG đảm bảo gói tin đến đích nguyên vẹn không lỗi?",
+      "options": ["A. Connectionless", "B. Best effort", "C. Media independent", "D. Reliable"],
+      "answer": "B. Best effort",
+      "explanation": "Giao hàng 'Nỗ lực tối đa' (Best effort), đặc trưng của UDP và IP, nghĩa là mạng sẽ cố gắng gửi nhưng nếu lỗi, nó sẽ không gửi lại, cũng không thông báo.",
+      "tip": "Best effort = Nỗ lực hết sức (rớt mạng mất đồ thì bạn tự chịu, mạng không đền)."
+    },
+    "en": {
+      "question": "Which delivery method does not guarantee that the packet will be delivered fully without errors?",
+      "options": ["A. Connectionless", "B. Best effort", "C. Media independent", "D. Reliable"],
+      "answer": "B. Best effort",
+      "explanation": "Best effort delivery means the network routes the packet without offering reliability or acknowledgments of successful receipt."
+    }
+  },
+  {
+    "id": 68,
+    "topic": "IPv4 & IPv6 Addressing",
+    "vi": {
+      "question": "Định dạng nén ngắn nhất hợp lệ của địa chỉ IPv6 2001:0DB8:0000:AB00:0000:0000:0000:1234 là gì?",
+      "options": ["A. 2001:DB8:0:AB00::1234", "B. 2001:DB8:0:AB::1234", "C. 2001:DB8::AB00::1234", "D. 2001:DB8:0:AB:0:1234"],
+      "answer": "A. 2001:DB8:0:AB00::1234",
+      "explanation": "1. Bỏ số 0 ở đầu: `0DB8` thành `DB8`. 2. Dấu `::` chỉ được dùng 1 lần cho chuỗi số 0 dài nhất (ở đây là 3 cụm `:0000:0000:0000:` thay bằng `::`). Lưu ý: `AB00` không được rút thành `AB` vì số 0 ở đuôi không được bỏ.",
+      "tip": "Trailing zeros (số 0 ở cuối cụm, như AB00) KHÔNG ĐƯỢC BỎ."
+    },
+    "en": {
+      "question": "What is the valid most compressed format possible of the IPv6 address 2001:0DB8:0000:AB00:0000:0000:0000:1234?",
+      "options": ["A. 2001:DB8:0:AB00::1234", "B. 2001:DB8:0:AB::1234", "C. 2001:DB8::AB00::1234", "D. 2001:DB8:0:AB:0:1234"],
+      "answer": "A. 2001:DB8:0:AB00::1234",
+      "explanation": "Omit leading zeros (0DB8 -> DB8). The longest contiguous block of all-zero hextets can be replaced once with a double colon (::)."
+    }
+  },
+  {
+    "id": 69,
+    "topic": "Network Security & Services",
+    "vi": {
+      "question": "Giao diện (interface) nào cho phép quản lý từ xa một Switch Layer 2?",
+      "options": ["A. The console port interface", "B. The AUX interface", "C. The switch virtual interface", "D. The first Ethernet port interface"],
+      "answer": "C. The switch virtual interface",
+      "explanation": "Switch Layer 2 không gán được IP vào cổng cắm cáp vật lý. Phải tạo một giao diện ảo SVI (Switch Virtual Interface, thường là Vlan1) và đặt IP cho nó để điều khiển từ xa.",
+      "tip": "Quản lý từ xa Switch (Telnet/SSH) bắt buộc phải dùng SVI."
+    },
+    "en": {
+      "question": "Which interface allows remote management of a Layer 2 switch?",
+      "options": ["A. The console port interface", "B. The AUX interface", "C. The switch virtual interface", "D. The first Ethernet port interface"],
+      "answer": "C. The switch virtual interface",
+      "explanation": "A Switch Virtual Interface (SVI), such as interface VLAN 1, is assigned an IP address so administrators can SSH/Telnet into the switch."
+    }
+  },
+  {
+    "id": 70,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Tại sao cáp quang cho một kết nối đơn lẻ thường phải dùng 2 sợi (two strands)?",
+      "options": ["A. The two strands allow the data to travel for longer distances", "B. They prevent crosstalk from causing interference", "C. They increase the speed", "D. They allow for full-duplex connectivity"],
+      "answer": "D. They allow for full-duplex connectivity",
+      "explanation": "Ánh sáng đi trong ống quang chỉ theo một chiều. Để một thiết bị có thể VỪA gửi VỪA nhận cùng lúc (Full-duplex), bắt buộc phải có 1 sợi Transmit (Tx) và 1 sợi Receive (Rx).",
+      "tip": "Đường một chiều thì phải xây 2 làn xe mới đi ngược chiều (Full-duplex) được."
+    },
+    "en": {
+      "question": "Why are two strands of fiber used for a single fiber optic connection?",
+      "options": ["A. The two strands allow the data to travel for longer distances", "B. They prevent crosstalk from causing interference", "C. They increase the speed", "D. They allow for full-duplex connectivity"],
+      "answer": "D. They allow for full-duplex connectivity",
+      "explanation": "Light generally travels in one direction. Two separate strands are used—one for Transmit (Tx) and one for Receive (Rx)—enabling full-duplex communication."
+    }
+  },
+  {
+    "id": 71,
+    "topic": "IPv4 & IPv6 Addressing",
+    "vi": {
+      "question": "Thuộc tính nào của ARP cho phép cố định (fix) địa chỉ MAC của các server quan trọng trong bảng ARP?",
+      "options": ["A. The type field 0x806 appears in the header", "B. A static IP-to-MAC address entry can be entered manually", "C. The port-to-MAC address table on a switch has the same entries", "D. Entries in an ARP table are time-stamped"],
+      "answer": "B. A static IP-to-MAC address entry can be entered manually",
+      "explanation": "Để tránh việc bị hack ARP (ARP Spoofing) ở các server quan trọng, admin có thể gõ lệnh tạo ánh xạ IP-MAC tĩnh (Static entry). Bản ghi này sẽ không bao giờ bị xóa tự động.",
+      "tip": "Cố định (Fixed) = Điền bằng tay thủ công (Static entry)."
+    },
+    "en": {
+      "question": "What property of ARP allows MAC addresses of frequently used servers to be fixed in the ARP table?",
+      "options": ["A. The type field 0x806 appears in the header", "B. A static IP-to-MAC address entry can be entered manually", "C. The port-to-MAC address table on a switch has the same entries", "D. Entries in an ARP table are time-stamped"],
+      "answer": "B. A static IP-to-MAC address entry can be entered manually",
+      "explanation": "Administrators can manually configure static ARP entries to prevent critical server mappings from aging out or being spoofed."
+    }
+  },
+  {
+    "id": 72,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Khi sử dụng phương thức chuyển mạch Store-and-forward, phần nào của khung Ethernet được dùng để kiểm tra lỗi?",
+      "options": ["A. Destination MAC address in the header", "B. Protocol type in the header", "C. CRC in the trailer", "D. Source MAC address in the header"],
+      "answer": "C. CRC in the trailer",
+      "explanation": "Switch dùng chế độ Store-and-forward sẽ nhận nguyên kiện hàng, mở phần đuôi (Trailer) ra xem mã CRC để xem có bị móp méo hỏng hóc gì không rồi mới chuyển đi.",
+      "tip": "Kiểm tra lỗi (Error check) luôn nằm ở cái đuôi (Trailer)."
+    },
+    "en": {
+      "question": "When the store-and-forward method of switching is in use, what part of the Ethernet frame is used to perform an error check?",
+      "options": ["A. Destination MAC address in the header", "B. Protocol type in the header", "C. CRC in the trailer", "D. Source MAC address in the header"],
+      "answer": "C. CRC in the trailer",
+      "explanation": "Store-and-forward switching caches the entire frame to compute the CRC and matches it against the FCS in the trailer."
+    }
+  },
+  {
+    "id": 73,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Cách thức ARP xử lý địa chỉ IPv4 là gì?",
+      "options": ["A. To determine the MAC address of the remote destination host", "B. To determine the MAC address of a device on the same network", "C. To determine the amount of time a packet takes", "D. To determine the network number based on the bits"],
+      "answer": "B. To determine the MAC address of a device on the same network",
+      "explanation": "Giao thức ARP dùng địa chỉ IPv4 (đã biết) để đi 'hỏi thăm' xem địa chỉ MAC (chưa biết) của thiết bị trong cùng 1 mạng LAN là số mấy.",
+      "tip": "Mục đích tối thượng của ARP: Biết IP -> Tìm MAC cục bộ (same network)."
+    },
+    "en": {
+      "question": "How does the ARP process use an IPv4 address?",
+      "options": ["A. To determine the MAC address of the remote destination host", "B. To determine the MAC address of a device on the same network", "C. To determine the amount of time a packet takes", "D. To determine the network number based on the bits"],
+      "answer": "B. To determine the MAC address of a device on the same network",
+      "explanation": "ARP broadcasts a known IPv4 address on the local link to discover the corresponding unknown MAC address."
+    }
+  },
+  {
+    "id": 74,
+    "topic": "IPv4 & IPv6 Addressing",
+    "vi": {
+      "question": "Bài kiểm tra loopback (ping 127.0.0.1) cung cấp thông tin gì?",
+      "options": ["A. The TCP/IP stack on the device is working correctly", "B. The device has end-to-end connectivity", "C. The device has the correct IP address on the network", "D. DHCP is working correctly"],
+      "answer": "A. The TCP/IP stack on the device is working correctly",
+      "explanation": "Ping đến 127.0.0.1 không đi ra khỏi máy tính, nó chỉ chạy vòng lại bên trong để kiểm tra xem phần mềm giao thức mạng (TCP/IP stack) của máy tính có đang hoạt động tốt hay không.",
+      "tip": "Loopback là soi gương. Thấy mặt mình trong gương (Reply) nghĩa là TCP/IP stack ổn."
+    },
+    "en": {
+      "question": "What information does the loopback test provide?",
+      "options": ["A. The TCP/IP stack on the device is working correctly", "B. The device has end-to-end connectivity", "C. The device has the correct IP address on the network", "D. DHCP is working correctly"],
+      "answer": "A. The TCP/IP stack on the device is working correctly",
+      "explanation": "A successful ping to 127.0.0.1 proves that the TCP/IP suite is properly installed and functioning on the local host."
+    }
+  },
+  {
+    "id": 75,
+    "topic": "Network Models & OSI",
+    "vi": {
+      "question": "Trường nào trong Header IPv4 chứa giá trị nhị phân 8-bit được sử dụng để quyết định độ ưu tiên của gói tin?",
+      "options": ["A. Differentiated services", "B. Destination IPv4 address", "C. Source IPv4 address", "D. Protocol"],
+      "answer": "A. Differentiated services",
+      "explanation": "Differentiated Services (DS), còn gọi là Type of Service (ToS), là trường để đánh dấu mức độ ưu tiên. Gói tin Voice sẽ được đánh dấu ưu tiên đi trước để tránh giật lag (QoS).",
+      "tip": "Dịch vụ khác biệt (Differentiated Services) = Quy định quyền ưu tiên cho gói tin."
+    },
+    "en": {
+      "question": "Which term describes a field in the IPv4 packet header that contains an 8-bit binary value used to determine the priority of each packet?",
+      "options": ["A. Differentiated services", "B. Destination IPv4 address", "C. Source IPv4 address", "D. Protocol"],
+      "answer": "A. Differentiated services",
+      "explanation": "The Differentiated Services (DS) field allows routers to prioritize IP packets for Quality of Service (QoS)."
+    }
+  },
+  {
+    "id": 76,
+    "topic": "IPv4 & IPv6 Addressing",
+    "vi": {
+      "question": "Có bao nhiêu địa chỉ host trong mạng 172.16.128.0 với subnet mask là 255.255.254.0?",
+      "options": ["A. 1024", "B. 2046", "C. 1022", "D. 510"],
+      "answer": "D. 510",
+      "explanation": "Mask 255.255.254.0 tương đương với prefix /23. Số bit dành cho Host = 32 - 23 = 9 bit. Số địa chỉ host dùng được = 2^9 - 2 = 512 - 2 = 510.",
+      "tip": "Thấy số đuôi là 254 (tức là 2 khối 256 dính nhau), tổng khoảng 500 mạng -> Chọn 510."
+    },
+    "en": {
+      "question": "How many host addresses are available on the network 172.16.128.0 with a subnet mask of 255.255.254.0?",
+      "options": ["A. 1024", "B. 2046", "C. 1022", "D. 510"],
+      "answer": "D. 510",
+      "explanation": "A mask of 255.255.254.0 is /23, leaving 9 bits for hosts. 2^9 - 2 = 510 usable IP addresses."
+    }
+  },
+  {
+    "id": 77,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Thuật ngữ tầng vật lý OSI nào mô tả khoảng thời gian, bao gồm cả sự chậm trễ (delays), để dữ liệu đi từ điểm này đến điểm kia?",
+      "options": ["A. Goodput", "B. Latency", "C. Throughput", "D. Bandwidth"],
+      "answer": "B. Latency",
+      "explanation": "Latency (Độ trễ) đo tổng thời gian gói tin di chuyển trên cáp cộng với thời gian chờ xử lý tại các thiết bị trung gian.",
+      "tip": "Độ trễ (Latency) luôn gắn liền với thời gian trễ (delays)."
+    },
+    "en": {
+      "question": "What OSI physical layer term describes the amount of time, including delays, for data to travel from one point to another?",
+      "options": ["A. Goodput", "B. Latency", "C. Throughput", "D. Bandwidth"],
+      "answer": "B. Latency",
+      "explanation": "Latency is the total time it takes for a message to travel from sender to receiver, including propagation and processing delays."
+    }
+  },
+  {
+    "id": 78,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Đặc điểm của phân lớp LLC (Logical Link Control) ở tầng Data Link là gì?",
+      "options": ["A. Defines software processes for physical layer", "B. Provides delimitation of data", "C. Provides logical addressing", "D. Places information in the frame allowing multiple Layer 3 protocols to use the same network interface"],
+      "answer": "D. Places information in the frame allowing multiple Layer 3 protocols to use the same network interface",
+      "explanation": "LLC hoạt động như một thông dịch viên. Nó cho phép một card mạng phần cứng (Tầng 2) giao tiếp trơn tru với nhiều giao thức phần mềm ở Tầng 3 (như IPv4, IPv6) bằng cách đánh dấu loại giao thức vào Frame.",
+      "tip": "LLC (Tầng 2 trên) là cầu nối để ghép nối với Tầng 3 (Layer 3 protocols)."
+    },
+    "en": {
+      "question": "What is a characteristic of the LLC sublayer?",
+      "options": ["A. Defines software processes for physical layer", "B. Provides delimitation of data", "C. Provides logical addressing", "D. Places information in the frame allowing multiple Layer 3 protocols to use the same network interface"],
+      "answer": "D. Places information in the frame allowing multiple Layer 3 protocols to use the same network interface",
+      "explanation": "The LLC sublayer identifies which network layer protocol (IPv4, IPv6) is being encapsulated within the frame."
+    }
+  },
+  {
+    "id": 79,
+    "topic": "Network Models & OSI",
+    "vi": {
+      "question": "Cấu trúc liên kết mạng WAN vật lý nào mang lại tính sẵn sàng cao và kết nối một vài, nhưng không phải tất cả, các điểm từ xa (remote sites)?",
+      "options": ["A. Point-to-point", "B. Mesh", "C. Partial mesh", "D. Hub and spoke"],
+      "answer": "C. Partial mesh",
+      "explanation": "Lưới toàn phần (Full mesh) kết nối mọi thiết bị với nhau (rất đắt tiền). Lưới bán phần (Partial mesh) chỉ kết nối các chi nhánh quan trọng lại với nhau để tiết kiệm chi phí nhưng vẫn đảm bảo chống rớt mạng.",
+      "tip": "Chỉ kết nối MỘT VÀI điểm (some, but not all) = Bán phần (Partial Mesh)."
+    },
+    "en": {
+      "question": "Which topology provides high availability and connects some, but not all, remote sites?",
+      "options": ["A. Point-to-point", "B. Mesh", "C. Partial mesh", "D. Hub and spoke"],
+      "answer": "C. Partial mesh",
+      "explanation": "Partial mesh connects vital nodes for redundancy without the extreme cost of connecting every single node to every other node."
+    }
+  },
+  {
+    "id": 80,
+    "topic": "Network Security & Services",
+    "vi": {
+      "question": "Chính sách nào cho phép thiết bị mạng quản lý luồng dữ liệu để ưu tiên cho giọng nói (voice) và video?",
+      "options": ["A. Extranet", "B. Quality of service", "C. Internet", "D. Intranet"],
+      "answer": "B. Quality of service",
+      "explanation": "Quality of Service (QoS) được ví như làn đường ưu tiên. Khi nghẽn mạng, gói tin Voice/Video sẽ được cho qua trước để tránh rớt tiếng, còn gói tin tải File tải Web sẽ phải xếp hàng đợi.",
+      "tip": "Ưu tiên (priority) = Chất lượng dịch vụ (Quality of service - QoS)."
+    },
+    "en": {
+      "question": "What term describes a policy that allows network devices to manage the flow of data to give priority to voice and video?",
+      "options": ["A. Extranet", "B. Quality of service", "C. Internet", "D. Intranet"],
+      "answer": "B. Quality of service",
+      "explanation": "QoS prioritizes latency-sensitive traffic (like VoIP and video) over less critical traffic (like FTP or email)."
+    }
+  },
+  {
+    "id": 81,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Hành động nào sẽ xảy ra nếu một host (máy tính) nhận được một khung (frame) có địa chỉ MAC đích mà nó không nhận dạng được?",
+      "options": ["A. The host forwards the frame to the router", "B. The host forwards the frame to all other hosts", "C. The host will discard the frame", "D. The host sends the frame to the switch"],
+      "answer": "C. The host will discard the frame",
+      "explanation": "Card mạng của máy tính chỉ xử lý gói tin có MAC trùng với nó, hoặc MAC Broadcast/Multicast. Còn gói tin có ghi MAC đích của máy khác, nó sẽ hủy bỏ (discard) ngay lập tức.",
+      "tip": "Thư chuyển nhầm nhà (sai MAC) thì chủ nhà ném vào sọt rác (Discard), chứ không rảnh đem chuyển tiếp giúp."
+    },
+    "en": {
+      "question": "What action will occur if a host receives a frame with a destination MAC address it does not recognize?",
+      "options": ["A. The host forwards the frame to the router", "B. The host forwards the frame to all other hosts", "C. The host will discard the frame", "D. The host sends the frame to the switch"],
+      "answer": "C. The host will discard the frame",
+      "explanation": "If the destination MAC address of a unicast frame does not match the receiving NIC's burned-in address, the NIC drops the frame."
+    }
+  },
+  {
+    "id": 82,
+    "topic": "Network Models & OSI",
+    "vi": {
+      "question": "Lợi thế của việc các thiết bị mạng sử dụng giao thức chuẩn mở (open standard protocols) là gì?",
+      "options": ["A. A client host and a server running different operating systems can successfully exchange data", "B. Internet access can be controlled by a single ISP", "C. Competition and innovation are limited", "D. Network communications is confined to the same vendor"],
+      "answer": "A. A client host and a server running different operating systems can successfully exchange data",
+      "explanation": "Chuẩn mở (như IP, HTTP, Ethernet) giống như ngôn ngữ quốc tế. Nhờ nó mà điện thoại Android có thể nhắn tin với iPhone, máy Mac có thể tải file từ máy chủ Windows.",
+      "tip": "Chuẩn mở = Ai cũng xài được, khác hệ điều hành (different OS) vẫn chơi được với nhau."
+    },
+    "en": {
+      "question": "What is an advantage of network devices using open standard protocols?",
+      "options": ["A. A client host and a server running different operating systems can successfully exchange data", "B. Internet access can be controlled by a single ISP", "C. Competition and innovation are limited", "D. Network communications is confined to the same vendor"],
+      "answer": "A. A client host and a server running different operating systems can successfully exchange data",
+      "explanation": "Open standards ensure vendor neutrality, allowing disparate systems to seamlessly communicate over the network."
+    }
+  },
+  {
+    "id": 83,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Thuật ngữ 'suy hao' (attenuation) trong truyền dữ liệu có nghĩa là gì?",
+      "options": ["A. Time for a signal to reach its destination", "B. Loss of signal strength as distance increases", "C. Leakage of signals from one cable pair to another", "D. Strengthening of a signal by a networking device"],
+      "answer": "B. Loss of signal strength as distance increases",
+      "explanation": "Khi kéo cáp đồng hay cáp quang đi quá xa, năng lượng của tín hiệu sẽ bị yếu dần do điện trở và tán xạ. Sự suy giảm cường độ tín hiệu này gọi là Suy hao.",
+      "tip": "Khoảng cách (distance) càng xa thì tín hiệu mạng càng rớt thê thảm (loss of signal)."
+    },
+    "en": {
+      "question": "What does the term 'attenuation' mean in data communication?",
+      "options": ["A. Time for a signal to reach its destination", "B. Loss of signal strength as distance increases", "C. Leakage of signals from one cable pair to another", "D. Strengthening of a signal by a networking device"],
+      "answer": "B. Loss of signal strength as distance increases",
+      "explanation": "Attenuation refers to the natural degradation of a signal's amplitude as it travels across a physical medium over long distances."
+    }
+  },
+  {
+    "id": 84,
+    "topic": "Network Models & OSI",
+    "vi": {
+      "question": "Định dạng PDU nào được sử dụng khi Card mạng (NIC) của một host nhận được các bit từ môi trường truyền dẫn mạng?",
+      "options": ["A. Packet", "B. Frame", "C. Segment", "D. File"],
+      "answer": "B. Frame",
+      "explanation": "NIC hoạt động ở Tầng vật lý và Tầng Data Link (Layer 2). Khi nó nhận luồng Bits từ dây cáp, nó sẽ đóng gói ngược lại thành một Frame để kiểm tra địa chỉ MAC.",
+      "tip": "Môi trường cáp/NIC (Layer 2) luôn thao tác với PDU tên là Frame (Khung)."
+    },
+    "en": {
+      "question": "Which PDU format is used when bits are received from the network medium by the NIC of a host?",
+      "options": ["A. Packet", "B. Frame", "C. Segment", "D. File"],
+      "answer": "B. Frame",
+      "explanation": "The Network Interface Card (NIC) operates at Layer 2 and encapsulates bits received from the media into Frames."
+    }
+  },
+  {
+    "id": 85,
+    "topic": "IPv4 & IPv6 Addressing",
+    "vi": {
+      "question": "Phạm vi tiền tố địa chỉ nào được dành riêng cho IPv4 Multicast?",
+      "options": ["A. 240.0.0.0 - 254.255.255.255", "B. 169.254.0.0 - 169.254.255.255", "C. 127.0.0.0 - 127.255.255.255", "D. 224.0.0.0 - 239.255.255.255"],
+      "answer": "D. 224.0.0.0 - 239.255.255.255",
+      "explanation": "Lớp địa chỉ D (Class D) trong IPv4 từ 224.0.0.0 đến 239.255.255.255 được quy định dùng riêng cho các giao thức Multicast (gửi đa hướng).",
+      "tip": "Dải Multicast luôn bắt đầu bằng con số 224."
+    },
+    "en": {
+      "question": "Which address prefix range is reserved for IPv4 multicast?",
+      "options": ["A. 240.0.0.0 - 254.255.255.255", "B. 169.254.0.0 - 169.254.255.255", "C. 127.0.0.0 - 127.255.255.255", "D. 224.0.0.0 - 239.255.255.255"],
+      "answer": "D. 224.0.0.0 - 239.255.255.255",
+      "explanation": "IPv4 Class D addresses (224.0.0.0/4) are strictly reserved for multicast traffic."
+    }
+  },
+  {
+    "id": 86,
+    "topic": "Network Security & Services",
+    "vi": {
+      "question": "Quản trị viên mạng yêu cầu nhập tin nhắn biểu ngữ (banner) trên thiết bị Cisco. Cách nhanh nhất để kiểm tra xem banner đã được cấu hình đúng chưa là gì?",
+      "options": ["A. Enter CTRL-Z at the privileged mode prompt", "B. Reboot the device", "C. Exit privileged EXEC mode and press Enter", "D. Power cycle the device"],
+      "answer": "C. Exit privileged EXEC mode and press Enter",
+      "explanation": "Message of the Day (MOTD) banner hiển thị khi người dùng lần đầu tiên cố gắng đăng nhập vào router/switch. Do đó, bạn cần thoát hoàn toàn phiên làm việc hiện tại (logout/exit privileged EXEC) và nhấn Enter để xem màn hình chào đón.",
+      "tip": "Phải thoát ra ngoài cửa (Exit) thì mới nhìn thấy được tấm bảng hiệu Banner treo ở cửa."
+    },
+    "en": {
+      "question": "A new network administrator has been asked to enter a banner message on a Cisco device. What is the fastest way a network administrator could test whether the banner is properly configured?",
+      "options": ["A. Enter CTRL-Z at the privileged mode prompt", "B. Reboot the device", "C. Exit privileged EXEC mode and press Enter", "D. Power cycle the device"],
+      "answer": "C. Exit privileged EXEC mode and press Enter",
+      "explanation": "MOTD banners are displayed when logging into the router. Logging entirely out (exiting privileged EXEC) triggers the login prompt."
+    }
+  },
+  {
+    "id": 87,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Địa chỉ nào sau đây là địa chỉ MAC Multicast?",
+      "options": ["A. 01-00-5E-00-00-03", "B. 00-26-0F-4B-00-3E", "C. FF-FF-FF-FF-FF-FF", "D. 5C-26-0A-4B-19-3E"],
+      "answer": "A. 01-00-5E-00-00-03",
+      "explanation": "Mọi địa chỉ MAC Multicast dùng cho IPv4 đều có 24 bit (3 byte) đầu tiên được gán cứng là 01-00-5E.",
+      "tip": "Mẹo kinh điển: MAC Multicast của IPv4 luôn luôn, chắc chắn bắt đầu bằng 01-00-5E."
+    },
+    "en": {
+      "question": "Which is a multicast MAC address?",
+      "options": ["A. 01-00-5E-00-00-03", "B. 00-26-0F-4B-00-3E", "C. FF-FF-FF-FF-FF-FF", "D. 5C-26-0A-4B-19-3E"],
+      "answer": "A. 01-00-5E-00-00-03",
+      "explanation": "An IPv4 multicast MAC address always begins with the specific Organizationally Unique Identifier (OUI) 01-00-5E."
+    }
+  },
+  {
+    "id": 88,
+    "topic": "Routing & Subnetting",
+    "vi": {
+      "question": "Router sử dụng thông số nào để chọn đường đi đến đích khi có nhiều tuyến đường (routes) khả dụng?",
+      "options": ["A. The lower metric value that is associated with the destination network", "B. The higher gateway IP address", "C. The higher metric value", "D. The lower gateway IP address"],
+      "answer": "A. The lower metric value that is associated with the destination network",
+      "explanation": "Router đánh giá độ tốt của con đường bằng 'Metric' (giống như chi phí, khoảng cách). Con đường nào có giá trị Metric thấp nhất sẽ được coi là tốt nhất và được đưa vào bảng định tuyến.",
+      "tip": "Metric là giá vé. Đi xe khách bao giờ cũng chọn giá vé RẺ NHẤT (lower metric value)."
+    },
+    "en": {
+      "question": "Which parameter does the router use to choose the path to the destination when there are multiple routes available?",
+      "options": ["A. The lower metric value that is associated with the destination network", "B. The higher gateway IP address", "C. The higher metric value", "D. The lower gateway IP address"],
+      "answer": "A. The lower metric value that is associated with the destination network",
+      "explanation": "Metrics represent the 'cost' of a route. Routers always prefer the route with the lowest metric."
+    }
+  },
+  {
+    "id": 89,
+    "topic": "IPv4 & IPv6 Addressing",
+    "vi": {
+      "question": "Trường (field) nào trong IPv4 header được sử dụng để phát hiện việc dữ liệu trong header bị lỗi (corruption)?",
+      "options": ["A. Header checksum", "B. Source IPv4 address", "C. Protocol", "D. TTL"],
+      "answer": "A. Header checksum",
+      "explanation": "Trường Checksum tính toán một mã bảo mật dựa trên nội dung Header. Khi router nhận gói tin, nó tính lại mã này. Nếu mã sai khác, router biết header đã bị lỗi trên đường truyền và sẽ bỏ gói tin.",
+      "tip": "Cứ thấy nhắc đến bắt lỗi (corruption / error) là tìm chữ Checksum (IPv4 Header) hoặc CRC/FCS (Layer 2)."
+    },
+    "en": {
+      "question": "Which term describes a field in the IPv4 packet header used to detect corruption in the IPv4 header?",
+      "options": ["A. Header checksum", "B. Source IPv4 address", "C. Protocol", "D. TTL"],
+      "answer": "A. Header checksum",
+      "explanation": "The Header Checksum is used to ensure the integrity of the IPv4 header during transit."
+    }
+  },
+  {
+    "id": 90,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Thuật ngữ OSI Tầng Vật lý nào mô tả quá trình một sóng làm biến đổi một sóng khác?",
+      "options": ["A. IEEE", "B. EIA/TIA", "C. Bir", "D. Modulation"],
+      "answer": "D. Modulation",
+      "explanation": "Modulation (Điều chế tín hiệu) là kỹ thuật nhúng dữ liệu vào một sóng mang (carrier wave) bằng cách làm thay đổi biên độ, tần số hoặc pha của sóng mang đó (như sóng FM/AM trên radio).",
+      "tip": "Sóng biến đổi sóng (modifies wave) = Modulation (Điều chế sóng)."
+    },
+    "en": {
+      "question": "What OSI physical layer term describes the process by which one wave modifies another wave?",
+      "options": ["A. IEEE", "B. EIA/TIA", "C. Bir", "D. Modulation"],
+      "answer": "D. Modulation",
+      "explanation": "Modulation is the process of altering a carrier wave's properties (amplitude, frequency, phase) to encode digital information."
+    }
+  },
+  {
+    "id": 91,
+    "topic": "Network Security & Services",
+    "vi": {
+      "question": "Phát biểu nào mô tả đúng chức năng của giao thức ARP (Address Resolution Protocol)?",
+      "options": ["A. ARP is used to discover the MAC address of any host on the local network.", "B. ARP is used to discover the IP address of any host on a different network.", "C. ARP is used to discover the MAC address of any host on a different network.", "D. ARP is used to discover the IP address of any host on the local network."],
+      "answer": "A. ARP is used to discover the MAC address of any host on the local network.",
+      "explanation": "ARP là cuốn danh bạ nội bộ. Máy tính biết IP của hàng xóm, nó sẽ dùng ARP để hét lên hỏi: 'Ê, IP này là của cái MAC nào vậy?'",
+      "tip": "Mục tiêu tối cao của ARP: Lấy được địa chỉ vật lý (MAC address) trong CÙNG mạng nội bộ (local network)."
+    },
+    "en": {
+      "question": "What statement describes the function of the Address Resolution Protocol?",
+      "options": ["A. ARP is used to discover the MAC address of any host on the local network.", "B. ARP is used to discover the IP address of any host on a different network.", "C. ARP is used to discover the MAC address of any host on a different network.", "D. ARP is used to discover the IP address of any host on the local network."],
+      "answer": "A. ARP is used to discover the MAC address of any host on the local network.",
+      "explanation": "ARP maps a known IPv4 address to an unknown MAC address on the local segment."
+    }
+  },
+  {
+    "id": 92,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Vai trò chính của Tầng Vật lý (Physical layer) trong việc truyền dữ liệu trên mạng là gì?",
+      "options": ["A. Provide physical addressing to the devices", "B. Determine the path packets take through the network", "C. Create the signals that represent the bits in each frame on to the media", "D. Control data access to the media"],
+      "answer": "C. Create the signals that represent the bits in each frame on to the media",
+      "explanation": "Tầng vật lý là tầng dưới cùng. Công việc của nó thuần túy là 'thợ điện': nhận các chuỗi bit 0 1 và phóng tín hiệu điện (hoặc ánh sáng, wifi) nhịp nhàng lên dây cáp.",
+      "tip": "Vật lý là điện. Tạo ra tín hiệu (create signals) trên dây cáp (media)."
+    },
+    "en": {
+      "question": "What is a primary role of the Physical layer in transmitting data on the network?",
+      "options": ["A. Provide physical addressing to the devices", "B. Determine the path packets take through the network", "C. Create the signals that represent the bits in each frame on to the media", "D. Control data access to the media"],
+      "answer": "C. Create the signals that represent the bits in each frame on to the media",
+      "explanation": "The physical layer encodes bits from frames into electrical, optical, or radio signals."
+    }
+  },
+  {
+    "id": 93,
+    "topic": "Network Models & OSI",
+    "vi": {
+      "question": "Một kỹ thuật viên mạng đang làm việc trên mạng không dây tại một phòng khám. Người này vô tình cấu hình wifi khiến bệnh nhân có thể xem hồ sơ y tế của bệnh nhân khác. Đặc điểm mạng nào đã bị vi phạm?",
+      "options": ["A. Scalability", "B. Reliability", "C. Security", "D. Fault tolerance"],
+      "answer": "C. Security",
+      "explanation": "Bảo mật mạng (Security) bao gồm tính bảo mật (Confidentiality) - đảm bảo chỉ những người có thẩm quyền mới được truy cập dữ liệu nhạy cảm. Để lộ hồ sơ là lỗi bảo mật nghiêm trọng.",
+      "tip": "Đọc lén hồ sơ nhạy cảm = Mất an toàn, mất bảo mật (Security)."
+    },
+    "en": {
+      "question": "A networking technician is working on the wireless network at a medical clinic. The technician accidentally sets up the wireless network so that patients can see the medical records data of other patients. Which of the four network characteristics has been violated?",
+      "options": ["A. Scalability", "B. Reliability", "C. Security", "D. Fault tolerance"],
+      "answer": "C. Security",
+      "explanation": "Exposing private medical records violates the confidentiality principle of network security."
+    }
+  },
+  {
+    "id": 94,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Hành động nào sẽ xảy ra nếu một host nhận được một khung (frame) có địa chỉ MAC đích là FF:FF:FF:FF:FF:FF?",
+      "options": ["A. The host will process the frame.", "B. The host replies to the switch with its own IP address.", "C. The host forwards the frame to all other hosts.", "D. The host returns the frame to the switch."],
+      "answer": "A. The host will process the frame.",
+      "explanation": "Bất kỳ thiết bị nào cũng có 2 địa chỉ MAC nó phải nghe: MAC của chính nó, và MAC Broadcast (toàn F). Khi thấy toàn F, mọi máy tính đều mở cửa nhận thư để xử lý.",
+      "tip": "FF:FF... là Broadcast (loa phát thanh). Loa nói thì máy nào cũng phải nghe (process the frame)."
+    },
+    "en": {
+      "question": "What action will occur if a host receives a frame with a destination MAC address of FF:FF:FF:FF:FF:FF?",
+      "options": ["A. The host will process the frame.", "B. The host replies to the switch with its own IP address.", "C. The host forwards the frame to all other hosts.", "D. The host returns the frame to the switch."],
+      "answer": "A. The host will process the frame.",
+      "explanation": "A MAC address of all Fs is the Layer 2 broadcast address. Every NIC on the LAN must accept and process it."
+    }
+  },
+  {
+    "id": 95,
+    "topic": "IPv4 & IPv6 Addressing",
+    "vi": {
+      "question": "Đặc điểm của thông điệp Multicast là gì?",
+      "options": ["A. They are sent to a single destination.", "B. They are sent to all hosts on a network.", "C. They are sent to a select group of hosts.", "D. They must be acknowledged."],
+      "answer": "C. They are sent to a select group of hosts.",
+      "explanation": "Mạng có 3 cách truyền: Unicast (1 tới 1), Broadcast (1 tới tất cả), và Multicast (1 tới một NHÓM thiết bị cụ thể có đăng ký nhận).",
+      "tip": "Multicast = Truyền hình cáp. Ai đăng ký nhóm kênh đó (select group) thì mới nhận được tín hiệu."
+    },
+    "en": {
+      "question": "What is a characteristic of multicast messages?",
+      "options": ["A. They are sent to a single destination.", "B. They are sent to all hosts on a network.", "C. They are sent to a select group of hosts.", "D. They must be acknowledged."],
+      "answer": "C. They are sent to a select group of hosts.",
+      "explanation": "Multicast is a one-to-many communication method where traffic is sent only to a specific group of subscribed hosts."
+    }
+  },
+  {
+    "id": 96,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Phát biểu nào mô tả chế độ truyền tải dữ liệu Half-duplex?",
+      "options": ["A. Data flows in one direction only.", "B. Data flows in both directions at the same time.", "C. Data flows in one direction to many different destinations.", "D. Data flows in one direction at a time."],
+      "answer": "D. Data flows in one direction at a time.",
+      "explanation": "Half-duplex giống như bộ đàm (bộ đàm 2 chiều rưỡi): Dữ liệu đi được cả 2 hướng, nhưng TẠI MỘT THỜI ĐIỂM, chỉ có 1 người được nói, người kia phải nghe.",
+      "tip": "Half = Một nửa = Tại một thời điểm chỉ cho 1 chiều chạy (one direction at a time)."
+    },
+    "en": {
+      "question": "Which statement describes the half-duplex mode of data transmission?",
+      "options": ["A. Data flows in one direction only.", "B. Data flows in both directions at the same time.", "C. Data flows in one direction to many different destinations.", "D. Data flows in one direction at a time."],
+      "answer": "D. Data flows in one direction at a time.",
+      "explanation": "Half-duplex allows communication in both directions, but only one direction at a time (like a walkie-talkie)."
+    }
+  },
+  {
+    "id": 97,
+    "topic": "Routing & Subnetting",
+    "vi": {
+      "question": "Hai chức năng chính của một Router (Bộ định tuyến) là gì? (Chọn hai)",
+      "options": ["A. Packet forwarding", "B. Microsegmentation", "C. Domain name resolution", "D. Path selection", "E. Flow control"],
+      "answer": "A. Packet forwarding, D. Path selection",
+      "explanation": "Nhiệm vụ kiếm cơm của Router là 2 việc: Chọn đường đi tốt nhất tới đích (Path selection) và ném gói tin đi theo con đường đó (Packet forwarding).",
+      "tip": "Router = Tìm đường (Path selection) & Chuyển phát gói tin (Packet forwarding)."
+    },
+    "en": {
+      "question": "Which two functions are primary functions of a router? (Choose two.)",
+      "options": ["A. Packet forwarding", "B. Microsegmentation", "C. Domain name resolution", "D. Path selection", "E. Flow control"],
+      "answer": "A. Packet forwarding, D. Path selection",
+      "explanation": "Routers connect networks by determining the best path to a destination (path selection) and sending packets along that path (forwarding)."
+    }
+  },
+  {
+    "id": 98,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Điều gì xảy ra khi Switch nhận một khung và giá trị CRC tính toán được khác với giá trị nằm trong trường FCS?",
+      "options": ["A. The switch places the new CRC value in the FCS field and forwards.", "B. The switch notifies the source of the bad frame.", "C. The switch drops the frame.", "D. The switch floods the frame."],
+      "answer": "C. The switch drops the frame.",
+      "explanation": "Lỗi mã CRC đồng nghĩa với việc kiện hàng dữ liệu đã bị bể nát trên đường đi. Switch không rảnh để báo lỗi, nó sẽ ném thẳng gói tin đó vào sọt rác (Drop).",
+      "tip": "Khác mã kiểm tra (sai CRC) = Khung bị hỏng = Vứt bỏ (Drop) ngay lập tức."
+    },
+    "en": {
+      "question": "What happens when a switch receives a frame and the calculated CRC value is different than the value that is in the FCS field?",
+      "options": ["A. The switch places the new CRC value in the FCS field and forwards.", "B. The switch notifies the source of the bad frame.", "C. The switch drops the frame.", "D. The switch floods the frame."],
+      "answer": "C. The switch drops the frame.",
+      "explanation": "If the CRC doesn't match the FCS, the frame is corrupted. The switch silently discards corrupted frames."
+    }
+  },
+  {
+    "id": 99,
+    "topic": "Network Security & Services",
+    "vi": {
+      "question": "Loại mối đe dọa nào được mô tả khi một kẻ tấn công mạo danh người khác để lấy thông tin tín dụng về người đó?",
+      "options": ["A. Data loss or manipulation", "B. Disruption of service", "C. Identity theft", "D. Information theft"],
+      "answer": "C. Identity theft",
+      "explanation": "Mạo danh (impersonate) người khác, xài tên tuổi của họ để lừa đảo, vay nợ, lấy tín dụng là hành vi Trộm cắp danh tính (Identity theft).",
+      "tip": "Mạo danh người khác (impersonates another person) = Đánh cắp danh tính (Identity theft)."
+    },
+    "en": {
+      "question": "What kind of threat is described when a threat actor impersonates another person to obtain credit information about that person?",
+      "options": ["A. Data loss or manipulation", "B. Disruption of service", "C. Identity theft", "D. Information theft"],
+      "answer": "C. Identity theft",
+      "explanation": "Using stolen credentials or personal details to act as someone else is defined as identity theft."
+    }
+  },
+  {
+    "id": 100,
+    "topic": "Network Models & OSI",
+    "vi": {
+      "question": "Tên gọi nào sau đây chỉ TẤT CẢ các máy tính kết nối mạng có tham gia gửi và nhận dữ liệu trực tiếp trong giao tiếp mạng?",
+      "options": ["A. Servers", "B. Intermediary devices", "C. Hosts", "D. Media"],
+      "answer": "C. Hosts",
+      "explanation": "Trong mạng máy tính, bất kỳ thiết bị đầu cuối nào (PC, điện thoại, máy in, server) có địa chỉ IP và tham gia gửi/nhận dữ liệu đều được gọi chung là Host (Máy chủ lưu trữ / Máy trạm).",
+      "tip": "Người ở hai đầu đoạn hội thoại (điện thoại, PC, Server) được gọi chung là Hosts / End devices."
+    },
+    "en": {
+      "question": "Which of the following is the name for all computers connected to a network that participate in sending and receiving data directly in network communication?",
+      "options": ["A. Servers", "B. Intermediary devices", "C. Hosts", "D. Media"],
+      "answer": "C. Hosts",
+      "explanation": "Any end device (like a PC, server, or smartphone) that communicates directly on a network is broadly termed a 'host'."
+    }
   }
 ];
 
