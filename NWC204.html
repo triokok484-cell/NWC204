@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NWC204 - Networking Master Review</title>
+    <style>
+        :root {
+            --primary-color: #0056b3; /* Đổi sang màu xanh đặc trưng của Cisco/Networking */
+            --primary-light: #e7f1ff;
+            --secondary-color: #28a745;
+            --danger-color: #dc3545;
+            --light-bg: #f8f9fa;
+            --dark-text: #333;
+            --border-radius: 12px;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+        
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* HEADER */
+        .top-bar {
+            background: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            flex-shrink: 0;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f0f0f0;
+            padding: 4px;
+            border-radius: 25px;
+        }
+
+        .tab-btn {
+            padding: 8px 20px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 20px;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 86, 179, 0.3);
+        }
+
+        .lang-btn {
+            background: white;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 5px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* LAYOUT */
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+            padding-bottom: 100px;
+        }
+
+        /* CONTROLS */
+        .controls-group {
+            background: #fff;
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            flex-wrap: wrap;
+        }
+        .control-item { display: flex; align-items: center; }
+        .control-item select {
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #fafafa;
+        }
+        .control-item label {
+            font-weight: 600;
+            margin-right: 8px;
+            font-size: 14px;
+        }
+
+        /* FLASHCARD */
+        .flashcard-wrapper {
+            display: flex;
+            justify-content: center;
+            perspective: 1000px;
+            margin-bottom: 20px;
+        }
+        .flashcard {
+            width: 100%;
+            max-width: 600px;
+            height: 350px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+        .flashcard.flipped { transform: rotateY(180deg); }
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: white;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 2px solid var(--primary-light);
+            overflow-y: auto;
+        }
+        .card-back { transform: rotateY(180deg); background: #fdfdfe; }
+
+        /* QUIZ */
+        .question-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        .options-list { list-style: none; padding: 0; }
+        .options-list li {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px 15px 15px 50px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+        }
+        .options-list li::before {
+            content: attr(data-label);
+            position: absolute; left: 15px; top: 50%;
+            transform: translateY(-50%);
+            width: 24px; height: 24px;
+            background: #f0f0f0; border-radius: 50%;
+            text-align: center; line-height: 24px; font-weight: bold;
+        }
+        .options-list li.correct { border-color: var(--secondary-color); background: #d4edda; }
+        .options-list li.wrong { border-color: var(--danger-color); background: #f8d7da; }
+
+        /* BUTTONS */
+        .start-btn, .nav-btn, .submit-btn {
+            padding: 12px 30px; border-radius: 25px; border: none;
+            font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        .start-btn { background: var(--primary-color); color: white; }
+        .submit-btn { background: var(--secondary-color); color: white; }
+        .nav-btn.secondary { background: #e0e0e0; color: #333; }
+
+        /* SIDEBAR */
+        .quiz-sidebar {
+            width: 250px; background: white; border-left: 1px solid #eee;
+            padding: 20px; overflow-y: auto;
+        }
+        .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        .map-btn {
+            width: 100%; aspect-ratio: 1; border: none; border-radius: 5px;
+            background: #f0f0f0; cursor: pointer; font-weight: bold;
+        }
+        .map-btn.active { border: 2px solid var(--primary-color); }
+        .map-btn.correct { background: var(--secondary-color); color: white; }
+        .map-btn.wrong { background: var(--danger-color); color: white; }
+
+        .hidden { display: none !important; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+        pre { background: #2d2d2d; color: #fff; padding: 10px; border-radius: 5px; text-align: left; width: 100%; }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('flashcard')">📚 Flashcards</button>
+            <button class="tab-btn" onclick="switchTab('quiz')">📝 Quiz (Practice)</button>
+        </div>
+        <div style="font-weight: bold; color: var(--primary-color);">NWC204 - NETWORK FUNDAMENTALS</div>
+        <button class="lang-btn" onclick="toggleLanguage()">🌐 VN / EN</button>
+    </div>
+
+    <div class="main-container">
+        <div class="content-area">
+
+            <!-- FLASHCARD VIEW -->
+            <div id="flashcard-view">
+                <div class="controls-group">
+                    <div class="control-item">
+                        <label id="lbl-fc-topic">Topic:</label>
+                        <select id="fc-topic-select" onchange="filterFlashcards()"></select>
+                    </div>
+                    <div class="control-item">
+                        <label id="lbl-fc-shuffle">Shuffle Options:</label>
+                        <input type="checkbox" id="fc-shuffle-check" onchange="renderFlashcard()">
+                    </div>
+                </div>
+
+                <div class="flashcard-wrapper">
+                    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                        <div class="card-face card-front">
+                            <small id="fc-flip-hint" style="color: #888; margin-bottom: 10px;">Click to flip</small>
+                            <div id="fc-content" style="width: 100%;"></div>
+                        </div>
+                        <div class="card-face card-back">
+                            <h3 style="color: var(--secondary-color);" id="txt-fc-ans">Answer</h3>
+                            <div id="fc-answer" style="font-size: 20px; font-weight: bold; margin-bottom: 15px;"></div>
+                            <div style="text-align: left; width: 100%;">
+                                <strong id="txt-fc-exp">Explanation:</strong>
+                                <div id="fc-explanation"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display:flex; justify-content:center; gap:20px;">
+                    <button class="nav-btn secondary" onclick="navFlashcard(-1)" id="btn-fc-prev">Prev</button>
+                    <span id="fc-counter" style="align-self:center; font-weight:bold;">0 / 0</span>
+                    <button class="nav-btn" onclick="navFlashcard(1)" id="btn-fc-next">Next</button>
+                </div>
+            </div>
+
+            <!-- QUIZ SETUP -->
+            <div id="quiz-setup" class="hidden" style="text-align:center; padding: 40px; background: white; border-radius: 12px;">
+                <h2 id="txt-setup-title">Practice Config</h2>
+                <div class="control-item" style="justify-content:center; margin-bottom: 20px;">
+                    <label id="lbl-quiz-topic">Topic:</label>
+                    <select id="quiz-topic-select" onchange="updateMaxQuestions()"></select>
+                </div>
+                <p><span id="txt-total">Total available:</span> <span id="total-qs" style="font-weight:bold;">0</span></p>
+                <div style="margin: 20px 0;">
+                    <label id="txt-q-count">Questions to do:</label><br>
+                    <input type="number" id="quiz-count-input" value="10" style="padding:10px; width:80px; text-align:center; font-size:18px;">
+                </div>
+                <button class="start-btn" onclick="startQuiz()" id="txt-start">Start 🚀</button>
+            </div>
+
+            <!-- QUIZ ACTIVE -->
+            <div id="quiz-active" class="hidden">
+                <div class="question-card">
+                    <div class="flex-between" style="margin-bottom:15px; color:#666;">
+                        <span id="quiz-progress">Question 1/10</span>
+                        <span id="txt-doing">NWC204 Training</span>
+                    </div>
+                    <div id="q-content"></div>
+                    <ul class="options-list" id="q-options"></ul>
+                    <div id="q-explanation" style="margin-top:20px; padding:15px; border-radius:8px; display:none;"></div>
+                </div>
+                <div class="flex-between">
+                    <button class="nav-btn secondary" onclick="navQuiz(-1)" id="btn-prev">Prev</button>
+                    <button class="submit-btn" onclick="finishQuiz()" id="btn-submit">Submit</button>
+                    <button class="nav-btn" onclick="navQuiz(1)" id="btn-next">Next</button>
+                </div>
+            </div>
+
+            <!-- RESULT -->
+            <div id="quiz-result" class="hidden" style="text-align:center;">
+                <div style="background:white; padding:30px; border-radius:12px; margin-bottom:20px;">
+                    <h2 id="txt-result-title">Result</h2>
+                    <div id="score-val" style="font-size:48px; font-weight:bold; color:var(--primary-color);">0/0</div>
+                    <button class="start-btn" onclick="resetQuiz()" style="margin-top:15px;">Restart 🔄</button>
+                </div>
+                <div id="review-list"></div>
+            </div>
+
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="quiz-sidebar hidden" id="quiz-sidebar">
+            <div style="font-weight:bold; margin-bottom:15px;" id="txt-map">Question Map</div>
+            <div class="question-grid" id="map-grid"></div>
+        </div>
+    </div>
+
+<script>
+    // 1. DỮ LIỆU CÂU HỎI (JSON sẽ được bạn thêm vào đây)
+    // Cấu trúc mẫu: { id: 1, topic: "OSI Model", vi: { question: "", options: [], answer: "", explanation: "" }, en: { question: "", options: [], answer: "", explanation: "" } }
+    const quizData = [
+        
+  {
+    "id": 1,
+    "topic": "Transport & Application Layers",
+    "vi": {
+      "question": "Hai ứng dụng nào sử dụng giao thức truyền tải UDP?",
+      "options": ["A. FTP", "B. HTTP", "C. ICMP", "D. TFTP", "E. VoIP"],
+      "answer": "D. TFTP, E. VoIP",
+      "explanation": "UDP là giao thức không hướng kết nối, tốc độ nhanh, phù hợp cho VoIP (truyền tiếng nói thời gian thực) và TFTP (truyền file đơn giản).",
+      "tip": "Mẹo: UDP = 'U Don't Plan' (Gửi đại không cần sắp xếp). Cứ cái gì cần NHANH, chấp nhận mất mát một chút (như tiếng nói rè, mất 1-2 khung hình) thì chọn UDP."
+    },
+    "en": {
+      "question": "Which two applications would use the UDP transport layer protocol? (Choose two.)",
+      "options": ["A. FTP", "B. HTTP", "C. ICMP", "D. TFTP", "E. VoIP"],
+      "answer": "D. TFTP, E. VoIP",
+      "explanation": "UDP is connectionless and low-overhead, ideal for real-time traffic like VoIP and simple transfers like TFTP."
+    }
+  },
+  {
+    "id": 2,
+    "topic": "Network Security & Services",
+    "vi": {
+      "question": "Khi router có thay đổi cấu hình chưa lưu, lệnh nào dùng để hủy bỏ các thay đổi đó và quay lại cấu hình trong NVRAM?",
+      "options": ["A. Copy startup-config running-config", "B. Reload mà không lưu cấu hình", "C. Delete vlan.dat", "D. Khởi động lại phần mềm giả lập"],
+      "answer": "B. Reload mà không lưu cấu hình",
+      "explanation": "Lệnh 'reload' sẽ khởi động lại thiết bị. Nếu bạn chưa gõ 'copy running startup', router sẽ nạp lại file cũ trong NVRAM.",
+      "tip": "Mẹo: NVRAM giống như 'Save game'. Nếu bạn chơi lỗi mà chưa Save, cứ thoát ra vào lại (Reload) là game quay về lúc chưa lỗi."
+    },
+    "en": {
+      "question": "What action can the technician take to discard the changes and work with the file in NVRAM?",
+      "options": ["A. Issue the copy startup-config running-config", "B. Issue the reload command without saving", "C. Delete the vlan.dat", "D. Close and reopen terminal software"],
+      "answer": "B. Issue the reload command without saving"
+    }
+  },
+  {
+    "id": 3,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Tính chất nào của ARP cho phép các máy tính trên mạng LAN gửi dữ liệu ra mạng ngoài (remote networks)?",
+      "options": ["A. Tìm địa chỉ MAC của Default Gateway", "B. Bảng MAC của Switch giống bảng ARP", "C. Địa chỉ MAC nguồn nằm trong header", "D. Địa chỉ đích là FF-FF-FF-FF-FF-FF"],
+      "answer": "A. Tìm địa chỉ MAC của Default Gateway",
+      "explanation": "Để ra ngoài LAN, gói tin phải gửi đến Router (Default Gateway). ARP giúp lấy MAC của Router đó.",
+      "tip": "Phân biệt: Local traffic = tìm MAC của bạn. Remote traffic = tìm MAC của ông bảo vệ (Gateway). Không có MAC của Gateway thì không ra khỏi cửa được."
+    },
+    "en": {
+      "question": "What property of ARP allows hosts on a LAN to send traffic to remote networks?",
+      "options": ["A. Learn the MAC address of the default gateway", "B. Switch MAC table matches ARP table", "C. Source MAC in header", "D. Destination MAC FF-FF-FF-FF-FF-FF"],
+      "answer": "A. Learn the MAC address of the default gateway"
+    }
+  },
+  {
+    "id": 4,
+    "topic": "Transport & Application Layers",
+    "vi": {
+      "question": "Cơ chế nào của tầng Transport đảm bảo thiết lập phiên làm việc (session establishment)?",
+      "options": ["A. TCP Port Number", "B. UDP Sequence Number", "C. UDP ACK flag", "D. TCP 3-way handshake"],
+      "answer": "D. TCP 3-way handshake",
+      "explanation": "Bắt tay 3 bước (SYN, SYN-ACK, ACK) chỉ có ở TCP để đảm bảo hai bên sẵn sàng trước khi truyền dữ liệu.",
+      "tip": "Mẹo: TCP là giao thức 'lịch sự'. Trước khi nói chuyện phải: Chào bạn (SYN) -> Chào lại (SYN-ACK) -> Xác nhận đã nghe (ACK)."
+    },
+    "en": {
+      "question": "Which transport layer feature is used to guarantee session establishment?",
+      "options": ["A. TCP port number", "B. UDP sequence number", "C. UDP ACK flag", "D. TCP 3-way handshake"],
+      "answer": "D. TCP 3-way handshake"
+    }
+  },
+  {
+    "id": 5,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Hành động nào xảy ra nếu Switch nhận được một Frame và địa chỉ MAC nguồn đã có sẵn trong bảng MAC?",
+      "options": ["A. Chia sẻ bảng MAC với switch khác", "B. Không chuyển tiếp frame", "C. Làm mới bộ đếm thời gian (timer) của entry đó", "D. Gửi frame tới router"],
+      "answer": "C. Làm mới bộ đếm thời gian (timer) của entry đó",
+      "explanation": "Mỗi dòng trong bảng MAC có thời gian tồn tại (thường 300s). Nếu MAC đó xuất hiện lại, Switch hiểu thiết bị vẫn đang online và reset đồng hồ về 0.",
+      "tip": "Mẹo: Giống như điểm danh. Bạn có mặt thì thầy giáo đánh dấu xác nhận bạn vẫn đang ở trong lớp, không cần ghi tên mới."
+    },
+    "en": {
+      "question": "What action will occur if a switch receives a frame and does have the source MAC address in the MAC table?",
+      "options": ["A. Shares table with others", "B. Does not forward", "C. Refreshes the timer on that entry", "D. Sends to router"],
+      "answer": "C. Refreshes the timer on that entry"
+    }
+  },
+  {
+    "id": 6,
+    "topic": "Routing & Subnetting",
+    "vi": {
+      "question": "Subnet mask nào phù hợp cho 3 mạng con: A (10 máy), B (8 máy), C (2 máy)?",
+      "options": ["A. 255.255.255.0", "B. 255.255.255.240", "C. 255.255.255.252", "D. 255.255.255.248"],
+      "answer": "B. 255.255.255.240",
+      "explanation": "Mạng lớn nhất cần 10 địa chỉ. 2^4 = 16 (trừ 2 còn 14). Vậy mượn 4 bit host. Mask /28 là .240.",
+      "tip": "Mẹo tính nhanh: Lấy số máy + 2 (Network & Broadcast). Chọn lũy thừa của 2 lớn hơn gần nhất. Ở đây 10+2=12, chọn 16. 2^(32-28)=16 -> Chọn /28 (.240)."
+    },
+    "en": {
+      "question": "What single subnet mask would be appropriate for subnets: A (10), B (8), C (2)?",
+      "options": ["A. 255.255.255.0", "B. 255.255.255.240", "C. 255.255.255.252", "D. 255.255.255.248"],
+      "answer": "B. 255.255.255.240"
+    }
+  },
+  {
+    "id": 7,
+    "topic": "Transport & Application Layers",
+    "vi": {
+      "question": "Yếu tố nào quyết định kích thước cửa sổ (Window Size) của TCP?",
+      "options": ["A. Lượng dữ liệu cần gửi", "B. Khả năng gửi của nguồn", "C. Lượng dữ liệu đích có thể xử lý tại một thời điểm", "D. Số lượng dịch vụ trong segment"],
+      "answer": "C. Lượng dữ liệu đích có thể xử lý tại một thời điểm",
+      "explanation": "TCP Window Size dùng để điều khiển lưu lượng (Flow Control) dựa trên bộ đệm còn trống của người nhận.",
+      "tip": "Mẹo: Window = 'Cái mồm' của người ăn. Người ăn (đích) bảo 'tôi chỉ nhai được 3 miếng thôi' thì người bón (nguồn) chỉ được đưa 3 miếng."
+    },
+    "en": {
+      "question": "Which factor determines TCP window size?",
+      "options": ["A. Amount of data to transmit", "B. Source capability", "C. Amount of data the destination can process", "D. Number of services"],
+      "answer": "C. Amount of data the destination can process"
+    }
+  },
+  {
+    "id": 8,
+    "topic": "IPv4 & IPv6 Addressing",
+    "vi": {
+      "question": "Subnet nào chứa địa chỉ 192.168.1.96 như một địa chỉ host sử dụng được?",
+      "options": ["A. 192.168.1.64/26", "B. 192.168.1.64/29", "C. 192.168.1.32/28", "D. 192.168.1.32/27"],
+      "answer": "A. 192.168.1.64/26",
+      "explanation": "/26 có bước nhảy là 64. Các mạng là .0, .64, .128. Mạng .64 có host từ .65 đến .126. Vậy .96 nằm trong đây.",
+      "tip": "Cẩn thận: Ở câu D /27 bước nhảy là 32. Các mạng là .0, .32, .64, .96. Vậy .96 là địa chỉ MẠNG (Network ID), không phải host."
+    },
+    "en": {
+      "question": "Which subnet would include the address 192.168.1.96 as a usable host address?",
+      "options": ["A. 192.168.1.64/26", "B. 192.168.1.64/29", "C. 192.168.1.32/28", "D. 192.168.1.32/27"],
+      "answer": "A. 192.168.1.64/26"
+    }
+  },
+  {
+    "id": 9,
+    "topic": "IPv4 & IPv6 Addressing",
+    "vi": {
+      "question": "Tiền tố (Prefix) nào tương ứng với subnet mask 255.255.255.240?",
+      "options": ["A. /27", "B. /26", "C. /28", "D. /25"],
+      "answer": "C. /28",
+      "explanation": "255.255.255 (24 bit) + 240 (11110000 = 4 bit) = 28 bit.",
+      "tip": "Mẹo thuộc lòng: 128=/25, 192=/26, 224=/27, 240=/28, 248=/29, 252=/30."
+    },
+    "en": {
+      "question": "What is the prefix length notation for the subnet mask 255.255.255.240?",
+      "options": ["A. /27", "B. /26", "C. /28", "D. /25"],
+      "answer": "C. /28"
+    }
+  },
+  {
+    "id": 10,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Thiết bị Layer 2 kiểm tra thông tin gì trong Ethernet Frame để chuyển tiếp dữ liệu?",
+      "options": ["A. IP đích", "B. MAC nguồn", "C. IP nguồn", "D. MAC đích"],
+      "answer": "D. MAC đích",
+      "explanation": "Switch (Layer 2) nhìn vào Destination MAC để biết phải đẩy frame ra cổng nào.",
+      "tip": "Mẹo: Tầng 2 (Switch) dùng MAC. Tầng 3 (Router) dùng IP. Giống như chuyển phát nhanh, người ta nhìn địa chỉ nhà (MAC) chứ chưa cần biết tên bạn là gì (IP)."
+    },
+    "en": {
+      "question": "What important information is examined in the Ethernet frame header by a Layer 2 device to forward data?",
+      "options": ["A. Destination IP", "B. Source MAC", "C. Source IP", "D. Destination MAC"],
+      "answer": "D. Destination MAC"
+    }
+  },
+  {
+    "id": 11,
+    "topic": "IPv4 & IPv6 Addressing",
+    "vi": {
+      "question": "Có bao nhiêu địa chỉ host khả dụng trong mạng có mask /28?",
+      "options": ["A. 256", "B. 14", "C. 62", "D. 30"],
+      "answer": "B. 14",
+      "explanation": "/28 có 32-28 = 4 bit host. 2^4 = 16. Trừ đi Network và Broadcast còn 14.",
+      "tip": "Mẹo: Công thức host luôn là 2^n - 2. Nhớ các mốc: /30=2, /29=6, /28=14, /27=30, /26=62, /24=254."
+    },
+    "en": {
+      "question": "What is the usable number of host IP addresses on a network that has a /28 mask?",
+      "options": ["A. 256", "B. 14", "C. 62", "D. 30"],
+      "answer": "B. 14"
+    }
+  },
+  {
+    "id": 12,
+    "topic": "Network Models & OSI",
+    "vi": {
+      "question": "Mạng cung cấp quyền truy cập an toàn cho nhà cung cấp, khách hàng và đối tác được gọi là gì?",
+      "options": ["A. Intranet", "B. Extranet", "C. Internet", "D. Extended"],
+      "answer": "B. Extranet",
+      "explanation": "Intranet = nội bộ. Extranet = mở rộng cho đối tác tin cậy. Internet = công cộng toàn cầu.",
+      "tip": "Mẹo: 'Extra' là cộng thêm. Extranet là Intranet cộng thêm các ông 'hàng xóm' đối tác thân thiết."
+    },
+    "en": {
+      "question": "Which term refers to a network that provides secure access to corporate offices by suppliers, customers and collaborators?",
+      "options": ["A. intranet", "B. extranet", "C. Internet", "D. extended"],
+      "answer": "B. extranet"
+    }
+  },
+  {
+    "id": 13,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Kiểu truyền thông nào không cần phân xử môi trường (media arbitration) ở tầng Data Link?",
+      "options": ["A. Controlled access", "B. Full-duplex", "C. Half-duplex", "D. Deterministic"],
+      "answer": "B. Full-duplex",
+      "explanation": "Trong Full-duplex, hai bên gửi và nhận trên hai kênh riêng biệt, không bao giờ đụng độ (collision) nên không cần phân xử.",
+      "tip": "Mẹo: Full-duplex giống đường 2 chiều có dải phân cách. Cứ chạy thôi không sợ đâm nhau. Half-duplex là đường làng hẹp, phải nhìn xem có ai đi ngược chiều không mới dám đi."
+    },
+    "en": {
+      "question": "Which media communication type does not require media arbitration in the data link layer?",
+      "options": ["A. controlled access", "B. full-duplex", "C. half-duplex", "D. deterministic"],
+      "answer": "B. full-duplex"
+    }
+  },
+  {
+    "id": 14,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Đặc điểm của thông điệp Multicast là gì?",
+      "options": ["A. Gửi đến 1 đích duy nhất", "B. Gửi đến tất cả host", "C. Gửi đến một nhóm host được chọn", "D. Phải được xác nhận (ACK)"],
+      "answer": "C. Gửi đến một nhóm host được chọn",
+      "explanation": "Unicast = 1 to 1. Broadcast = 1 to All. Multicast = 1 to Group.",
+      "tip": "Mẹo: Multicast giống như nhắn tin vào nhóm Zalo. Chỉ những ai trong nhóm mới nhận được, người ngoài không nhận được."
+    },
+    "en": {
+      "question": "What is a characteristic of multicast messages?",
+      "options": ["A. They are sent to a single destination.", "B. They are sent to all hosts on a network.", "C. They are sent to a select group of hosts", "D. They must be acknowledged."],
+      "answer": "C. They are sent to a select group of hosts"
+    }
+  },
+  {
+    "id": 15,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Điều gì xảy ra nếu host nhận được frame có MAC đích là FF-FF-FF-FF-FF-FF?",
+      "options": ["A. Host sẽ xử lý frame đó", "B. Host phản hồi IP của mình", "C. Host chuyển tiếp cho host khác", "D. Host trả lại switch"],
+      "answer": "A. Host sẽ xử lý frame đó",
+      "explanation": "Đây là địa chỉ Broadcast. Mọi thiết bị nhận được đều phải mở ra xem nội dung bên trong là gì.",
+      "tip": "Mẹo: MAC toàn chữ F là 'Loa phường'. Loa phường phát thì ai cũng phải nghe."
+    },
+    "en": {
+      "question": "What action will occur if a host receives a frame with a destination MAC address of FF FF FF FF FF FF?",
+      "options": ["A. The host will process the frame.", "B. The host replies to the switch with its own IP address.", "C. The host forwards the frame to all other hosts", "D. The host returns the frame to the switch."],
+      "answer": "A. The host will process the frame."
+    }
+  },
+  {
+    "id": 16,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Phần Trailer của Data-link frame chứa thông tin gì?",
+      "options": ["A. Dữ liệu", "B. Địa chỉ logic", "C. Kiểm lỗi (Error detection)", "D. Địa chỉ vật lý"],
+      "answer": "C. Kiểm lỗi (Error detection)",
+      "explanation": "Trailer thường chứa trường FCS (Frame Check Sequence) dùng thuật toán CRC để kiểm tra xem frame có bị hỏng trong lúc truyền không.",
+      "tip": "Mẹo: Header là 'Đầu', Trailer là 'Đuôi'. Ở đuôi luôn có con dấu 'đã kiểm định' (kiểm lỗi)."
+    },
+    "en": {
+      "question": "What is contained in the trailer of a data-link frame?",
+      "options": ["A data", "B. logical address", "C. error detection", "D. physical address"],
+      "answer": "C. error detection"
+    }
+  },
+  {
+    "id": 17,
+    "topic": "Network Models & OSI",
+    "vi": {
+      "question": "Một kỹ thuật viên vô tình để bệnh nhân thấy hồ sơ y tế của người khác. Đặc điểm mạng nào bị vi phạm?",
+      "options": ["A. Scalability", "B. Reliability", "C. Security", "D. Fault tolerance"],
+      "answer": "C. Security",
+      "explanation": "Bảo mật (Security) bao gồm tính bảo mật (Confidentiality) - đảm bảo chỉ người có quyền mới được xem dữ liệu.",
+      "tip": "Mẹo: Lộ dữ liệu = Mất an ninh (Security). Mạng sập = Mất khả năng chịu lỗi (Fault tolerance)."
+    },
+    "en": {
+      "question": "A technician accidentally sets up the wireless network so that patients can see medical records of other patients. Which characteristic has been violated?",
+      "options": ["A. scalability", "B. reliability", "C. security", "D. fault tolerance"],
+      "answer": "C. security"
+    }
+  },
+  {
+    "id": 18,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Vai trò chính của tầng Vật lý (Physical) là gì?",
+      "options": ["A. Cung cấp địa chỉ vật lý", "B. Quyết định đường đi của gói tin", "C. Tạo tín hiệu điện/quang đại diện cho các bit", "D. Kiểm soát truy cập môi trường truyền dẫn"],
+      "answer": "C. Tạo tín hiệu điện/quang đại diện cho các bit",
+      "explanation": "Tầng 1 (Physical) chỉ quan tâm đến việc biến bit (0,1) thành điện áp, ánh sáng hoặc sóng vô tuyến.",
+      "tip": "Mẹo: Tầng 1 = 'Thợ điện'. Chỉ quan tâm dây nhợ, tín hiệu, không quan tâm nội dung bức thư."
+    },
+    "en": {
+      "question": "What is a primary role of the Physical layer in transmitting data on the network?",
+      "options": ["A. provide physical addressing", "B. determine the path", "C. create the signals that represent the bits", "D. control data access"],
+      "answer": "C. create the signals that represent the bits"
+    }
+  },
+  {
+    "id": 19,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Chức năng của giao thức ARP là gì?",
+      "options": ["A. Tìm địa chỉ MAC của host trong mạng nội bộ", "B. Tìm IP của host mạng khác", "C. Tìm MAC của host mạng khác", "D. Tìm IP của host trong mạng nội bộ"],
+      "answer": "A. Tìm địa chỉ MAC của host trong mạng nội bộ",
+      "explanation": "ARP ánh xạ từ địa chỉ IP (đã biết) sang địa chỉ MAC (chưa biết) trong cùng một mạng LAN.",
+      "tip": "Mẹo: ARP = 'Hỏi tên'. Tôi biết số nhà (IP), tôi gào lên hỏi 'Ai là số nhà này cho tôi xin cái tên (MAC)'."
+    },
+    "en": {
+      "question": "What statement describes the function of the Address Resolution Protocol?",
+      "options": ["A. ARP is used to discover the MAC address of any host on the local network.", "B. ARP is used to discover the IP address of any host on a different network.", "C. ARP is used to discover the MAC address of any host on a different network", "D. ARP is used to discover the IP address of any host on the local network"],
+      "answer": "A. ARP is used to discover the MAC address of any host on the local network."
+    }
+  },
+  {
+    "id": 20,
+    "topic": "IPv4 & IPv6 Addressing",
+    "vi": {
+      "question": "Địa chỉ IPv4 nào được host dùng để ping giao diện loopback?",
+      "options": ["A. 126.0.0.1", "B. 126.0.0.0", "C. 127.0.0.1", "D. 127.0.0.0"],
+      "answer": "C. 127.0.0.1",
+      "explanation": "Dải 127.0.0.0/8 được dành riêng cho loopback. Phổ biến nhất là 127.0.0.1.",
+      "tip": "Mẹo: Ping 127.0.0.1 là tự soi gương xem mặt mình có sạch không (kiểm tra card mạng và giao thức TCP/IP trên máy mình)."
+    },
+    "en": {
+      "question": "Which IPv4 address can a host use to ping the loopback interface?",
+      "options": ["A. 126.0.0.1", "B. 126.0.0.0", "C. 127.0.0.1", "D. 127.0.0.0"],
+      "answer": "C. 127.0.0.1"
+    }
+  },
+  {
+    "id": 21,
+    "topic": "IPv4 & IPv6 Addressing",
+    "vi": {
+      "question": "Có bao nhiêu địa chỉ host trong mạng 172.16.128.0 mask 255.255.254.0?",
+      "options": ["A. 1024", "B. 2046", "C. 1022", "D. 510"],
+      "answer": "D. 510",
+      "explanation": "Mask .254.0 tương đương /23. Số bit host = 32 - 23 = 9 bit. 2^9 - 2 = 512 - 2 = 510.",
+      "tip": "Mẹo: Nhớ mask /24 là 254 host. /23 (mượn thêm 1 bit mạng thành host) thì gấp đôi /24 lên: 256*2 - 2 = 510."
+    },
+    "en": {
+      "question": "How many host addresses are available on the network 172.16.128.0 with a subnet mask of 255.255.254.0?",
+      "options": ["A. 1024", "B. 2046", "C. 1022", "D. 510"],
+      "answer": "D. 510"
+    }
+  },
+  {
+    "id": 22,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Tại sao một kết nối quang đơn lẻ thường dùng 2 sợi cáp quang?",
+      "options": ["A. Để truyền đi xa hơn", "B. Để chống nhiễu chéo", "C. Để tăng tốc độ", "D. Để hỗ trợ Full-duplex"],
+      "answer": "D. Để hỗ trợ Full-duplex",
+      "explanation": "Một sợi dùng để truyền (TX), một sợi dùng để nhận (RX). Điều này cho phép truyền nhận đồng thời (Full-duplex).",
+      "tip": "Mẹo: Giống như đường sắt cao tốc. Phải có 2 làn tàu mới chạy ngược chiều nhau cùng lúc được."
+    },
+    "en": {
+      "question": "Why are two strands of fiber used for a single fiber optic connection?",
+      "options": ["A. Travel longer distances", "B. Prevent crosstalk", "C. Increase speed", "D. Allow for full-duplex"],
+      "answer": "D. Allow for full-duplex"
+    }
+  },
+  {
+    "id": 23,
+    "topic": "IPv4 & IPv6 Addressing",
+    "vi": {
+      "question": "Địa chỉ IPv6 nào sau đây được rút gọn đúng nhất từ 2001:0DB8:0000:AB00:0000:0000:0000:1234?",
+      "options": ["A. 2001:DB8:0:AB00::1234", "B. 2001:DB8:0:AB::1234", "C. 2001:DB8::AB00::1234", "D. 2001:DB8:0:AB:0:1234"],
+      "answer": "A. 2001:DB8:0:AB00::1234",
+      "explanation": "Quy tắc: Bỏ số 0 đứng đầu. Dùng :: thay cho nhóm các số 0 liên tiếp (chỉ dùng 1 lần).",
+      "tip": "Lưu ý: AB00 không được rút thành AB vì số 0 nằm ở cuối (leading zeros mới được bỏ, trailing zeros thì không)."
+    },
+    "en": {
+      "question": "What is the valid most compressed format of the IPv6 address 2001:0DB8:0000:AB00:0000:0000:0000:1234?",
+      "options": ["A. 2001:DB8:0:AB00::1234", "B. 2001:DB8:0:AB::1234", "C. 2001:DB8::AB00::1234", "D. 2001:DB8:0:AB:0:1234"],
+      "answer": "A. 2001:DB8:0:AB00::1234"
+    }
+  },
+  {
+    "id": 24,
+    "topic": "Network Models & OSI",
+    "vi": {
+      "question": "Lợi thế của việc dùng giao thức tiêu chuẩn mở (open standard) là gì?",
+      "options": ["A. Máy khách và máy chủ chạy OS khác nhau vẫn trao đổi được dữ liệu", "B. Truy cập Internet bị kiểm soát bởi 1 ISP duy nhất", "C. Hạn chế sự cạnh tranh", "D. Chỉ cho phép các thiết bị cùng hãng giao tiếp"],
+      "answer": "A. Máy khách và máy chủ chạy OS khác nhau vẫn trao đổi được dữ liệu",
+      "explanation": "Tiêu chuẩn mở (như IP, HTTP) giúp các thiết bị khác hãng, khác hệ điều hành 'hiểu' nhau.",
+      "tip": "Mẹo: Tiêu chuẩn mở giống như Tiếng Anh toàn cầu. Dù bạn là người Việt hay người Nhật, cứ nói Tiếng Anh là hiểu nhau."
+    },
+    "en": {
+      "question": "What is an advantage of network devices using open standard protocols?",
+      "options": ["A. Client and server running different OS can exchange data", "B. Controlled by a single ISP", "C. Limited competition", "D. Confined to same vendor"],
+      "answer": "A. Client and server running different OS can exchange data"
+    }
+  },
+  {
+    "id": 25,
+    "topic": "Network Security & Services",
+    "vi": {
+      "question": "Chính sách ưu tiên lưu lượng thoại và video hơn các lưu lượng khác được gọi là gì?",
+      "options": ["A. Extranet", "B. QoS (Quality of Service)", "C. Internet", "D. Intranet"],
+      "answer": "B. QoS (Quality of Service)",
+      "explanation": "QoS đảm bảo các ứng dụng nhạy cảm với độ trễ (như gọi điện thoại, họp online) được ưu tiên đi trước.",
+      "tip": "Mẹo: QoS giống như 'Xe cứu thương'. Khi kẹt xe, xe cứu thương được ưu tiên đi trước để cứu người."
+    },
+    "en": {
+      "question": "What term describes a policy that allows network devices to give priority to voice and video?",
+      "options": ["A. extranet", "B quality of service", "C. internet", "D. intranet"],
+      "answer": "B quality of service"
+    }
+  },
+  {
+    "id": 26,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Đặc điểm của phân lớp LLC (Logical Link Control) là gì?",
+      "options": ["A. Định nghĩa tiến trình phần mềm cho tầng vật lý", "B. Cung cấp giới hạn dữ liệu theo môi trường truyền dẫn", "C. Cung cấp địa chỉ logic để xác định thiết bị", "D. Cho phép nhiều giao thức Layer 3 cùng sử dụng một giao diện mạng"],
+      "answer": "D. Cho phép nhiều giao thức Layer 3 cùng sử dụng một giao diện mạng",
+      "explanation": "LLC đóng vai trò là giao diện giữa tầng Network và tầng Data Link, giúp card mạng hỗ trợ cả IPv4, IPv6, v.v.",
+      "tip": "Mẹo: Tầng 2 có 2 con: LLC (phía trên, giao tiếp với IP) và MAC (phía dưới, giao tiếp với dây cáp)."
+    },
+    "en": {
+      "question": "What is a characteristic of the LLC sublayer?",
+      "options": ["A. Defines software processes for physical layer", "B. Provides delimitation of data", "C. Provides logical addressing", "D. Allows multiple Layer 3 protocols to use the same interface"],
+      "answer": "D. Allows multiple Layer 3 protocols to use the same interface"
+    }
+  },
+  {
+    "id": 27,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Khi sử dụng phương thức chuyển mạch Store-and-forward, phần nào của Frame được dùng để kiểm lỗi?",
+      "options": ["A. MAC đích", "B. Protocol type", "C. CRC trong Trailer", "D. MAC nguồn"],
+      "answer": "C. CRC trong Trailer",
+      "explanation": "Store-and-forward nhận toàn bộ frame, tính toán lại giá trị CRC và so sánh với trường FCS ở Trailer.",
+      "tip": "Mẹo: Store-and-forward = 'Nhận hết rồi mới gửi'. Phải nhận hết mới kiểm tra được lỗi ở đuôi (Trailer)."
+    },
+    "en": {
+      "question": "When the store-and-forward method of switching is in use, what part of the frame is used to perform an error check?",
+      "options": ["A. destination MAC", "B. protocol type", "C. CRC in the trailer", "D. source MAC"],
+      "answer": "C. CRC in the trailer"
+    }
+  },
+  {
+    "id": 28,
+    "topic": "Transport & Application Layers",
+    "vi": {
+      "question": "Giao thức truyền tải nào thuộc loại 'Best effort' và không đảm bảo dữ liệu đến đích không lỗi?",
+      "options": ["A. Connectionless", "B. Best effort", "C. Media independent"],
+      "answer": "B. Best effort",
+      "explanation": "Best effort (nỗ lực tối đa) có nghĩa là giao thức sẽ cố gắng gửi nhưng nếu mất gói tin thì nó không chịu trách nhiệm gửi lại (như UDP).",
+      "tip": "Mẹo: Best effort giống như 'Gửi thư bưu điện thường'. Bưu điện sẽ cố giao, nhưng nếu mất thì họ không báo, bạn tự chịu."
+    },
+    "en": {
+      "question": "Which delivery method does not guarantee that the packet will be delivered fully without errors?",
+      "options": ["A. Connectionless", "B. Best effort", "C. Media independent"],
+      "answer": "B. Best effort"
+    }
+  },
+  {
+    "id": 29,
+    "topic": "Transport & Application Layers",
+    "vi": {
+      "question": "Dịch vụ web (HTTP) sử dụng socket nào nếu máy khách là 10.1.1.10 (port 1099) và máy chủ là 10.1.1.254?",
+      "options": ["A. 1099:10.1.1.10, 80:10.1.1.254", "B. 10.1.1.10:80, 10.1.1.254:1099", "C. 10.1.1.10:1099, 10.1.1.254:80", "D. 80:10.1.1.10, 1099:10.1.1.254"],
+      "answer": "C. 10.1.1.10:1099, 10.1.1.254:80",
+      "explanation": "Socket = IP + Port. Máy khách dùng port ngẫu nhiên (>1023), máy chủ Web dùng port 80.",
+      "tip": "Mẹo: Socket giống như 'Địa chỉ nhà : Số phòng'. Bạn ở phòng 1099 đi thăm người ở phòng 80."
+    },
+    "en": {
+      "question": "A host 10.1.1.10 wants web services from 10.1.1.254. Which displays the correct socket pair?",
+      "options": ["A. 1099:10.1.1.10, 80:10.1.1.254", "B. 10.1.1.10:80, 10.1.1.254:1099", "C. 10.1.1.10:1099, 10.1.1.254:80", "D. 80:10.1.1.10, 1099:10.1.1.254"],
+      "answer": "C. 10.1.1.10:1099, 10.1.1.254:80"
+    }
+  },
+  {
+    "id": 30,
+    "topic": "Network Security & Services",
+    "vi": {
+      "question": "Sự khác biệt chính giữa lệnh tracert và lệnh ping là gì?",
+      "options": ["A. Tracert nhanh hơn", "B. Tracert hiển thị thông tin các router trên đường đi", "C. Tracert chỉ gửi 1 gói tin ICMP", "D. Ping dùng để kiểm tra cấu hình IP"],
+      "answer": "B. Tracert hiển thị thông tin các router trên đường đi",
+      "explanation": "Ping chỉ cho biết có thông hay không. Tracert cho biết gói tin đã đi qua những trạm (hop) nào.",
+      "tip": "Mẹo: Ping là hỏi 'Có nhà không?'. Tracert là hỏi 'Để đến nhà bạn tôi phải đi qua những ngã tư nào?'."
+    },
+    "en": {
+      "question": "What is a function of the tracert command that differs from the ping command?",
+      "options": ["A. Tracert is faster", "B. Tracert shows the information of routers in the path", "C. Tracert sends one ICMP message", "D. Ping tests local IP config"],
+      "answer": "B. Tracert shows the information of routers in the path"
+    }
+  },
+  {
+    "id": 31,
+    "topic": "IPv4 & IPv6 Addressing",
+    "vi": {
+      "question": "Phần nào của địa chỉ GUA (Global Unicast Address) IPv6 được cấp bởi ISP?",
+      "options": ["A. Global routing prefix", "B. Subnet ID", "C. Interface ID", "D. Link-local prefix"],
+      "answer": "A. Global routing prefix",
+      "explanation": "Cấu trúc GUA: Global Routing Prefix (từ ISP) + Subnet ID (từ tổ chức) + Interface ID (từ thiết bị).",
+      "tip": "Mẹo: Global Routing Prefix giống như 'Mã quốc gia/Mã tỉnh'. ISP là người quản lý cái này."
+    },
+    "en": {
+      "question": "Which part of a GUA is assigned by the ISP?",
+      "options": ["A. Global routing prefix", "B. Subnet ID", "C. Prefix", "D. RIR prefix"],
+      "answer": "A. Global routing prefix"
+    }
+  },
+  {
+    "id": 32,
+    "topic": "Network Security & Services",
+    "vi": {
+      "question": "Loại bản ghi DNS nào dùng để phân giải tên của các máy chủ tên (name servers)?",
+      "options": ["A. NS", "B. A", "C. MX", "D. AAAA"],
+      "answer": "A. NS",
+      "explanation": "A = IPv4, AAAA = IPv6, MX = Mail server, NS = Name Server.",
+      "tip": "Mẹo: NS viết tắt của Name Server. Cứ thấy hỏi về server quản lý tên miền thì chọn NS."
+    },
+    "en": {
+      "question": "Which of the following DNS resource record types resolves authoritative name servers?",
+      "options": ["A. NS", "B. A", "C. MX", "D. AAAA"],
+      "answer": "A. NS"
+    }
+  },
+  {
+    "id": 33,
+    "topic": "Network Models & OSI",
+    "vi": {
+      "question": "Thiết bị trung gian (intermediary device) nào sau đây có chức năng chính là chuyển tiếp dữ liệu dựa trên bảng địa chỉ MAC?",
+      "options": ["A. Hub", "B. Router", "C. Switch", "D. Modem"],
+      "answer": "C. Switch",
+      "explanation": "Switch hoạt động ở Layer 2 và duy trì bảng MAC để biết cổng nào nối với máy nào.",
+      "tip": "Phân biệt: Switch = MAC (Layer 2). Router = IP (Layer 3). Hub = Không biết gì cả, cứ nhận là phát hết (Layer 1)."
+    },
+    "en": {
+      "question": "Which network device has the primary function to send data based on the MAC address table?",
+      "options": ["A. Hub", "B. Router", "C. Switch", "D. Modem"],
+      "answer": "C. Switch"
+    }
+  },
+  {
+    "id": 34,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Đặc điểm của chế độ truyền dẫn Half-duplex là gì?",
+      "options": ["A. Dữ liệu chỉ đi theo một chiều", "B. Dữ liệu đi 2 chiều cùng lúc", "C. Dữ liệu đi 1 chiều tại một thời điểm", "D. Chỉ gửi được dữ liệu broadcast"],
+      "answer": "C. Dữ liệu đi 1 chiều tại một thời điểm",
+      "explanation": "Trong Half-duplex, thiết bị không thể vừa gửi vừa nhận cùng lúc (như bộ đàm).",
+      "tip": "Mẹo: Half-duplex là 'Bộ đàm'. Một người nói xong phải bảo 'Hết' (Over) thì người kia mới được nói."
+    },
+    "en": {
+      "question": "Which statement describes the half-duplex mode of data transmission?",
+      "options": ["A. Flow in one direction only", "B. Flow in both directions same time", "C. Flow in one direction to many", "D. Flow in one direction at a time"],
+      "answer": "D. Flow in one direction at a time"
+    }
+  },
+  {
+    "id": 35,
+    "topic": "Network Security & Services",
+    "vi": {
+      "question": "Lệnh nào dùng để bảo mật chế độ privileged EXEC trên Switch bằng mật khẩu?",
+      "options": ["A. enable class", "B. secret class", "C. enable secret cisco@123", "D. service password-encryption"],
+      "answer": "C. enable secret cisco@123",
+      "explanation": "Lệnh 'enable secret' tạo mật khẩu được mã hóa mạnh để vào chế độ cấu hình.",
+      "tip": "Mẹo: Phải có chữ 'secret' thì mật khẩu mới được mã hóa. Đừng dùng 'enable password' vì nó hiện rõ mật khẩu trong config."
+    },
+    "en": {
+      "question": "How is the privileged EXEC mode access secured on a switch?",
+      "options": ["A. enable class", "B. secret class", "C. enable secret cisco@12345", "D. service password-encryption"],
+      "answer": "C. enable secret cisco@12345"
+    }
+  },
+  {
+    "id": 36,
+    "topic": "Routing & Subnetting",
+    "vi": {
+      "question": "Hai chức năng chính của Router là gì?",
+      "options": ["A. Chuyển tiếp gói tin (packet forwarding)", "B. Vi phân đoạn (Microsegmentation)", "C. Phân giải tên miền", "D. Chọn đường đi (path selection)", "E. Kiểm soát luồng"],
+      "answer": "A. Chuyển tiếp gói tin, D. Chọn đường đi",
+      "explanation": "Router chọn đường đi tốt nhất (Routing) và sau đó đẩy gói tin đi theo đường đó (Forwarding).",
+      "tip": "Mẹo: Router giống như 'Google Maps'. Nó tìm đường (Path selection) và chỉ bạn đi (Forwarding)."
+    },
+    "en": {
+      "question": "Which two functions are primary functions of a router?",
+      "options": ["A. packet forwarding", "B. Microsegmentation", "C. domain name resolution", "D. path selection", "E. flow control"],
+      "answer": "A. packet forwarding, D. path selection"
+    }
+  },
+  {
+    "id": 37,
+    "topic": "Network Security & Services",
+    "vi": {
+      "question": "Kẻ tấn công giả mạo người khác để lấy thông tin tín dụng được gọi là loại đe dọa nào?",
+      "options": ["A. Mất mát dữ liệu", "B. Gián đoạn dịch vụ", "C. Trộm cắp danh tính (Identity theft)", "D. Trộm cắp thông tin"],
+      "answer": "C. Trộm cắp danh tính (Identity theft)",
+      "explanation": "Sử dụng thông tin cá nhân của người khác để thực hiện hành vi gian lận là Identity theft.",
+      "tip": "Mẹo: Cứ 'giả danh' (impersonate) là Identity theft."
+    },
+    "en": {
+      "question": "What kind of threat is described when a threat actor impersonates another person to obtain credit information?",
+      "options": ["A. data loss", "B. disruption of service", "C. identity theft", "D. information theft"],
+      "answer": "C. identity theft"
+    }
+  },
+  {
+    "id": 38,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Khi Switch nhận frame và giá trị CRC tính toán được khác với giá trị trong trường FCS, switch sẽ làm gì?",
+      "options": ["A. Ghi đè CRC mới", "B. Thông báo cho nguồn", "C. Hủy bỏ frame (Drop)", "D. Phát tán frame ra các cổng"],
+      "answer": "C. Hủy bỏ frame (Drop)",
+      "explanation": "Nếu CRC sai nghĩa là dữ liệu bị hỏng. Switch sẽ bỏ qua frame đó để tiết kiệm tài nguyên mạng.",
+      "tip": "Mẹo: Giống như nhận một kiện hàng bị rách nát, tan tành. Bạn từ chối nhận luôn chứ không mang vào nhà."
+    },
+    "en": {
+      "question": "What happens when a switch receives a frame and the calculated CRC value is different than the value in the FCS field?",
+      "options": ["A. Overwrite CRC", "B. Notify source", "C. Drop the frame", "D. Flood the frame"],
+      "answer": "C. Drop the frame"
+    }
+  },
+  {
+    "id": 39,
+    "topic": "Network Security & Services",
+    "vi": {
+      "question": "Lệnh nào hiển thị tóm tắt trạng thái các interface, địa chỉ IP và tình trạng hoạt động trên Router?",
+      "options": ["A. show interface fa0/1", "B. show ip route", "C. show ip interface brief", "D. show running-config"],
+      "answer": "C. show ip interface brief",
+      "explanation": "Đây là lệnh 'vạn năng' để kiểm tra nhanh IP và trạng thái Up/Down của các cổng.",
+      "tip": "Mẹo: 'Brief' nghĩa là ngắn gọn. Muốn xem bảng tổng kết nhanh thì phải có chữ 'brief'."
+    },
+    "en": {
+      "question": "Which command can be used on a Cisco router to display all interfaces, IP addresses, and current status?",
+      "options": ["A. show interface fa0/1", "B. show ip route", "C. show ip interface brief", "D. show running-config"],
+      "answer": "C. show ip interface brief"
+    }
+  },
+  {
+    "id": 40,
+    "topic": "IPv4 & IPv6 Addressing",
+    "vi": {
+      "question": "Kỹ thuật nào cho phép IPv4 và IPv6 cùng tồn tại trên một thiết bị?",
+      "options": ["A. Dual stack", "B. Tunneling", "C. Translation", "D. Tất cả các ý trên"],
+      "answer": "A. Dual stack",
+      "explanation": "Dual stack là cấu hình cả IPv4 và IPv6 chạy song song trên cùng một card mạng.",
+      "tip": "Phân biệt: Dual stack = Chạy song song. Tunneling = IPv6 'đi nhờ' trong gói IPv4. Translation (NAT64) = Chuyển đổi giữa 2 loại."
+    },
+    "en": {
+      "question": "Which of the following techniques use native IPv6 connectivity?",
+      "options": ["A. Dual stack", "B. Tunneling", "C. Translation", "D. All of the above"],
+      "answer": "A. Dual stack"
+    }
+  },
+  {
+    "id": 41,
+    "topic": "IPv4 & IPv6 Addressing",
+    "vi": {
+      "question": "Độ dài tiền tố (prefix length) được khuyến nghị cho hầu hết các mạng con IPv6 là bao nhiêu?",
+      "options": ["A. /32", "B. /48", "C. /64", "D. /128"],
+      "answer": "C. /64",
+      "explanation": "Trong IPv6, /64 là tiêu chuẩn cho một mạng LAN để hỗ trợ các tính năng như SLAAC.",
+      "tip": "Mẹo: IPv6 có 128 bit. Chia đôi 64 bit làm Network, 64 bit làm Host là đẹp nhất."
+    },
+    "en": {
+      "question": "What is the recommended prefix length for most IPv6 subnets?",
+      "options": ["A. /32", "B. /48", "C. /64", "D. /128"],
+      "answer": "C. /64"
+    }
+  },
+  {
+    "id": 42,
+    "topic": "Network Models & OSI",
+    "vi": {
+      "question": "Chế độ IOS nào cho phép truy cập vào tất cả các lệnh và tính năng cấu hình?",
+      "options": ["A. Global configuration mode", "B. Interface mode", "C. Line console mode", "D. Privileged EXEC mode"],
+      "answer": "D. Privileged EXEC mode",
+      "explanation": "Đây là chế độ có dấu '#'. Từ đây bạn có thể xem mọi thứ và vào các chế độ cấu hình sâu hơn.",
+      "tip": "Mẹo: Dấu '>' là User (xem ít). Dấu '#' là Privileged (quyền admin, xem tất)."
+    },
+    "en": {
+      "question": "Which IOS mode allows access to all commands and features?",
+      "options": ["A. Global configuration", "B. Interface mode", "C. Line console", "D. Privileged EXEC"],
+      "answer": "D. Privileged EXEC"
+    }
+  },
+  {
+    "id": 43,
+    "topic": "IPv4 & IPv6 Addressing",
+    "vi": {
+      "question": "Có bao nhiêu địa chỉ host khả dụng trong một mạng IPv4 có mask /26?",
+      "options": ["A. 254", "B. 62", "C. 192", "D. 64"],
+      "answer": "B. 62",
+      "explanation": "/26 mượn 2 bit (192). Số bit host là 6. 2^6 - 2 = 64 - 2 = 62.",
+      "tip": "Mẹo: 64 là tổng số địa chỉ, nhưng đề hỏi 'usable host' thì luôn phải trừ đi 2."
+    },
+    "en": {
+      "question": "How many valid host addresses are available on an IPv4 subnet configured with a /26 mask?",
+      "options": ["A. 254", "B. 62", "C. 192", "D. 64"],
+      "answer": "B. 62"
+    }
+  },
+  {
+    "id": 44,
+    "topic": "Network Security & Services",
+    "vi": {
+      "question": "Cấu hình khởi động (startup configuration) được lưu trữ ở đâu trên router?",
+      "options": ["A. Flash", "B. RAM", "C. ROM", "D. NVRAM"],
+      "answer": "D. NVRAM",
+      "explanation": "RAM lưu cấu hình đang chạy (running), NVRAM lưu cấu hình để khi khởi động lại máy không bị mất (startup).",
+      "tip": "Mẹo: RAM = Mất khi tắt điện. NVRAM = Non-Volatile (Không mất khi tắt điện)."
+    },
+    "en": {
+      "question": "What is stored in the NVRAM of a Cisco router?",
+      "options": ["A. Cisco IOS", "B. Running configuration", "C. Bootup instructions", "D. Startup configuration"],
+      "answer": "D. Startup configuration"
+    }
+  },
+  {
+    "id": 45,
+    "topic": "Network Security & Services",
+    "vi": {
+      "question": "Lệnh 'service password-encryption' có tác dụng gì?",
+      "options": ["A. Mã hóa mật khẩu khi truyền qua mạng", "B. Ngăn việc xem mật khẩu dạng văn bản thuần túy trong file cấu hình", "C. Sử dụng thuật toán MD5 cho mật khẩu enable secret", "D. Tự động mã hóa file cấu hình trong NVRAM"],
+      "answer": "B. Ngăn việc xem mật khẩu dạng văn bản thuần túy trong file cấu hình",
+      "explanation": "Lệnh này mã hóa các mật khẩu hiện có trong file 'show running-config' để người đứng cạnh không đọc lén được.",
+      "tip": "Mẹo: Lệnh này giúp biến mật khẩu 'cisco' thành '08311702...' khi bạn gõ show run."
+    },
+    "en": {
+      "question": "What does the service password-encryption command accomplish?",
+      "options": ["A. Encrypts across serial links", "B. Prevents viewing passwords in running-config", "C. Enables MD5 for enable secret", "D. Encrypts startup-config"],
+      "answer": "B. Prevents viewing passwords in running-config"
+    }
+  },
+  {
+    "id": 46,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Tính năng auto-MDIX trên switch có tác dụng gì?",
+      "options": ["A. Tự cấu hình tốc độ 10/100/1000", "B. Tự phát hiện và cấu hình cổng cho cáp thẳng hoặc cáp chéo", "C. Tự cấu hình Full-duplex", "D. Tự bật/tắt cổng khi có kết nối"],
+      "answer": "B. Tự phát hiện và cấu hình cổng cho cáp thẳng hoặc cáp chéo",
+      "explanation": "Nhờ auto-MDIX, bạn không cần quan tâm thiết bị nào nối với thiết bị nào, cáp nào cũng nhận.",
+      "tip": "Mẹo: MDIX là 'Thông minh'. Cắm nhầm cáp nó cũng tự xoay sở để chạy được."
+    },
+    "en": {
+      "question": "What is the auto-MDIX feature on a switch?",
+      "options": ["A. auto-speed config", "B. auto-detect straight or crossover cable", "C. auto-duplex config", "D. auto-port status"],
+      "answer": "B. auto-detect straight or crossover cable"
+    }
+  },
+  {
+    "id": 47,
+    "topic": "IPv4 & IPv6 Addressing",
+    "vi": {
+      "question": "Địa chỉ IPv6 bắt đầu bằng 'fe80' là loại địa chỉ nào?",
+      "options": ["A. Global Unicast (GUA)", "B. Link-Local (LLA)", "C. Multicast", "D. Loopback"],
+      "answer": "B. Link-Local (LLA)",
+      "explanation": "LLA (Link-Local Address) dùng để giao tiếp trong nội bộ một đường kết nối (link) và bắt đầu bằng fe80::/10.",
+      "tip": "Mẹo: fe80 = 'Friend Every 80' (Bạn bè trong vùng fe80). Chỉ dùng để 'nói chuyện' với các máy cạnh mình."
+    },
+    "en": {
+      "question": "What type of IPv6 address begins with fe80?",
+      "options": ["A. GUA", "B. LLA", "C. Multicast", "D. Loopback"],
+      "answer": "B. LLA"
+    }
+  },
+  {
+    "id": 48,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Mục đích của trường FCS trong Frame là gì?",
+      "options": ["A. Kiểm tra tính toàn vẹn của frame", "B. Xác định địa chỉ MAC nguồn", "C. Xác định loại giao thức Layer 3", "D. Đánh dấu bắt đầu frame"],
+      "answer": "A. Kiểm tra tính toàn vẹn của frame",
+      "explanation": "FCS (Frame Check Sequence) chứa giá trị kiểm tra lỗi giúp xác định frame có bị thay đổi/nhiễu trên đường đi không.",
+      "tip": "Mẹo: FCS = 'Final Check System' (Hệ thống kiểm tra cuối cùng)."
+    },
+    "en": {
+      "question": "What is the purpose of the FCS field in a frame?",
+      "options": ["A. verify integrity", "B. source MAC", "C. identify Layer 3 protocol", "D. start delimiter"],
+      "answer": "A. verify integrity"
+    }
+  },
+  {
+    "id": 49,
+    "topic": "Physical & Data Link Layers",
+    "vi": {
+      "question": "Loại cáp UTP nào được dùng để kết nối PC trực tiếp tới Switch?",
+      "options": ["A. Console", "B. Rollover", "C. Crossover", "D. Straight-through"],
+      "answer": "D. Straight-through",
+      "explanation": "Kết nối hai thiết bị khác loại (PC và Switch) dùng cáp thẳng (Straight-through).",
+      "tip": "Mẹo: Khác loại (PC-Switch) = Cáp thẳng. Cùng loại (PC-PC, Switch-Switch) = Cáp chéo (Crossover)."
+    },
+    "en": {
+      "question": "Which type of UTP cable is used to connect a PC to a switch port?",
+      "options": ["A. Console", "B. Rollover", "C. Crossover", "D. Straight-through"],
+      "answer": "D. Straight-through"
+    }
+  },
+  {
+    "id": 50,
+    "topic": "Transport & Application Layers",
+    "vi": {
+      "question": "Quá trình chia một dòng dữ liệu lớn thành các phần nhỏ trước khi truyền được gọi là gì?",
+      "options": ["A. Sequencing", "B. Duplexing", "C. Multiplexing", "D. Segmentation"],
+      "answer": "D. Segmentation",
+      "explanation": "Tầng Transport chia nhỏ dữ liệu thành các Segment để dễ quản lý và truyền tải.",
+      "tip": "Mẹo: Segmentation giống như 'Chặt thịt'. Cả tảng thịt to không nuốt được, phải chặt nhỏ ra từng miếng (segment)."
+    },
+    "en": {
+      "question": "What is the process of dividing a large data stream into smaller pieces prior to transmission?",
+      "options": ["A. Sequencing", "B. Duplexing", "C. Multiplexing", "D. segmentation"],
+      "answer": "D. segmentation"
+    }
+  }
+
+    ];
+
+    // 2. PHÂN LOẠI CHỦ ĐỀ NWC204
+    const nwcTopics = [
+        "Network Models & OSI",
+        "Physical & Data Link Layers",
+        "IPv4 & IPv6 Addressing",
+        "Routing & Subnetting",
+        "Transport & Application Layers",
+        "Network Security & Services"
+    ];
+
+    let state = { 
+        isVietnamese: true, activeTab: 'flashcard', fcIndex: 0, 
+        fcFilteredData: [], quizPhase: 'setup', activeQuestions: [], 
+        userAnswers: {}, currentQuizIndex: 0 
+    };
+
+    const texts = {
+        vi: { 
+            setupTitle: "Cấu hình luyện tập", total: "Tổng số câu khả dụng:", qCount: "Số lượng câu làm:", 
+            start: "Bắt đầu 🚀", map: "Bản đồ câu hỏi", doing: "Đang luyện tập NWC204", 
+            submit: "Nộp bài", resultTitle: "Kết quả bài làm", prev: "Trước", next: "Sau",
+            fcAns: "Đáp án", fcExp: "Giải thích", qOf: "Câu", all: "Tất cả chủ đề",
+            flipHint: "Click để lật thẻ", topic: "Chủ đề:"
+        },
+        en: { 
+            setupTitle: "Practice Config", total: "Total available:", qCount: "Questions count:", 
+            start: "Start 🚀", map: "Question Map", doing: "NWC204 Training", 
+            submit: "Submit", resultTitle: "Quiz Results", prev: "Prev", next: "Next",
+            fcAns: "Answer", fcExp: "Explanation", qOf: "Question", all: "All Topics",
+            flipHint: "Click to flip card", topic: "Topic:"
+        }
+    };
+
+    function init() {
+        const fcSelect = document.getElementById('fc-topic-select');
+        const quizSelect = document.getElementById('quiz-topic-select');
+        
+        [fcSelect, quizSelect].forEach(select => {
+            select.innerHTML = `<option value="all">${state.isVietnamese ? texts.vi.all : texts.en.all}</option>`;
+            nwcTopics.forEach(t => select.add(new Option(t, t)));
+        });
+        
+        filterFlashcards(); updateMaxQuestions(); updateLanguageTexts();
+    }
+
+    function toggleLanguage() {
+        state.isVietnamese = !state.isVietnamese;
+        updateLanguageTexts();
+        renderFlashcard();
+        if (state.quizPhase === 'active') renderQuestionCard();
+    }
+
+    function updateLanguageTexts() {
+        const t = state.isVietnamese ? texts.vi : texts.en;
+        document.getElementById('txt-setup-title').innerText = t.setupTitle;
+        document.getElementById('txt-total').innerText = t.total;
+        document.getElementById('txt-q-count').innerText = t.qCount;
+        document.getElementById('txt-start').innerText = t.start;
+        document.getElementById('txt-map').innerText = t.map;
+        document.getElementById('txt-doing').innerText = t.doing;
+        document.getElementById('btn-prev').innerText = t.prev;
+        document.getElementById('btn-next').innerText = t.next;
+        document.getElementById('btn-submit').innerText = t.submit;
+        document.getElementById('txt-result-title').innerText = t.resultTitle;
+        document.getElementById('fc-flip-hint').innerText = t.flipHint;
+        document.getElementById('lbl-fc-topic').innerText = t.topic;
+        document.getElementById('lbl-quiz-topic').innerText = t.topic;
+    }
+
+    function switchTab(tab) {
+        state.activeTab = tab;
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('flashcard-view').classList.add('hidden');
+        document.getElementById('quiz-setup').classList.add('hidden');
+        document.getElementById('quiz-active').classList.add('hidden');
+        document.getElementById('quiz-result').classList.add('hidden');
+        document.getElementById('quiz-sidebar').classList.add('hidden');
+
+        if (tab === 'flashcard') {
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            document.getElementById('flashcard-view').classList.remove('hidden');
+        } else {
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            if (state.quizPhase === 'setup') document.getElementById('quiz-setup').classList.remove('hidden');
+            else { 
+                document.getElementById(state.quizPhase === 'active' ? 'quiz-active' : 'quiz-result').classList.remove('hidden');
+                document.getElementById('quiz-sidebar').classList.remove('hidden');
+            }
+        }
+    }
+
+    // CORE LOGIC: Shuffle, Filter, Nav
+    function shuffleArray(arr) { return arr.sort(() => Math.random() - 0.5); }
+
+    function filterFlashcards() {
+        const topic = document.getElementById('fc-topic-select').value;
+        state.fcFilteredData = topic === 'all' ? [...quizData] : quizData.filter(q => q.topic === topic);
+        state.fcIndex = 0; renderFlashcard();
+    }
+
+    function renderFlashcard() {
+        if (state.fcFilteredData.length === 0) { document.getElementById('fc-content').innerText = "No data."; return; }
+        const q = state.fcFilteredData[state.fcIndex];
+        const data = state.isVietnamese ? q.vi : q.en;
+        document.querySelector('.flashcard').classList.remove('flipped');
+        document.getElementById('fc-content').innerHTML = `<strong>Topic: ${q.topic}</strong><p>${data.question}</p>`;
+        document.getElementById('fc-answer').innerText = data.answer;
+        document.getElementById('fc-explanation').innerText = data.explanation;
+        document.getElementById('fc-counter').innerText = `${state.fcIndex + 1} / ${state.fcFilteredData.length}`;
+    }
+
+    function navFlashcard(dir) {
+        let n = state.fcIndex + dir;
+        if (n >= 0 && n < state.fcFilteredData.length) { state.fcIndex = n; renderFlashcard(); }
+    }
+
+    function updateMaxQuestions() {
+        const topic = document.getElementById('quiz-topic-select').value;
+        const count = topic === 'all' ? quizData.length : quizData.filter(q => q.topic === topic).length;
+        document.getElementById('total-qs').innerText = count;
+    }
+
+    function startQuiz() {
+        const count = parseInt(document.getElementById('quiz-count-input').value);
+        const topic = document.getElementById('quiz-topic-select').value;
+        let pool = topic === 'all' ? [...quizData] : quizData.filter(q => q.topic === topic);
+        state.activeQuestions = shuffleArray(pool).slice(0, count);
+        state.userAnswers = {}; state.currentQuizIndex = 0; state.quizPhase = 'active';
+        switchTab('quiz'); renderQuestionCard(); renderMap();
+    }
+
+    function renderQuestionCard() {
+        const idx = state.currentQuizIndex;
+        const q = state.activeQuestions[idx];
+        const data = state.isVietnamese ? q.vi : q.en;
+        const t = state.isVietnamese ? texts.vi : texts.en;
+        
+        document.getElementById('quiz-progress').innerText = `${t.qOf} ${idx + 1}/${state.activeQuestions.length}`;
+        document.getElementById('q-content').innerHTML = `<p>${data.question}</p>`;
+        
+        const ul = document.getElementById('q-options'); ul.innerHTML = '';
+        const ans = state.userAnswers[idx];
+
+        data.options.forEach((opt, i) => {
+            const li = document.createElement('li');
+            li.innerText = opt;
+            const label = String.fromCharCode(65 + i);
+            li.setAttribute('data-label', label);
+            
+            if (ans) {
+                li.classList.add('disabled');
+                if (opt.startsWith(data.answer.charAt(0))) li.classList.add('correct');
+                if (ans.label === label && !ans.isCorrect) li.classList.add('wrong');
+            } else {
+                li.onclick = () => {
+                    const isCorrect = opt.startsWith(data.answer.charAt(0));
+                    state.userAnswers[idx] = { label, isCorrect };
+                    renderQuestionCard(); renderMap();
+                };
+            }
+            ul.appendChild(li);
+        });
+
+        const exp = document.getElementById('q-explanation');
+        if (ans) {
+            exp.style.display = 'block';
+            exp.style.background = ans.isCorrect ? '#d4edda' : '#f8d7da';
+            exp.innerHTML = `<strong>${t.fcExp}:</strong> ${data.explanation}`;
+        } else exp.style.display = 'none';
+    }
+
+    function navQuiz(dir) {
+        let n = state.currentQuizIndex + dir;
+        if (n >= 0 && n < state.activeQuestions.length) { state.currentQuizIndex = n; renderQuestionCard(); }
+    }
+
+    function finishQuiz() {
+        state.quizPhase = 'result';
+        let score = Object.values(state.userAnswers).filter(a => a.isCorrect).length;
+        document.getElementById('score-val').innerText = `${score}/${state.activeQuestions.length}`;
+        switchTab('quiz');
+    }
+
+    function resetQuiz() { state.quizPhase = 'setup'; switchTab('quiz'); }
+
+    function renderMap() {
+        const grid = document.getElementById('map-grid'); grid.innerHTML = '';
+        state.activeQuestions.forEach((_, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'map-btn';
+            btn.innerText = i + 1;
+            if (state.userAnswers[i]) btn.classList.add(state.userAnswers[i].isCorrect ? 'correct' : 'wrong');
+            if (i === state.currentQuizIndex) btn.classList.add('active');
+            btn.onclick = () => { state.currentQuizIndex = i; renderQuestionCard(); renderMap(); };
+            grid.appendChild(btn);
+        });
+    }
+
+    init();
+</script>
+</body>
+</html>
