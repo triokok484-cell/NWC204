@@ -3,24 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NWC204 - Networking Practice Tool</title>
+    <title>NWC204 - Networking Study Tool v2</title>
     <style>
         :root {
             --primary-color: #6f42c1;
             --primary-light: #f3f0ff;
             --secondary-color: #28a745;
             --danger-color: #dc3545;
-            --light-bg: #f8f9fa;
-            --dark-text: #333;
-            --border-radius: 15px;
+            --bg-color: #f0f2f5;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --border-radius: 20px;
         }
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
         
         * { box-sizing: border-box; }
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f5f6fa;
-            color: var(--dark-text);
+            background-color: var(--bg-color);
             margin: 0; padding: 0;
             display: flex; flex-direction: column;
             height: 100vh; overflow: hidden;
@@ -28,215 +27,179 @@
 
         /* Top Bar */
         .top-bar {
-            background: white; padding: 12px 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            background: white; padding: 10px 30px;
             display: flex; justify-content: space-between; align-items: center;
-            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03); z-index: 100;
         }
-        .tabs { display: flex; background: #eee; padding: 4px; border-radius: 30px; }
+        .tabs { display: flex; background: #f0f0f0; padding: 4px; border-radius: 30px; }
         .tab-btn {
-            padding: 8px 22px; border: none; background: transparent;
+            padding: 8px 25px; border: none; background: transparent;
             cursor: pointer; border-radius: 25px; font-weight: 600;
-            transition: 0.3s; color: #555;
+            transition: 0.3s; color: #666;
         }
         .tab-btn.active { background: var(--primary-color); color: white; }
 
         /* Content Area */
         .main-container { display: flex; flex: 1; overflow: hidden; }
-        .content-area {
-            flex: 1; padding: 30px; overflow-y: auto;
-            max-width: 1000px; margin: 0 auto; width: 100%;
-        }
+        .content-area { flex: 1; padding: 25px; overflow-y: auto; width: 100%; position: relative; }
 
-        /* Question Highlight Style */
-        .question-header {
-            background: #eef2ff;
-            border-left: 6px solid var(--primary-color);
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-        }
-        .question-text {
-            font-size: 20px;
-            font-weight: 700;
-            line-height: 1.5;
-            color: #1e293b;
-        }
-        .chapter-tag {
-            display: inline-block;
-            background: #ddd;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            font-weight: bold;
-            color: #666;
-        }
+        /* Flashcard Section */
+        .fc-controls { display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; }
+        .fc-select { padding: 10px 20px; border-radius: 15px; border: 1px solid #ddd; outline: none; }
 
-        /* Options */
-        .options-list { list-style: none; padding: 0; }
-        .options-list li {
-            background: white; border: 2px solid #edf2f7;
-            border-radius: 12px; padding: 18px 18px 18px 55px;
-            margin-bottom: 12px; cursor: pointer;
-            position: relative; transition: 0.2s;
-            font-size: 16px; font-weight: 500;
-        }
-        .options-list li::before {
-            content: attr(data-label);
-            position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
-            width: 28px; height: 28px; background: #f1f5f9;
-            border-radius: 50%; text-align: center; line-height: 28px; font-weight: bold;
-        }
-        .options-list li:hover { border-color: var(--primary-color); background: #f8fafc; }
-        .options-list li.correct { background: #dcfce7; border-color: var(--secondary-color); color: #166534; }
-        .options-list li.wrong { background: #fee2e2; border-color: var(--danger-color); color: #991b1b; }
-
-        /* Sidebar Map */
-        .quiz-sidebar {
-            width: 280px; background: white; border-left: 1px solid #e2e8f0;
-            padding: 20px; overflow-y: auto;
-        }
-        .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
-        .map-btn {
-            width: 100%; aspect-ratio: 1; border: none; border-radius: 8px;
-            background: #f1f5f9; cursor: pointer; font-weight: bold; transition: 0.2s;
-        }
-        .map-btn.active { box-shadow: 0 0 0 3px var(--primary-light); border: 2px solid var(--primary-color); }
-        .map-btn.correct { background: var(--secondary-color); color: white; }
-        .map-btn.wrong { background: var(--danger-color); color: white; }
-
-        /* UI Elements */
-        .start-btn { 
-            background: var(--primary-color); color: white; border: none;
-            padding: 15px 40px; border-radius: 30px; font-size: 18px;
-            font-weight: bold; cursor: pointer;
-        }
-        .hidden { display: none !important; }
-        .flex-between { display: flex; justify-content: space-between; align-items: center; }
-        .explanation-box {
-            margin-top: 20px; padding: 20px; border-radius: 12px;
-            border-left: 5px solid #666; background: #f8fafc;
-        }
-
-        /* Flashcard specifics */
-        .flashcard {
-            width: 100%; max-width: 650px; height: 400px;
-            perspective: 1000px; margin: 0 auto; cursor: pointer;
+        .flashcard-container {
+            width: 100%; max-width: 800px; height: 450px;
+            margin: 0 auto; perspective: 1000px; cursor: pointer;
         }
         .flashcard-inner {
             position: relative; width: 100%; height: 100%;
-            transition: transform 0.6s; transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
         }
-        .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+        .flashcard-container.flipped .flashcard-inner { transform: rotateY(180deg); }
         .card-face {
             position: absolute; width: 100%; height: 100%;
-            backface-visibility: hidden; border-radius: 20px;
-            background: white; padding: 40px; display: flex;
+            backface-visibility: hidden; border-radius: var(--border-radius);
+            background: white; padding: 50px; display: flex;
             flex-direction: column; justify-content: center; align-items: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;
+            box-shadow: var(--card-shadow); text-align: center;
         }
-        .card-back { transform: rotateY(180deg); background: #fafaff; }
+        .card-back { transform: rotateY(180deg); overflow-y: auto; }
 
-        /* Hotkey Legend */
-        .hotkey-hint {
-            position: fixed; bottom: 20px; right: 20px;
-            background: #333; color: white; padding: 8px 15px;
-            border-radius: 8px; font-size: 12px; opacity: 0.7;
+        .tag-subject {
+            background: #e2e8f0; color: #475569; font-weight: bold;
+            padding: 6px 15px; border-radius: 20px; font-size: 13px;
+            text-transform: uppercase; margin-bottom: 25px;
         }
+        .question-text { font-size: 24px; font-weight: 700; color: #1e293b; line-height: 1.4; }
+        
+        .ans-highlight {
+            background: #dcfce7; color: #166534; padding: 15px;
+            border-radius: 12px; font-weight: bold; font-size: 20px;
+            width: 100%; margin-bottom: 15px; border: 1px solid #bdf0cc;
+        }
+
+        /* Nav Buttons */
+        .fc-nav { display: flex; justify-content: center; align-items: center; gap: 40px; margin-top: 30px; }
+        .circle-btn {
+            background: #e2e8f0; border: none; width: 100px; padding: 12px;
+            border-radius: 25px; cursor: pointer; font-weight: bold; transition: 0.2s;
+        }
+        .circle-btn:hover { background: #cbd5e1; }
+
+        /* Quiz UI */
+        .quiz-card { background: white; padding: 30px; border-radius: var(--border-radius); box-shadow: var(--card-shadow); margin-bottom: 20px; }
+        .quiz-q-header { background: #f8faff; border-left: 5px solid var(--primary-color); padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        .options-list { list-style: none; padding: 0; }
+        .options-list li {
+            background: white; border: 2px solid #f0f2f5; border-radius: 12px;
+            padding: 15px 15px 15px 50px; margin-bottom: 10px; cursor: pointer;
+            position: relative; transition: 0.2s; font-weight: 500;
+        }
+        .options-list li::before {
+            content: attr(data-label); position: absolute; left: 15px; top: 50%;
+            transform: translateY(-50%); width: 26px; height: 26px;
+            background: #f1f5f9; border-radius: 50%; text-align: center; line-height: 26px; font-weight: bold;
+        }
+        .options-list li.correct { background: #dcfce7; border-color: var(--secondary-color); }
+        .options-list li.wrong { background: #fee2e2; border-color: var(--danger-color); }
+
+        /* Sidebar */
+        .quiz-sidebar { width: 300px; background: white; border-left: 1px solid #eee; padding: 20px; overflow-y: auto; }
+        .map-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        .map-dot {
+            aspect-ratio: 1; border: none; border-radius: 8px;
+            background: #f1f5f9; cursor: pointer; font-weight: bold;
+        }
+        .map-dot.active { border: 2px solid var(--primary-color); }
+        .map-dot.correct { background: var(--secondary-color); color: white; }
+        .map-dot.wrong { background: var(--danger-color); color: white; }
+
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
     <div class="top-bar">
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('flashcard')">📚 Thẻ học</button>
-            <button class="tab-btn" onclick="switchTab('quiz')">📝 Luyện tập Quiz</button>
+            <button class="tab-btn active" id="btn-fc-tab" onclick="switchTab('flashcard')">📚 Học thuật</button>
+            <button class="tab-btn" id="btn-quiz-tab" onclick="switchTab('quiz')">📝 Luyện tập</button>
         </div>
-        <div id="hotkey-display" style="font-size: 14px; font-weight: bold; color: var(--primary-color);">Hotkey: N (Dịch) | M (Xáo đáp án)</div>
-        <button class="tab-btn" onclick="toggleLanguage()" style="border: 1px solid #ddd;">🌐 VN / EN</button>
+        <button class="tab-btn" onclick="toggleLang()" style="border: 1px solid #ddd; background: #fff;">🌐 VN / EN</button>
     </div>
 
     <div class="main-container">
         <div class="content-area">
             
-            <!-- FLASHCARD -->
-            <div id="flashcard-view">
-                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+            <!-- FLASHCARD SECTION -->
+            <div id="flashcard-section">
+                <div class="fc-controls">
+                    <select id="fc-topic-select" class="fc-select" onchange="filterFC()"></select>
+                </div>
+                <div class="flashcard-container" id="fc-card" onclick="flipCard()">
                     <div class="flashcard-inner">
                         <div class="card-face">
-                            <div class="chapter-tag" id="fc-tag">Topic</div>
-                            <div id="fc-question" class="question-text"></div>
+                            <div class="tag-subject" id="fc-tag">Topic</div>
+                            <div class="question-text" id="fc-question">Question loading...</div>
                         </div>
                         <div class="card-face card-back">
-                            <h3 style="color: var(--secondary-color);">ĐÁP ÁN</h3>
-                            <div id="fc-answer" style="font-size: 22px; font-weight: bold; margin-bottom: 20px;"></div>
-                            <div id="fc-explanation" style="text-align: left; font-size: 15px; color: #555;"></div>
+                            <div class="ans-highlight" id="fc-answer">Answer</div>
+                            <div id="fc-explanation" style="text-align: left; line-height: 1.6;">Explanation</div>
                         </div>
                     </div>
                 </div>
-                <div class="flex-between" style="max-width: 650px; margin: 30px auto;">
-                    <button class="tab-btn" onclick="navFlashcard(-1)" style="background:#ddd">Trước</button>
-                    <span id="fc-counter" style="font-weight: bold;">0/0</span>
-                    <button class="tab-btn" onclick="navFlashcard(1)" style="background:#ddd">Sau</button>
+                <div class="fc-nav">
+                    <button class="circle-btn" onclick="navFC(-1)">Trước</button>
+                    <div id="fc-progress" style="font-weight: bold; font-size: 18px;">0 / 0</div>
+                    <button class="circle-btn" onclick="navFC(1)">Sau</button>
                 </div>
             </div>
 
-            <!-- SETUP -->
-            <div id="quiz-setup" class="hidden" style="text-align: center; background: white; padding: 50px; border-radius: 20px;">
-                <h1 style="color: var(--primary-color);">Cấu hình luyện tập</h1>
-                <div style="margin-bottom: 30px;">
-                    <label>1. Chọn chủ đề:</label><br><br>
-                    <select id="topic-select" onchange="updateMax()" style="padding: 12px; width: 300px; border-radius: 8px;"></select>
+            <!-- QUIZ SETUP -->
+            <div id="quiz-setup" class="hidden" style="text-align: center; margin-top: 50px;">
+                <h1>Cấu hình luyện tập</h1>
+                <div style="margin-bottom: 20px;">
+                    <select id="quiz-topic-select" class="fc-select" style="width: 300px;"></select>
                 </div>
-                <div style="margin-bottom: 30px;">
-                    <label>2. Số lượng câu hỏi:</label><br><br>
-                    <input type="number" id="quiz-count" value="10" style="padding: 10px; width: 80px; text-align: center; font-size: 18px;">
-                    <span id="total-available" style="color: #666; margin-left: 10px;"></span>
-                </div>
-                <button class="start-btn" onclick="startQuiz()">Bắt đầu làm bài 🚀</button>
+                <button class="circle-btn" style="background: var(--primary-color); color: white; width: 200px;" onclick="startQuiz()">Bắt đầu 🚀</button>
             </div>
 
             <!-- QUIZ ACTIVE -->
             <div id="quiz-active" class="hidden">
-                <div class="question-header">
-                    <div class="chapter-tag" id="q-tag">Chapter Name</div>
-                    <div id="quiz-question" class="question-text"></div>
+                <div class="quiz-card">
+                    <div class="quiz-q-header">
+                        <div class="tag-subject" id="q-tag">Topic</div>
+                        <div class="question-text" id="q-text">Question?</div>
+                    </div>
+                    <ul class="options-list" id="q-options"></ul>
+                    <div id="q-exp" class="hidden" style="margin-top: 20px; padding: 15px; background: #f8fafc; border-radius: 10px;"></div>
                 </div>
-                <ul class="options-list" id="quiz-options"></ul>
-                <div id="quiz-explanation" class="explanation-box" style="display: none;"></div>
-                
-                <div class="flex-between" style="margin-top: 30px;">
-                    <button class="tab-btn" onclick="navQuiz(-1)" style="background:#ddd">Câu trước</button>
-                    <button class="start-btn" style="background: var(--secondary-color);" onclick="finishQuiz()">Kết thúc & Chấm điểm</button>
-                    <button class="tab-btn" onclick="navQuiz(1)" style="background:#ddd">Câu sau</button>
+                <div style="display: flex; justify-content: space-between;">
+                    <button class="circle-btn" onclick="navQuiz(-1)">Trước</button>
+                    <button class="circle-btn" style="background: var(--secondary-color); color: white; width: 150px;" onclick="submitQuiz()">Nộp bài</button>
+                    <button class="circle-btn" onclick="navQuiz(1)">Sau</button>
                 </div>
             </div>
 
             <!-- RESULT -->
             <div id="quiz-result" class="hidden" style="text-align: center;">
-                <div style="background: white; padding: 40px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+                <div class="quiz-card">
                     <h2>Kết quả bài làm</h2>
-                    <div id="final-score" style="font-size: 60px; font-weight: bold; color: var(--primary-color);">0/0</div>
-                    <button class="start-btn" onclick="resetQuiz()" style="margin-top: 20px;">Làm đề mới 🔄</button>
+                    <div id="score-text" style="font-size: 50px; font-weight: bold; color: var(--primary-color);">0/0</div>
+                    <button class="circle-btn" style="margin-top: 20px;" onclick="resetQuiz()">Làm lại 🔄</button>
                 </div>
-                <div id="review-area" style="margin-top: 30px; text-align: left;"></div>
             </div>
 
         </div>
 
-        <!-- SIDEBAR -->
         <div class="quiz-sidebar hidden" id="quiz-sidebar">
-            <h3 style="margin-top: 0;">Bản đồ câu hỏi</h3>
-            <div class="question-grid" id="map-grid"></div>
+            <h3 style="margin-bottom: 20px;">Bản đồ câu hỏi</h3>
+            <div class="map-grid" id="map-grid"></div>
         </div>
     </div>
 
-    <div class="hotkey-hint">Phím N: Dịch | Phím M: Xáo đáp án | Mũi tên: Chuyển câu</div>
-
 <script>
-    // JSON DATA - Hãy dán dữ liệu 50 câu của bạn vào đây
+    // 1. SƯỜN JSON ĐỒNG BỘ
     const quizData = [
         {
     "id": 1,
@@ -1843,201 +1806,177 @@
 
     let state = {
         isVN: true,
-        activeTab: 'flashcard',
+        tab: 'flashcard',
         fcIdx: 0,
+        fcFiltered: [],
         quizPhase: 'setup',
         activeQs: [],
         currentIdx: 0,
-        answers: {}
+        results: {}
     };
 
-    const labelChars = "ABCDEF".split("");
-
     function init() {
-        const select = document.getElementById('topic-select');
-        const topics = ["Tất cả / All Chapters", ...new Set(quizData.map(q => q.topic))];
-        select.innerHTML = topics.map(t => `<option value="${t}">${t}</option>`).join('');
-        updateMax();
-        renderFlashcard();
-
-        // Đăng ký Phím tắt
-        document.addEventListener('keydown', (e) => {
-            if (e.target.tagName === 'INPUT') return;
-            const key = e.key.toLowerCase();
-            if (key === 'n') toggleLanguage();
-            if (key === 'm') shuffleCurrentOptions();
-            if (key === 'arrowright') { if(state.activeTab === 'flashcard') navFlashcard(1); else navQuiz(1); }
-            if (key === 'arrowleft') { if(state.activeTab === 'flashcard') navFlashcard(-1); else navQuiz(-1); }
+        const topics = ["Tất cả", ...new Set(quizData.map(q => q.topic))];
+        const selects = [document.getElementById('fc-topic-select'), document.getElementById('quiz-topic-select')];
+        selects.forEach(s => {
+            s.innerHTML = topics.map(t => `<option value="${t}">${t}</option>`).join('');
+        });
+        filterFC();
+        
+        // Listeners
+        window.addEventListener('keydown', e => {
+            if (e.code === 'Space') { e.preventDefault(); flipCard(); }
+            if (e.key.toLowerCase() === 'n') toggleLang();
+            if (e.key.toLowerCase() === 'm') shuffleOptions();
+            if (e.key === 'ArrowRight') (state.tab === 'flashcard') ? navFC(1) : navQuiz(1);
+            if (e.key === 'ArrowLeft') (state.tab === 'flashcard') ? navFC(-1) : navQuiz(-1);
         });
     }
 
-    function toggleLanguage() {
-        state.isVN = !state.isVN;
-        if (state.activeTab === 'flashcard') renderFlashcard();
-        else if (state.quizPhase === 'active') renderQuestion();
-    }
+    function toggleLang() { state.isVN = !state.isVN; updateUI(); }
 
-    function shuffleCurrentOptions() {
-        const q = (state.activeTab === 'flashcard') ? null : state.activeQuestions[state.currentIdx];
-        if (q) {
-            q.perm = shuffleArray(Array.from(Array(q.vi.options.length).keys()));
-            renderQuestion();
-        }
-    }
-
-    function switchTab(tab) {
-        state.activeTab = tab;
+    function switchTab(t) {
+        state.tab = t;
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-btn')[tab === 'flashcard' ? 0 : 1].classList.add('active');
+        document.getElementById(t === 'flashcard' ? 'btn-fc-tab' : 'btn-quiz-tab').classList.add('active');
         
-        document.getElementById('flashcard-view').classList.add('hidden');
-        document.getElementById('quiz-setup').classList.add('hidden');
-        document.getElementById('quiz-active').classList.add('hidden');
-        document.getElementById('quiz-result').classList.add('hidden');
-        document.getElementById('quiz-sidebar').classList.add('hidden');
-
-        if (tab === 'flashcard') {
-            document.getElementById('flashcard-view').classList.remove('hidden');
-        } else {
-            if (state.quizPhase === 'setup') document.getElementById('quiz-setup').classList.remove('hidden');
-            else {
-                document.getElementById(state.quizPhase === 'active' ? 'quiz-active' : 'quiz-result').classList.remove('hidden');
-                document.getElementById('quiz-sidebar').classList.remove('hidden');
-            }
-        }
+        document.getElementById('flashcard-section').classList.toggle('hidden', t !== 'flashcard');
+        document.getElementById('quiz-setup').classList.toggle('hidden', t !== 'quiz' || state.quizPhase !== 'setup');
+        document.getElementById('quiz-active').classList.toggle('hidden', t !== 'quiz' || state.quizPhase !== 'active');
+        document.getElementById('quiz-result').classList.toggle('hidden', t !== 'quiz' || state.quizPhase !== 'result');
+        document.getElementById('quiz-sidebar').classList.toggle('hidden', t !== 'quiz' || state.quizPhase === 'setup');
+        updateUI();
     }
 
-    // Flashcard Logic
-    function renderFlashcard() {
-        if (quizData.length === 0) return;
-        const q = quizData[state.fcIdx];
-        const data = state.isVN ? q.vi : q.en;
-        document.querySelector('.flashcard').classList.remove('flipped');
-        document.getElementById('fc-tag').innerText = q.topic;
-        document.getElementById('fc-question').innerText = data.question;
-        document.getElementById('fc-answer').innerText = data.answer;
-        document.getElementById('fc-explanation').innerText = data.explanation || "";
-        document.getElementById('fc-counter').innerText = `${state.fcIdx + 1} / ${quizData.length}`;
+    function filterFC() {
+        const t = document.getElementById('fc-topic-select').value;
+        state.fcFiltered = t === 'Tất cả' ? [...quizData] : quizData.filter(q => q.topic === t);
+        state.fcIdx = 0;
+        updateUI();
     }
 
-    function navFlashcard(dir) {
-        state.fcIdx = (state.fcIdx + dir + quizData.length) % quizData.length;
-        renderFlashcard();
+    function flipCard() {
+        if(state.tab === 'flashcard') document.getElementById('fc-card').classList.toggle('flipped');
     }
 
-    // Quiz Logic
-    function updateMax() {
-        const topic = document.getElementById('topic-select').value;
-        const count = topic.includes("Tất cả") ? quizData.length : quizData.filter(q => q.topic === topic).length;
-        document.getElementById('total-available').innerText = `(Có sẵn: ${count})`;
+    function navFC(dir) {
+        state.fcIdx = (state.fcIdx + dir + state.fcFiltered.length) % state.fcFiltered.length;
+        document.getElementById('fc-card').classList.remove('flipped');
+        updateUI();
     }
-
-    function shuffleArray(a) { return a.sort(() => Math.random() - 0.5); }
 
     function startQuiz() {
-        const topic = document.getElementById('topic-select').value;
-        const count = parseInt(document.getElementById('quiz-count').value);
-        let pool = topic.includes("Tất cả") ? [...quizData] : quizData.filter(q => q.topic === topic);
-        
-        // Random liên tục
-        state.activeQuestions = shuffleArray(pool).slice(0, count);
-        state.answers = {};
-        state.currentIdx = 0;
+        const t = document.getElementById('quiz-topic-select').value;
+        let pool = t === 'Tất cả' ? [...quizData] : quizData.filter(q => q.topic === t);
+        state.activeQs = pool.sort(() => Math.random() - 0.5).slice(0, 10);
         state.quizPhase = 'active';
-        
-        document.getElementById('quiz-setup').classList.add('hidden');
-        document.getElementById('quiz-active').classList.remove('hidden');
-        document.getElementById('quiz-sidebar').classList.remove('hidden');
-        
-        renderQuestion();
+        state.currentIdx = 0;
+        state.results = {};
+        switchTab('quiz');
         renderMap();
     }
 
-    function renderQuestion() {
-        const idx = state.currentIdx;
-        const q = state.activeQuestions[idx];
-        const data = state.isVN ? q.vi : q.en;
-        
-        document.getElementById('q-tag').innerText = q.topic;
-        document.getElementById('quiz-question').innerText = data.question;
-        document.getElementById('quiz-progress').innerText = `Câu hỏi ${idx + 1} / ${state.activeQuestions.length}`;
-        
-        const ul = document.getElementById('quiz-options');
-        ul.innerHTML = '';
-        const exp = document.getElementById('quiz-explanation');
-        const userAns = state.answers[idx];
-
-        // Khởi tạo permutation nếu chưa có
-        if (!q.perm) q.perm = Array.from(Array(data.options.length).keys());
-
-        q.perm.forEach((originalIdx, i) => {
-            const li = document.createElement('li');
-            li.innerText = data.options[originalIdx].replace(/^[A-Z]\.\s*/, '');
-            const currentLabel = labelChars[i];
-            li.setAttribute('data-label', currentLabel);
-
-            if (userAns) {
-                li.classList.add('disabled');
-                const isCorrect = data.options[originalIdx].startsWith(data.answer.charAt(0));
-                if (isCorrect) li.classList.add('correct');
-                if (userAns.label === currentLabel && !userAns.isCorrect) li.classList.add('wrong');
-            } else {
-                li.onclick = () => {
-                    const isCorrect = data.options[originalIdx].startsWith(data.answer.charAt(0));
-                    state.answers[idx] = { label: currentLabel, isCorrect };
-                    renderQuestion();
-                    renderMap();
-                };
-            }
-            ul.appendChild(li);
-        });
-
-        if (userAns) {
-            exp.style.display = 'block';
-            exp.style.borderLeftColor = userAns.isCorrect ? 'var(--secondary-color)' : 'var(--danger-color)';
-            exp.innerHTML = `<strong>Đáp án đúng: ${data.answer}</strong><p>${data.explanation || ""}</p>`;
-        } else exp.style.display = 'none';
-
-        highlightMap();
+    function navQuiz(dir) {
+        state.currentIdx = (state.currentIdx + dir + state.activeQs.length) % state.activeQs.length;
+        updateUI();
     }
 
-    function navQuiz(dir) {
-        const next = state.currentIdx + dir;
-        if (next >= 0 && next < state.activeQuestions.length) {
-            state.currentIdx = next;
-            renderQuestion();
+    function shuffleOptions() {
+        if(state.tab === 'quiz' && state.quizPhase === 'active') {
+            const q = state.activeQs[state.currentIdx];
+            if(!q.perm) q.perm = [0,1,2,3];
+            q.perm = q.perm.sort(() => Math.random() - 0.5);
+            updateUI();
         }
+    }
+
+    function updateUI() {
+        if (state.tab === 'flashcard') {
+            const q = state.fcFiltered[state.fcIdx];
+            if(!q) return;
+            const data = state.isVN ? q.vi : q.en;
+            document.getElementById('fc-tag').innerText = q.topic;
+            document.getElementById('fc-question').innerText = data.question;
+            document.getElementById('fc-answer').innerText = data.answer;
+            document.getElementById('fc-explanation').innerHTML = `<strong>Giải thích:</strong> ${data.explanation}<br><br><span style="color:var(--primary-color)">💡 ${data.tip || ""}</span>`;
+            document.getElementById('fc-progress').innerText = `${state.fcIdx + 1} / ${state.fcFiltered.length}`;
+        } else if (state.quizPhase === 'active') {
+            const q = state.activeQs[state.currentIdx];
+            const data = state.isVN ? q.vi : q.en;
+            document.getElementById('q-tag').innerText = q.topic;
+            document.getElementById('q-text').innerText = data.question;
+            
+            const options = document.getElementById('q-options');
+            options.innerHTML = '';
+            if(!q.perm) q.perm = [0,1,2,3];
+            
+            q.perm.forEach((pIdx, i) => {
+                const li = document.createElement('li');
+                const label = String.fromCharCode(65 + i);
+                li.setAttribute('data-label', label);
+                li.innerText = data.options[pIdx].substring(3);
+                
+                const userAns = state.results[state.currentIdx];
+                if(userAns) {
+                    if(data.options[pIdx].startsWith(data.answer.charAt(0))) li.classList.add('correct');
+                    if(userAns === label && !data.options[pIdx].startsWith(data.answer.charAt(0))) li.classList.add('wrong');
+                    li.style.pointerEvents = 'none';
+                } else {
+                    li.onclick = () => selectAns(label);
+                }
+                options.appendChild(li);
+            });
+            
+            const exp = document.getElementById('q-exp');
+            if(state.results[state.currentIdx]) {
+                exp.classList.remove('hidden');
+                exp.innerHTML = `<strong>${data.answer}</strong><br>${data.explanation}`;
+            } else exp.classList.add('hidden');
+            
+            renderMap();
+        }
+    }
+
+    function selectAns(label) {
+        const q = state.activeQs[state.currentIdx];
+        const data = state.isVN ? q.vi : q.en;
+        const pIdx = q.perm[label.charCodeAt(0) - 65];
+        const isCorrect = data.options[pIdx].startsWith(data.answer.charAt(0));
+        state.results[state.currentIdx] = label;
+        updateUI();
     }
 
     function renderMap() {
         const grid = document.getElementById('map-grid');
-        grid.innerHTML = state.activeQuestions.map((_, i) => 
-            `<button class="map-btn" id="map-btn-${i}" onclick="jumpTo(${i})">${i + 1}</button>`
-        ).join('');
-        highlightMap();
+        grid.innerHTML = state.activeQs.map((_, i) => {
+            let cls = 'map-dot';
+            if(i === state.currentIdx) cls += ' active';
+            if(state.results[i]) {
+                const q = state.activeQs[i];
+                const data = state.isVN ? q.vi : q.en;
+                const pIdx = q.perm[state.results[i].charCodeAt(0) - 65];
+                cls += data.options[pIdx].startsWith(data.answer.charAt(0)) ? ' correct' : ' wrong';
+            }
+            return `<button class="${cls}" onclick="state.currentIdx=${i}; updateUI();">${i+1}</button>`;
+        }).join('');
     }
 
-    function jumpTo(i) { state.currentIdx = i; renderQuestion(); }
-
-    function highlightMap() {
-        document.querySelectorAll('.map-btn').forEach((btn, i) => {
-            btn.className = 'map-btn';
-            if (i === state.currentIdx) btn.classList.add('active');
-            if (state.answers[i]) btn.classList.add(state.answers[i].isCorrect ? 'correct' : 'wrong');
-        });
-    }
-
-    function finishQuiz() {
+    function submitQuiz() {
         state.quizPhase = 'result';
-        const score = Object.values(state.answers).filter(a => a.isCorrect).length;
-        document.getElementById('quiz-active').classList.add('hidden');
-        document.getElementById('quiz-result').classList.remove('hidden');
-        document.getElementById('final-score').innerText = `${score} / ${state.activeQuestions.length}`;
+        let score = 0;
+        state.activeQs.forEach((q, i) => {
+            const data = state.isVN ? q.vi : q.en;
+            if(state.results[i]) {
+                const pIdx = q.perm[state.results[i].charCodeAt(0) - 65];
+                if(data.options[pIdx].startsWith(data.answer.charAt(0))) score++;
+            }
+        });
+        document.getElementById('score-text').innerText = `${score} / ${state.activeQs.length}`;
+        switchTab('quiz');
     }
 
     function resetQuiz() {
         state.quizPhase = 'setup';
-        state.activeQuestions.forEach(q => delete q.perm);
         switchTab('quiz');
     }
 
