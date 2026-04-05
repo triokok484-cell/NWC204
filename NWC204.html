@@ -8593,6 +8593,12 @@
             if (e.key === 'ArrowRight') (state.tab === 'flashcard') ? navFC(1) : (state.quizPhase === 'active' && navQuiz(1));
 
             if (e.key === 'ArrowLeft') (state.tab === 'flashcard') ? navFC(-1) : (state.quizPhase === 'active' && navQuiz(-1));
+            if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                if (state.tab === 'flashcard') {
+                    e.preventDefault(); // Khóa không cho trang web cuộn lên/xuống
+                    flipCard();         // Gọi hàm lật thẻ
+                }
+            }
 
         });
 
