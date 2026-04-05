@@ -4229,20 +4229,21 @@
   },
   {
     "id": 235,
-    "topic": "Network Security & Services",
+    "topic": "Physical & Data Link Layers",
     "vi": {
-      "question": "DONE - Chúc mừng bạn đã hoàn thành bộ ôn tập 235 câu unique!",
-      "options": ["Tiếp tục ôn tập", "Làm bài thi thử", "Nghỉ ngơi thôi", "Tất cả đều đúng"],
-      "answer": ["Tất cả đều đúng"],
-      "explanation": "Bạn đã phủ hết kiến thức trọng tâm của môn NWC204.",
-      "tip": "Mẹo: Chúc bạn thi tốt đạt điểm cao nhé!"
+      "question": "Hành động nào sẽ xảy ra nếu một Switch nhận được một frame và địa chỉ MAC ĐÍCH KHÔNG có sẵn trong bảng MAC?",
+      "options": ["Switch sẽ hủy bỏ (drop) frame đó", "Switch gửi frame tới Router để xử lý", "Switch sẽ chuyển tiếp frame ra tất cả các cổng, trừ cổng đã nhận frame đó vào (Flooding)", "Switch lưu frame vào bộ nhớ đệm cho đến khi tìm thấy MAC"],
+      "answer": ["Switch sẽ chuyển tiếp frame ra tất cả các cổng, trừ cổng đã nhận frame đó vào (Flooding)"],
+      "explanation": "Khi Switch không biết MAC đích ở đâu (Unknown Unicast), nó sẽ phát tán frame ra toàn bộ các cổng (trừ cổng nguồn) để mong rằng thiết bị đích sẽ phản hồi.",
+      "tip": "Mẹo: Không biết địa chỉ người nhận thì 'Gào' lên cho cả xóm nghe để người đó tự lên tiếng."
     },
     "en": {
-      "question": "DONE - Congratulations on completing the 235 unique questions!",
-      "options": ["Review again", "Take mock exam", "Rest", "All of above"],
-      "answer": ["All of above"],
-      "explanation": "You have covered the core syllabus of NWC204."
+      "question": "What action will occur if a switch receives a frame and does NOT have the destination MAC address in the MAC table?",
+      "options": ["The switch drops the frame", "The switch sends to the router", "The switch forwards the frame out all ports except the incoming port", "The switch buffers the frame"],
+      "answer": ["The switch forwards the frame out all ports except the incoming port"],
+      "explanation": "This process is known as unknown unicast flooding."
     }
+  
   }
 
     ];
